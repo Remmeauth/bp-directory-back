@@ -5,7 +5,7 @@ WORKDIR /bp-directory-back
 RUN apt-get update && apt-get install -y \
         vim \
         telnet net-tools \
-        postgresql postgresql-contrib
+        postgresql postgresql-client postgresql-contrib
 
 COPY . /bp-directory-back
 
