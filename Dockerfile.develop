@@ -9,4 +9,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY . /bp-directory-back
 
-RUN pip install --no-cache-dir -r /bp-directory-back/requirements.txt
+RUN pip install --no-cache-dir \
+        -r /block-producers-directory-back/dev.txt \
+        -r /block-producers-directory-back/project.txt \
+        -r /block-producers-directory-back/tests.txt
