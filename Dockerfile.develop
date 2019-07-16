@@ -1,0 +1,12 @@
+FROM python:3.7
+
+WORKDIR /bp-directory-back
+
+RUN apt-get update && apt-get install -y \
+        vim \
+        telnet net-tools \
+        postgresql postgresql-contrib
+
+COPY . /bp-directory-back
+
+RUN pip install --no-cache-dir -r /bp-directory-back/requirements.txt
