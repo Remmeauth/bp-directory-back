@@ -1,18 +1,22 @@
 version: '3'
 services:
 
-  bp-directory-back:
-    container_name: bp-directory-back
+  block-producers-directory-back:
+    container_name: block-producers-directory-back
     build:
       context: .
       dockerfile: Dockerfile.develop
-    command: sh ops/development/start-server.sh
+    command: ./ops/development/start-server.sh
     depends_on:
       - postgres
     privileged: true
     volumes:
-      - .:/bp-directory-back
-      - ./shared:/bp-directory-back/shared
+      - .:/block-producers-directory-back
+      - ./shared:/block-producers-directory-back/shared
+    environment:
+      - 'DEBUG=True'
+      - 'SECRET_KEY=q#-d-)5oo8cjoy6=(ejf=5jdg)e&(tf!@k2zs%9=8^=kq7gxq'
+      - 'POSTGRESQL_DSN=postgresql://postgres:postgres@postgres:5432/postgres'
     ports:
       - '8000:8000'
     stdin_open: true

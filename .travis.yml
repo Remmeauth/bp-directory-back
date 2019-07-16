@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - docker-compose -f docker-compose.development.yml up -d
+  - docker-compose -f docker-compose.develop.yml up -d
 
 script:
   - docker exec -it block-producers-directory-back bash -c "radon cc directory -nb --total-average"
