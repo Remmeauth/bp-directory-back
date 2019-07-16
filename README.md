@@ -1,4 +1,6 @@
-# bp-directory-back
+# Block producers directory back-end
+
+Directory of block producers based around ``Remme Protocol``.
 
 * [Development](#development)
 
@@ -7,8 +9,8 @@
 Clone the project with the following command:
 
 ```bash
-$ git clone https://github.com/Remmeauth/bp-directory-back.git
-$ cd bp-directory-back
+$ git clone https://github.com/Remmeauth/block-producers-directory-back.git
+$ cd block-producers-directory-back
 ```
 
 To build the project, use the following command:
@@ -26,7 +28,7 @@ $ docker-compose -f docker-compose.develop.yml up
 If you need to enter the bash of the container, use the following command:
 
 ```bash
-$ docker exec -it bp-directory-back bash
+$ docker exec -it block-producers-directory-back bash
 ```
 
 Clean all containers with the following command:

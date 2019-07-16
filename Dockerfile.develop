@@ -1,12 +1,12 @@
 FROM python:3.7
 
-WORKDIR /bp-directory-back
+WORKDIR /block-producers-directory-back
 
 RUN apt-get update && apt-get install -y \
         vim \
         telnet net-tools \
         postgresql postgresql-client postgresql-contrib
 
-COPY . /bp-directory-back
+COPY . /block-producers-directory-back
 
-RUN pip install --no-cache-dir -r /bp-directory-back/requirements.txt
+RUN pip install --no-cache-dir -r /block-producers-directory-back/requirements.txt
