@@ -56,7 +56,7 @@ To run the project, use the following command. It will start the server and occu
 
 ```bash
 $ docker run -p 8000:8000 -e PORT=8000 \
-      -e DEBUG=False -e SECRET_KEY=t5dcw2llz8eshqp -e POSTGRESQL_DSN='sqlite:///db.sqlite3' \
+      -e DEBUG=False -e SECRET_KEY=t5dcw2llz8eshqp -e DATABASE_URL='sqlite:///db.sqlite3' \
       -v $PWD:/block-producers-directory-back \
       --name block-producers-directory-back block-producers-directory-back
 ```
