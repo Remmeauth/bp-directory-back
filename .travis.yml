@@ -10,7 +10,7 @@ script:
   - docker exec -it block-producers-directory-back bash -c "radon cc directory -nb --total-average"
   - docker exec -it block-producers-directory-back bash -c "cat requirements/dev.txt requirements/project.txt requirements/tests.txtt | safety check --stdin"
   - docker exec -it block-producers-directory-back bash -c "bash <(curl -s https://linters.io/sort-requirements) requirements/dev.txt requirements/project.txt requirements/tests.txt"
-  - docker exec -it block-producers-directory-back bash -c "bash <(curl -s https://linters.io/isort-diff) directory"
+  - docker exec -it block-producers-directory-back bash -c "isort -rc directory --diff"
   - docker exec -it block-producers-directory-back bash -c "flake8 directory"
   - docker exec -it block-producers-directory-back bash -c "coverage run --source='.' directory/manage.py test"
   - docker exec -it block-producers-directory-back bash -c "coverage report -m"
