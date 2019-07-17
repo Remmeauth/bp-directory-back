@@ -8,7 +8,7 @@ import dj_database_url
 DEBUG = bool(os.environ.get('DEBUG'))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-POSTGRESQL_DSN = os.environ.get('POSTGRESQL_DSN')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,7 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'directory.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {
@@ -51,10 +51,10 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'directory.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(default=POSTGRESQL_DSN),
+    'default': dj_database_url.config(default=DATABASE_URL),
 }
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -10,10 +10,6 @@
     "SECRET_KEY": {
       "description": "Secret key to encrypt confidential data in database.",
       "required": true
-    },
-    "POSTGRESQL_DSN": {
-      "description": "URL (DSN) to PostgreSQL database.",
-      "required": true
     }
   },
   "addons": [
