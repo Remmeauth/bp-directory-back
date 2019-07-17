@@ -10,6 +10,10 @@
     "SECRET_KEY": {
       "description": "Secret key to encrypt confidential data in database.",
       "required": true
+    },
+    "ENVIRONMENT": {
+      "description": "Environment value. For now, is used for detect review applications only.",
+      "required": false
     }
   },
   "addons": [
