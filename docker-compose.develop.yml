@@ -1,0 +1,28 @@
+version: '3'
+services:
+
+  block-producers-directory-back:
+    container_name: block-producers-directory-back
+    build:
+      context: .
+      dockerfile: Dockerfile.develop
+    command: ./ops/development/start-server.sh
+    depends_on:
+      - postgres
+    privileged: true
+    volumes:
+      - .:/block-producers-directory-back
+      - ./shared:/block-producers-directory-back/shared
+    environment:
+      - 'DEBUG=True'
+      - 'SECRET_KEY=q#-d-)5oo8cjoy6=(ejf=5jdg)e&(tf!@k2zs%9=8^=kq7gxq'
+      - 'DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres'
+    ports:
+      - '8000:8000'
+    stdin_open: true
+    tty: true
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always

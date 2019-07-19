@@ -1,0 +1,11 @@
+FROM python:3.7
+
+WORKDIR /block-producers-directory-back
+COPY . /block-producers-directory-back
+
+RUN pip install --no-cache-dir \
+        -r /block-producers-directory-back/requirements/dev.txt \
+        -r /block-producers-directory-back/requirements/project.txt \
+        -r /block-producers-directory-back/requirements/tests.txt
+
+CMD ["/bin/bash", "./ops/production/start-server.sh"]

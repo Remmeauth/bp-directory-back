@@ -1,0 +1,28 @@
+{
+  "name": "block-producers-directory-back",
+  "description": "Back-end of directory of block producers based around Remme Protocol.",
+  "repository": "https://github.com/Remmeauth/block-producers-directory-back",
+  "env": {
+    "DEBUG": {
+      "description": "Flag if application is debuggable.",
+      "required": true
+    },
+    "SECRET_KEY": {
+      "description": "Secret key to encrypt confidential data in database.",
+      "required": true
+    },
+    "ENVIRONMENT": {
+      "description": "Environment value. For now, is used for detect review applications only.",
+      "required": false
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ],
+  "stack": "container"
+}
