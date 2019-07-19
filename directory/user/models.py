@@ -16,7 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     User database model.
     """
 
-    name = models.CharField(_('name'), max_length=30, blank=False)
+    first_name = models.CharField(_('first name'), max_length=30, blank=False)
     last_name = models.CharField(_('last name'), max_length=100, blank=False)
     email = models.EmailField(_('email'), unique=True, blank=False)
 
@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Return the short name for the user.
         """
-        return self.name
+        return self.first_name
 
     @classmethod
     def create_with_email(cls, email, password):
