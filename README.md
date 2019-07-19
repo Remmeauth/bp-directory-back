@@ -2,8 +2,55 @@
 
 Directory of block producers based around ``Remme Protocol``.
 
+* [API](#api)
+  * [Authentication](#authentication)
 * [Development](#development)
 * [Production](#production)
+
+## API
+
+### Authentication
+
+* `POST | /authentication/token/obtaining/` - obtain `JWT token` for existing user by his email and password.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| email      | String  | Yes      | User e-mail.   |
+| password   | String  | Yes      | User password. |
+
+```bash
+$ curl -v -X POST -H "Content-Type: application/json" -d \
+     '{"email":"directory@gmail.com","password":"directory-1337"}' \
+      http://localhost:8000/authentication/token/obtaining/ | python -m json.tool
+{
+    "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
+}
+```
+
+* `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
+
+```bash
+$ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX....NzZ..."}' \
+      http://localhost:8000/authentication/token/refreshing/ | python -m json.tool
+{
+    "token": "eyJ0e....eyJ1c2VyX2....sOx4S9zpC..."
+}
+```
+
+* `POST | /authentication/token/verification/` - check if `JWT token` token is valid.
+
+```bash
+$ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX2....sOx4S9zpC..."}' \
+      http://localhost:8000/authentication/token/verification/ | python -m json.tool
+{
+    "token": "eyJ0e....eyJ1c2VyX2....sOx4S9zpC..."
+}
+```
+
+Returns token and status code `200` if valid. Otherwise, it will return a `400` status code as well as an error 
+identifying why the token was invalid.
 
 ## Development
 
