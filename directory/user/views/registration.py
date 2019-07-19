@@ -39,7 +39,7 @@ class UserRegistrationSingle(APIView):
         })
 
         if not form.is_valid():
-            return JsonResponse(form.errors, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
 
         try:
             RegisterUser(user=self.user).by_email(email=email, password=password)

@@ -5,7 +5,7 @@ Provide errors for user domain objects.
 
 class UserWithSpecifiedEmailAddressAlreadyExistsError(Exception):
     """
-    Inaccessible due to its protection level exception.
+    User with specified e-mail address already exists error.
     """
 
     def __init__(self):

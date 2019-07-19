@@ -75,9 +75,11 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"email":"dmytro.strilets
 
 ##### Known errors
 
-| Argument     | Level                      | Error message                                      | Status code |
-| :----------: | :------------------------: | -------------------------------------------------- | :---------: |
-|  -           | General execution          | User with specified e-mail address already exists. | 400         |
+| Argument  | Level                      | Error message                                      | Status code |
+| :-------: | :------------------------: | -------------------------------------------------- | :---------: |
+|  -        | General execution          | User with specified e-mail address already exists. | 400         |
+|  email    | Input arguments validation | This field is required.                            | 400         |
+|  password | Input arguments validation | This field is required.                            | 400         |
 
 ## Development
 

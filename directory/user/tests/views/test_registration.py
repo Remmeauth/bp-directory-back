@@ -47,3 +47,24 @@ class TestUserRegistrationSingle(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_register_user_with_no_data(self):
+        """
+        Case: register user without e-mail address and password.
+        Expect: e-mail address and password are required.
+        """
+        expected_result = {
+            'errors': {
+                'email': [
+                    'This field is required.',
+                ],
+                'password': [
+                    'This field is required.',
+                ],
+            },
+        }
+
+        response = self.client.post('/user/registration/', json.dumps({}), content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code

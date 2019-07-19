@@ -1,5 +1,5 @@
 """
-Provide implementation of user endpoints .
+Provide implementation of user endpoints.
 """
 from django.urls import path
 
