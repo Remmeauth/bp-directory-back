@@ -1,5 +1,5 @@
 """
-Provide HTTP endpoints as root.
+Provide implementation of root endpoints.
 """
 from django.contrib import admin
 from django.urls import (
@@ -12,6 +12,8 @@ from rest_framework_jwt.views import (
     verify_jwt_token,
 )
 
+from user.endpoints import user_endpoints
+
 authentication_endpoints = [
     path('token/obtaining/', obtain_jwt_token),
     path('token/refreshing/', refresh_jwt_token),
@@ -21,4 +23,5 @@ authentication_endpoints = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include(authentication_endpoints)),
+    path('user/', include(user_endpoints)),
 ]

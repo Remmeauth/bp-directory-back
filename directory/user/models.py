@@ -51,3 +51,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         Return the short name for the user.
         """
         return self.name
+
+    @classmethod
+    def create_with_email(cls, email, password):
+        """
+        Create a user with specified e-mail address and password.
+        """
+        cls.objects.create(email=email, password=password)
+
+    @classmethod
+    def does_exist(cls, email):
+        """
+        Check if user exists by e-mail address.
+        """
+        if cls.objects.filter(email=email).exists():
+            return True
+
+        return False
