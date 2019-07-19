@@ -4,6 +4,7 @@ Directory of block producers based around ``Remme Protocol``.
 
 * [API](#api)
   * [Authentication](#authentication)
+  * [User](#user)
 * [Development](#development)
 * [Production](#production)
 
@@ -51,6 +52,34 @@ $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ
 
 Returns token and status code `200` if valid. Otherwise, it will return a `400` status code as well as an error 
 identifying why the token was invalid.
+
+### User
+
+* `POST | /auth/registration/` - register a user with email and password.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| email      | String  | Yes      | User e-mail.   |
+| password   | String  | Yes      | User password. |
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" -d '{"email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
+      http://localhost:8000/user/registration/ | python -m json.tool
+{
+    "message": "User has been created.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                      | Status code |
+| :-------: | :------------------------: | -------------------------------------------------- | :---------: |
+|  -        | General execution          | User with specified e-mail address already exists. | 400         |
+|  email    | Input arguments validation | This field is required.                            | 400         |
+|  password | Input arguments validation | This field is required.                            | 400         |
 
 ## Development
 
