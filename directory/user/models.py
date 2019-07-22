@@ -106,3 +106,9 @@ class Profile(models.Model):
     facebook_url = models.URLField(max_length=200, blank=True)
     telegram_url = models.URLField(max_length=200, blank=True)
     steemit_url = models.URLField(max_length=200, blank=True)
+
+    def __str__(self):
+        """
+        Get string representation of an object.
+        """
+        return self.user.email

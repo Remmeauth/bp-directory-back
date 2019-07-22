@@ -13,6 +13,7 @@ function create_database_super_user() {
 function create_database_fixtures() {
   declare -a arr_fixtures=(
     "directory/user/fixtures/user.json"
+    "directory/user/fixtures/profile.json"
   )
 
   for fixture in "${arr_fixtures[@]}"
