@@ -2,7 +2,7 @@
 Provide implementation of user registration.
 """
 from user.domain.errors import (
-    SpecifiedUserPasswordWasIncorrectError,
+    SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressAlreadyExistsError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
 )
@@ -49,7 +49,7 @@ class ChangeUserPassword:
 
         is_password_matched = self.user.verify_password(email=email, password=old_password)
 
-        if is_password_matched is False:
-            raise SpecifiedUserPasswordWasIncorrectError
+        if not is_password_matched:
+            raise SpecifiedUserPasswordIsIncorrectError
 
         self.user.set_new_password(email=email, password=new_password)

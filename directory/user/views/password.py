@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from user.domain.errors import (
-    SpecifiedUserPasswordWasIncorrectError,
+    SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
 )
 from user.domain.objects import ChangeUserPassword
@@ -49,7 +49,7 @@ class UserPasswordSingle(APIView):
         try:
             ChangeUserPassword(user=self.user).do(email=email, old_password=old_password, new_password=new_password)
         except (
-            SpecifiedUserPasswordWasIncorrectError,
+            SpecifiedUserPasswordIsIncorrectError,
             UserWithSpecifiedEmailAddressDoesNotExistError,
         ) as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)

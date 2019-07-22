@@ -47,10 +47,10 @@ class TestUserPasswordSingle(TestCase):
     def test_change_user_password_with_incorrect_password(self):
         """
         Case: change user password with incorrect password.
-        Expect: specified user password was incorrect error message.
+        Expect: specified user password is incorrect error message.
         """
         expected_result = {
-            'error': 'The specified user password was incorrect.',
+            'error': 'The specified user password is incorrect.',
         }
 
         response = self.client.post('/user/password/', json.dumps({

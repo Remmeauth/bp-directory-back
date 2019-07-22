@@ -27,13 +27,13 @@ class UserWithSpecifiedEmailAddressDoesNotExistError(Exception):
         self.message = 'User with specified e-mail address does not exist.'
 
 
-class SpecifiedUserPasswordWasIncorrectError(Exception):
+class SpecifiedUserPasswordIsIncorrectError(Exception):
     """
-    The specified user password was incorrect error.
+    The specified user password is incorrect error.
     """
 
     def __init__(self):
         """
         Constructor.
         """
-        self.message = 'The specified user password was incorrect.'
+        self.message = 'The specified user password is incorrect.'

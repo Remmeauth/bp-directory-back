@@ -106,7 +106,7 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | Argument     | Level                      | Error message                                      | Status code |
 | :----------: | :------------------------: | -------------------------------------------------- | :---------: |
 | -            | General execution          | User with specified e-mail address does not exist. | 400         |
-| -            | General execution          | The specified user password was incorrect.         | 400         |
+| -            | General execution          | The specified user password is incorrect.          | 400         |
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
 
