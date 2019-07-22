@@ -5,6 +5,7 @@ from http import HTTPStatus
 
 from django.http import JsonResponse
 from rest_framework.views import APIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from user.domain.errors import (
     SpecifiedUserPasswordWasIncorrectError,
@@ -13,8 +14,6 @@ from user.domain.errors import (
 from user.domain.objects import ChangeUserPassword
 from user.forms import ChangeUserPasswordForm
 from user.models import User
-
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
 class UserPasswordSingle(APIView):

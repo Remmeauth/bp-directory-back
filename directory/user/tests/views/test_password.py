@@ -15,7 +15,9 @@ class TestUserPasswordSingle(TestCase):
     """
 
     def setUp(self):
-
+        """
+        Setup.
+        """
         User.objects.create_user(email='martin.fowler@gmail.com', password='martin.fowler.1337')
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
@@ -41,6 +43,23 @@ class TestUserPasswordSingle(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
+
+    def test_change_user_password_with_incorrect_password(self):
+        """
+        Case: change user password with incorrect password.
+        Expect: specified user password was incorrect error message.
+        """
+        expected_result = {
+            'error': 'The specified user password was incorrect.',
+        }
+
+        response = self.client.post('/user/password/', json.dumps({
+            'old_password': 'martin.fowler.1111',
+            'new_password': 'martin.f.1337',
+        }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
 
     def test_change_user_password_without_data(self):
         """
