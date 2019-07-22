@@ -1,0 +1,53 @@
+[
+  {
+    "model": "user.profile",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "location": "Berlin, Germany",
+      "additional_information": "Software Engineer at Travis-CI.",
+      "website_url": "https://johnsmith.com",
+      "linkedin_url": "https://www.linkedin.com/in/johnsmith",
+      "twitter_url": "https://twitter.com/johnsmith",
+      "medium_url": "https://medium.com/@johnsmith",
+      "github_url": "https://github.com/johnsmith",
+      "facebook_url": "https://www.facebook.com/johnsmith",
+      "telegram_url": "https://t.me/johnsmith",
+      "steemit_url": "https://steemit.com/@johnsmith"
+    }
+  },
+  {
+    "model": "user.profile",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "location": "San Francisco, USA",
+      "additional_information": "Engineering Manager at Facebook.",
+      "website_url": "https://tonystark.com",
+      "linkedin_url": "https://www.linkedin.com/in/tonystark",
+      "twitter_url": "https://twitter.com/tonystark",
+      "medium_url": "https://medium.com/@tonystark",
+      "github_url": "https://github.com/tonystark",
+      "facebook_url": "https://www.facebook.com/tonystark",
+      "telegram_url": "https://t.me/tonystark",
+      "steemit_url": "https://steemit.com/@tonystark"
+    }
+  },
+  {
+    "model": "user.profile",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "location": "Tokyo, Japan",
+      "additional_information": "Chief Marketing Officer at Yamaha.",
+      "website_url": "https://paulrudd.com",
+      "linkedin_url": "https://www.linkedin.com/in/paulrudd",
+      "twitter_url": "https://twitter.com/paulrudd",
+      "medium_url": "https://medium.com/@paulrudd",
+      "github_url": "https://github.com/paulrudd",
+      "facebook_url": "https://www.facebook.com/paulrudd",
+      "telegram_url": "https://t.me/paulrudd",
+      "steemit_url": "https://steemit.com/@paulrudd"
+    }
+  }
+]
