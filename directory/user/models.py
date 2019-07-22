@@ -4,6 +4,7 @@ Provide database models for user.
 from __future__ import unicode_literals
 
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -57,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Create a user with specified e-mail address and password.
         """
-        cls.objects.create(email=email, password=password)
+        cls.objects.create_user(email=email, password=password)
 
     @classmethod
     def does_exist(cls, email):
@@ -68,6 +69,23 @@ class User(AbstractBaseUser, PermissionsMixin):
             return True
 
         return False
+
+    @classmethod
+    def verify_password(cls, email, password):
+        """
+        Check if the user's password is equal to the encrypted user password.
+        """
+        encrypted_user_password = cls.objects.get(email=email).password
+        return check_password(password=password, encoded=encrypted_user_password)
+
+    @classmethod
+    def set_new_password(cls, email, password):
+        """
+        Set new user password by specified e-mail.
+        """
+        user = cls.objects.get(email=email)
+        user.set_password(password)
+        user.save()
 
 
 class Profile(models.Model):

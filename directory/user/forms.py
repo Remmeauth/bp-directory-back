@@ -19,3 +19,12 @@ class UserRegistrationForm(forms.Form):
 
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
+
+
+class ChangeUserPasswordForm(forms.Form):
+    """
+    Change user password form implementation.
+    """
+
+    old_password = forms.CharField(widget=forms.PasswordInput)
+    new_password = forms.CharField(widget=forms.PasswordInput)
