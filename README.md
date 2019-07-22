@@ -4,6 +4,7 @@ Directory of block producers based around ``Remme Protocol``.
 
 * [API](#api)
   * [Authentication](#authentication)
+  * [User](#user)
 * [Development](#development)
 * [Production](#production)
 
@@ -22,12 +23,12 @@ Directory of block producers based around ``Remme Protocol``.
 
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d \
-     '{"email":"directory@gmail.com","password":"directory-1337"}' \
+     '{"email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
       http://localhost:8000/authentication/token/obtaining/ | python -m json.tool
 {
     "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
 }
-```
+```   
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
@@ -51,6 +52,63 @@ $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ
 
 Returns token and status code `200` if valid. Otherwise, it will return a `400` status code as well as an error 
 identifying why the token was invalid.
+
+### User
+
+* `POST | /auth/registration/` - register a user with email and password.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| email      | String  | Yes      | User e-mail.   |
+| password   | String  | Yes      | User password. |
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" -d '{"email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
+      http://localhost:8000/user/registration/ | python -m json.tool
+{
+    "message": "User has been created.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                      | Status code |
+| :-------: | :------------------------: | -------------------------------------------------- | :---------: |
+|  -        | General execution          | User with specified e-mail address already exists. | 400         |
+|  email    | Input arguments validation | This field is required.                            | 400         |
+|  password | Input arguments validation | This field is required.                            | 400         |
+
+* `POST | /user/password/` - change user password.
+
+##### Request parameters
+
+| Arguments    | Type   | Required | Description        |
+| :----------: | :----: | :------: | ------------------ |
+| old_password | String | Yes      | Old user password. |
+| new_password | String | Yes      | New user password. |
+
+```bash
+$ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dmytro.1337"}' \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/user/password/ | python -m json.tool
+{
+    "message": "Password has been changed.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument     | Level                      | Error message                                      | Status code |
+| :----------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -            | General execution          | User with specified e-mail address does not exist. | 400         |
+| -            | General execution          | The specified user password is incorrect.          | 400         |
+| old_password | Input arguments validation | This field is required.                            | 400         |
+| new_password | Input arguments validation | This field is required.                            | 400         |
 
 ## Development
 
