@@ -25,8 +25,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'user',
     'block_producer',
+    'user',
 ]
 
 MIDDLEWARE = [
