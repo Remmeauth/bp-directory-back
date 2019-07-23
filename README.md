@@ -110,6 +110,51 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
 
+* `POST | /user/password/recovery` - password recovery for an existing user by his email.
+
+##### Request parameters
+
+| Arguments | Type   | Required | Description  |
+| :-------: | :----: | :------: | ------------ |
+| email     | String | Yes      | User e-mail. |
+
+```bash
+$ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
+      -H "Content-Type: application/json" \
+      http://localhost:8000/user/password/recovery | python -m json.tool
+{
+    "message": "Forgotten password has been sent to the specified e-mail address.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                      | Status code |
+| :------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -        | General execution          | User with specified e-mail address does not exist. | 400         |
+| email    | Input arguments validation | This field is required.                            | 400         |
+
+* `POST | /user/password/recovery/{user_identifier}` - send a new password to an existing user who previously requested a password recovery.
+
+##### Request parameters
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" \
+      http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a | python -m json.tool
+{
+    "message": "New password has been sent to e-mail address.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument | Level           | Error message                                                | Status code |
+| :------: | :---------------: | ---------------------------------------------------------- | :---------: |
+| -        | General execution | User with specified e-mail address does not exist.         | 400         |
+| -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
+
 ## Development
 
 Clone the project with the following command:
