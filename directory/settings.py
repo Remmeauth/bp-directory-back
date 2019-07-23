@@ -11,6 +11,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
+EMAIL_HOST_USER = 'djangosendemailfrom@gmail.com'
+EMAIL_HOST_PASSWORD = 'djangosendemailfrom1337'
+
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ['*']
@@ -26,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'block_producer',
+    'services',
     'user',
 ]
 
