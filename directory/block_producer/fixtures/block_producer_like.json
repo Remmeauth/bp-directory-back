@@ -1,0 +1,98 @@
+[
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "block_producer": 1
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "block_producer": 2
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "block_producer": 3
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "block_producer": 4
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 5,
+    "fields": {
+      "user": 2,
+      "block_producer": 1
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 6,
+    "fields": {
+      "user": 2,
+      "block_producer": 2
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 7,
+    "fields": {
+      "user": 2,
+      "block_producer": 3
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 8,
+    "fields": {
+      "user": 2,
+      "block_producer": 4
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 9,
+    "fields": {
+      "user": 3,
+      "block_producer": 1
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 10,
+    "fields": {
+      "user": 3,
+      "block_producer": 2
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 11,
+    "fields": {
+      "user": 3,
+      "block_producer": 3
+    }
+  },
+  {
+    "model": "block_producer.blockproducerlike",
+    "pk": 12,
+    "fields": {
+      "user": 3,
+      "block_producer": 4
+    }
+  }
+]

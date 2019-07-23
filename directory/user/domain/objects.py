@@ -1,5 +1,5 @@
 """
-Provide implementation of user registration.
+Provide implementation of user domain.
 """
 from user.domain.errors import (
     SpecifiedUserPasswordIsIncorrectError,

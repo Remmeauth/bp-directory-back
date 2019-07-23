@@ -1,0 +1,94 @@
+[
+  {
+    "model": "block_producer.blockproducer",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "name": "Block producer Canada",
+      "website_url": "https://bpcanada.com",
+      "location": "Berlin, Germany",
+      "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
+      "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer Canada is headquartered in Montreal, Canada and is backed by reputable Canadian financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+      "logo_url": "",
+      "linkedin_url": "https://www.linkedin.com/in/bpcanada",
+      "twitter_url": "https://twitter.com/bpcanada",
+      "medium_url": "https://medium.com/@bpcanada",
+      "github_url": "https://github.com/bpcanada",
+      "facebook_url": "https://www.facebook.com/bpcanada",
+      "telegram_url": "https://t.me/bpcanada",
+      "reddit_url": "https://reddit.com/@bpcanada",
+      "slack_url": "https://slack.com/bpcanada",
+      "wikipedia_url": "https://wikipedia.com/bpcanada",
+      "steemit_url": "https://steemit.com/@bpcanada"
+    }
+  },
+  {
+    "model": "block_producer.blockproducer",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "name": "Block producer Canada",
+      "website_url": "https://bpcanada.com",
+      "location": "San Francisco, USA",
+      "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
+      "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer Canada is headquartered in Montreal, Canada and is backed by reputable Canadian financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+      "logo_url": "",
+      "linkedin_url": "https://www.linkedin.com/in/bpcanada",
+      "twitter_url": "https://twitter.com/bpcanada",
+      "medium_url": "https://medium.com/@bpcanada",
+      "github_url": "https://github.com/bpcanada",
+      "facebook_url": "https://www.facebook.com/bpcanada",
+      "telegram_url": "https://t.me/bpcanada",
+      "reddit_url": "https://reddit.com/@bpcanada",
+      "slack_url": "https://slack.com/bpcanada",
+      "wikipedia_url": "https://wikipedia.com/bpcanada",
+      "steemit_url": "https://steemit.com/@bpcanada"
+    }
+  },
+    {
+    "model": "block_producer.blockproducer",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "name": "Block producer USA",
+      "website_url": "https://bpusa.com",
+      "location": "San Francisco, USA",
+      "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+      "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer USA is headquartered in San Francisco, USA and is backed by reputable American financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+      "logo_url": "",
+      "linkedin_url": "https://www.linkedin.com/in/bpusa",
+      "twitter_url": "https://twitter.com/bpusa",
+      "medium_url": "https://medium.com/@bpusa",
+      "github_url": "https://github.com/bpusa",
+      "facebook_url": "https://www.facebook.com/bpusa",
+      "telegram_url": "https://t.me/bpusa",
+      "reddit_url": "https://reddit.com/@bpusa",
+      "slack_url": "https://slack.com/bpusa",
+      "wikipedia_url": "https://wikipedia.com/bpusa",
+      "steemit_url": "https://steemit.com/@bpusa"
+    }
+  },
+  {
+    "model": "block_producer.blockproducer",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "name": "Block producer Canada",
+      "website_url": "https://bpcanada.com",
+      "location": "Tokyo, Japan",
+      "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
+      "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer Canada is headquartered in Montreal, Canada and is backed by reputable Canadian financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+      "logo_url": "",
+      "linkedin_url": "https://www.linkedin.com/in/bpcanada",
+      "twitter_url": "https://twitter.com/bpcanada",
+      "medium_url": "https://medium.com/@bpcanada",
+      "github_url": "https://github.com/bpcanada",
+      "facebook_url": "https://www.facebook.com/bpcanada",
+      "telegram_url": "https://t.me/bpcanada",
+      "reddit_url": "https://reddit.com/@bpcanada",
+      "slack_url": "https://slack.com/bpcanada",
+      "wikipedia_url": "https://wikipedia.com/bpcanada",
+      "steemit_url": "https://steemit.com/@bpcanada"
+    }
+  }
+]

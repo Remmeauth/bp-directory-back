@@ -17,14 +17,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     User database model.
     """
 
-    first_name = models.CharField(_('first name'), max_length=30, blank=False)
-    last_name = models.CharField(_('last name'), max_length=100, blank=False)
-    email = models.EmailField(_('email'), unique=True, blank=False)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(unique=True, blank=False)
 
-    created = models.DateTimeField(_('created'), auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
-    is_active = models.BooleanField(_('active'), default=True)
-    is_staff = models.BooleanField(_('staff status'), default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -86,3 +86,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         user = cls.objects.get(email=email)
         user.set_password(password)
         user.save()
+
+
+class Profile(models.Model):
+    """
+    Profile database model.
+    """
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    location = models.CharField(max_length=100, blank=True)
+    avatar_url = models.URLField(max_length=200, blank=True)
+    additional_information = models.TextField(blank=True)
+
+    website_url = models.URLField(max_length=200, blank=True)
+    linkedin_url = models.URLField(max_length=200, blank=True)
+    twitter_url = models.URLField(max_length=200, blank=True)
+    medium_url = models.URLField(max_length=200, blank=True)
+    github_url = models.URLField(max_length=200, blank=True)
+    facebook_url = models.URLField(max_length=200, blank=True)
+    telegram_url = models.URLField(max_length=200, blank=True)
+    steemit_url = models.URLField(max_length=200, blank=True)
+
+    def __str__(self):
+        """
+        Get string representation of an object.
+        """
+        return self.user.email
