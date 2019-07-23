@@ -106,6 +106,7 @@ class UserRequestPasswordRecoverySingle(APIView):
             recovery_identifier = RequestUserPasswordRecovery(
                 user=self.user, password_recovery_state=self.password_recovery_state,
             ).do(email=email)
+
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
@@ -145,6 +146,7 @@ class UserPasswordRecoverySingle(APIView):
             email, new_password = RecoveryUserPassword(
                 user=self.user, password_recovery_state=self.password_recovery_state,
             ).do(user_identifier=user_identifier)
+
         except UserWithSpecifiedIdentifierDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
