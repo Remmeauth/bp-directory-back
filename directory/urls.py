@@ -12,6 +12,7 @@ from rest_framework_jwt.views import (
     verify_jwt_token,
 )
 
+from block_producer.endpoints import block_producer_endpoints
 from user.endpoints import user_endpoints
 
 authentication_endpoints = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include(authentication_endpoints)),
     path('user/', include(user_endpoints)),
+    path('block-producers/', include(block_producer_endpoints)),
 ]
