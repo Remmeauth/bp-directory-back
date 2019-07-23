@@ -5,6 +5,7 @@ Directory of block producers based around ``Remme Protocol``.
 * [API](#api)
   * [Authentication](#authentication)
   * [User](#user)
+  * [Block producer](#block-producer)
 * [Development](#development)
 * [Production](#production)
 
@@ -139,6 +140,10 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
 
 ##### Request parameters
 
+| Arguments       | Type   | Required | Description      |
+| :-------------: | :----: | :------: | ---------------- |
+| user_identifier | String | Yes      | User identifier. |
+
 ```bash
 $ curl -X POST -H "Content-Type: application/json" \
       http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a | python -m json.tool
@@ -148,12 +153,38 @@ $ curl -X POST -H "Content-Type: application/json" \
 }
 ```
 
-##### Known errors
-
-| Argument | Level           | Error message                                                | Status code |
+| Argument | Level             | Error message                                              | Status code |
 | :------: | :---------------: | ---------------------------------------------------------- | :---------: |
 | -        | General execution | User with specified e-mail address does not exist.         | 400         |
 | -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
+
+### Block producer
+
+* `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/block-producers/2/like/ | python -m json.tool
+{
+    "message": "Block producer liking has been handled.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level             | Error message                                            | Status code |
+| :-------: | :---------------: | -------------------------------------------------------- | :---------: |
+| -         | General execution | User with specified e-mail address does not exist.       | 400         |
+| -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
 ## Development
 
@@ -163,6 +194,14 @@ Clone the project with the following command:
 $ git clone https://github.com/Remmeauth/block-producers-directory-back.git
 $ cd block-producers-directory-back
 ```
+
+The project requires the following environment variables:
+
+```bash
+export SENDGRID_API_KEY='PZqNQgmk9dJcw.yJ0eNzZ0sVpa5NzZ0sVpa5.eyJ1c2VyX2eyJ1c2VyX2'
+```
+
+Instead of default values above, request workable and real ones from [@dmytrostriletskyi](https://github.com/dmytrostriletskyi) or [@yelaginj](https://github.com/yelaginj).
 
 To build the project, use the following command:
 

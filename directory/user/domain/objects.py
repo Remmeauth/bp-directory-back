@@ -1,5 +1,5 @@
 """
-Provide implementation of user registration.
+Provide implementation of user domain.
 """
 import uuid
 
