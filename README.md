@@ -5,6 +5,7 @@ Directory of block producers based around ``Remme Protocol``.
 * [API](#api)
   * [Authentication](#authentication)
   * [User](#user)
+  * [Block producer](#block-producer)
 * [Development](#development)
 * [Production](#production)
 
@@ -109,6 +110,34 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | -            | General execution          | The specified user password is incorrect.          | 400         |
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
+
+### Block producer
+
+* `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/block-producers/2/like/ | python -m json.tool
+{
+    "message": "Block producer liking has been handled.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level             | Error message                                            | Status code |
+| :-------: | :---------------: | -------------------------------------------------------- | :---------: |
+| -         | General execution | User with specified e-mail address does not exist.       | 400         |
+| -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
 ## Development
 

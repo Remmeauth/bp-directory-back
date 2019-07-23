@@ -1,8 +1,6 @@
 """
 Provide database models for block producer.
 """
-from __future__ import unicode_literals
-
 from django.db import models
 
 from user.models import User
@@ -38,3 +36,62 @@ class BlockProducer(models.Model):
         Get string representation of an object.
         """
         return f'{self.name} — {self.user.email}'
+
+    @classmethod
+    def does_exist(cls, identifier):
+        """
+        Check if block producer exists by its identifier.
+        """
+        if cls.objects.filter(id=identifier).exists():
+            return True
+
+        return False
+
+
+class BlockProducerLike(models.Model):
+    """
+    Block producer like database model.
+    """
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    block_producer = models.ForeignKey(BlockProducer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        """
+        Get string representation of an object.
+        """
+        return f'{self.block_producer.name} — {self.user.email}'
+
+    @classmethod
+    def does_exist(cls, user_email, block_producer_id):
+        """
+        Check if block producer like exists by user e-mail address and block producer identifier.
+        """
+        user = User.objects.get(email=user_email)
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        if cls.objects.filter(user=user, block_producer=block_producer).exists():
+            return True
+
+        return False
+
+    @classmethod
+    def put(cls, user_email, block_producer_id):
+        """
+        To like to block producer.
+        """
+        user = User.objects.get(email=user_email)
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        cls.objects.create(user=user, block_producer=block_producer)
+
+    @classmethod
+    def remove(cls, user_email, block_producer_id):
+        """
+        To unlike to block producer.
+        """
+        user = User.objects.get(email=user_email)
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        block_producer_like = cls.objects.get(user=user, block_producer=block_producer)
+        block_producer_like.delete()
