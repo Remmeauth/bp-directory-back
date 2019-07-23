@@ -11,6 +11,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
+PROJECT_EMAIL_ADDRESS = os.environ.get('PROJECT_EMAIL_ADDRESS')
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ['*']
