@@ -148,6 +148,14 @@ $ git clone https://github.com/Remmeauth/block-producers-directory-back.git
 $ cd block-producers-directory-back
 ```
 
+The project requires the following environment variables:
+
+```bash
+export SENDGRID_API_KEY='PZqNQgmk9dJcw.yJ0eNzZ0sVpa5NzZ0sVpa5.eyJ1c2VyX2eyJ1c2VyX2'
+```
+
+Instead of default values above, request workable and real ones from [@dmytrostriletskyi](https://github.com/dmytrostriletskyi) or [@yelaginj](https://github.com/yelaginj).
+
 To build the project, use the following command:
 
 ```bash

@@ -14,6 +14,14 @@
     "ENVIRONMENT": {
       "description": "Environment value. For now, is used for detect review applications only.",
       "required": false
+    },
+    "PROJECT_EMAIL_ADDRESS": {
+      "description": "Project e-mail address to send mails to users from.",
+      "required": true
+    },
+    "SENDGRID_API_KEY": {
+      "description": "SendGrid e-mail service API key.",
+      "required": true
     }
   },
   "addons": [
