@@ -1,0 +1,122 @@
+[
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "block_producer": 1,
+      "created_at": "2019-06-18T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "block_producer": 2,
+      "created_at": "2019-06-19T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "block_producer": 3,
+      "created_at": "2019-06-20T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "block_producer": 4,
+      "created_at": "2019-06-21T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 5,
+    "fields": {
+      "user": 2,
+      "block_producer": 1,
+      "created_at": "2019-06-18T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 6,
+    "fields": {
+      "user": 2,
+      "block_producer": 2,
+      "created_at": "2019-06-19T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 7,
+    "fields": {
+      "user": 2,
+      "block_producer": 3,
+      "created_at": "2019-06-20T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 8,
+    "fields": {
+      "user": 2,
+      "block_producer": 4,
+      "created_at": "2019-06-21T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 9,
+    "fields": {
+      "user": 3,
+      "block_producer": 1,
+      "created_at": "2019-06-18T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 10,
+    "fields": {
+      "user": 3,
+      "block_producer": 2,
+      "created_at": "2019-06-19T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 11,
+    "fields": {
+      "user": 3,
+      "block_producer": 3,
+      "created_at": "2019-06-20T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  },
+  {
+    "model": "block_producer.blockproducercomment",
+    "pk": 12,
+    "fields": {
+      "user": 3,
+      "block_producer": 4,
+      "created_at": "2019-06-21T13:19:37+00:00",
+      "text": "Great block producer!"
+    }
+  }
+]

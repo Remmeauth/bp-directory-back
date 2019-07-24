@@ -5,6 +5,28 @@ from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoe
 from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 
 
+class BlockProducer:
+    """
+    Block producer implementation.
+    """
+
+    def __init__(self, user, block_producer):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+
+    def do(self, user_email, info):
+        """
+        Create a block producer.
+        """
+        if not self.user.does_exist(email=user_email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        self.block_producer.create(email=user_email, info=info)
+
+
 class LikeBlockProducer:
     """
     Liking block producer implementation.
@@ -33,3 +55,29 @@ class LikeBlockProducer:
 
         else:
             self.block_producer_like.put(user_email=user_email, block_producer_id=block_producer_id)
+
+
+class CommentBlockProducer:
+    """
+    Commenting block producer implementation.
+    """
+
+    def __init__(self, user, block_producer, block_producer_comment):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+        self.block_producer_comment = block_producer_comment
+
+    def do(self, user_email, block_producer_id, text):
+        """
+        To comment a block producer.
+        """
+        if not self.user.does_exist(email=user_email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        self.block_producer_comment.create(user_email=user_email, block_producer_id=block_producer_id, text=text)

@@ -111,7 +111,103 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
 
+* `POST | /user/password/recovery` - request password recovery for an existing user by his e-mail address. Send the recovery link to the e-mail address.
+
+##### Request parameters
+
+| Arguments | Type   | Required | Description  |
+| :-------: | :----: | :------: | ------------ |
+| email     | String | Yes      | User e-mail. |
+
+```bash
+$ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
+      -H "Content-Type: application/json" \
+      http://localhost:8000/user/password/recovery | python -m json.tool
+{
+    "message": "Recovery link has been sent to the specified e-mail address.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                      | Status code |
+| :------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -        | General execution          | User with specified e-mail address does not exist. | 400         |
+| email    | Input arguments validation | This field is required.                            | 400         |
+
+* `POST | /user/password/recovery/{user_identifier}` - send a new password to an existing user who previously requested a password recovery.
+
+##### Request parameters
+
+| Arguments       | Type   | Required | Description      |
+| :-------------: | :----: | :------: | ---------------- |
+| user_identifier | String | Yes      | User identifier. |
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" \
+      http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
+{
+    "message": "New password has been sent to e-mail address.",
+    "status_code": 200
+}
+```
+
+| Argument | Level             | Error message                                              | Status code |
+| :------: | :---------------: | ---------------------------------------------------------- | :---------: |
+| -        | General execution | User with specified e-mail address does not exist.         | 400         |
+| -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
+
 ### Block producer
+
+* `PUT | /block-producers/` - create a block producer.
+
+##### Request parameters 
+
+| Arguments         | Type   | Required | Description                                         |
+| :---------------: | :----: | :------: | --------------------------------------------------- |
+| name              | String | Yes      | Name of the block producer.                         |
+| website_url       | String | Yes      | Reference to the block producer website.            |
+| location          | String | No       | Location of the block producer.                     |
+| short_description | String | Yes      | Short description about the block producer.         |
+| full_description  | String | No       | Full detailed description about the block producer. |
+| logo_url          | String | No       | Reference to the block producer logotype.           |
+| linkedin_url      | String | No       | Reference to the Linkedin.                          |
+| twitter_url       | String | No       | Reference to the Twitter.                           |
+| medium_url        | String | No       | Reference to the Medium.                            |
+| github_url        | String | No       | Reference to the GitHub.                            |
+| facebook_url      | String | No       | Reference to the Facebook.                          |
+| telegram_url      | String | No       | Reference to the Telegram.                          |
+| reddit_url        | String | No       | Reference to the Reddit.                            |
+| slack_url         | String | No       | Reference to the Slack.                             |
+| steemit_url       | String | No       | Reference to the Steemit.                           |
+| wikipedia_url     | String | No       | Reference to the Wikipedia.                         |
+
+```bash
+$ curl -X PUT http://localhost:8000/block-producers/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+     -d $'{
+  "name": "Block Producer USA",
+  "website_url": "https://bpusa.com",
+  "location": "San Francisco, USA",
+  "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+  "linkedin_url": "https://www.linkedin.com/in/bpusa"
+}' | python -m json.tool
+{
+    "message": "Block producer has been created.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument          | Level                      | Error message                                      | Status code |
+| :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -                 | General execution          | User with specified e-mail address does not exist. | 400         |
+| name              | Input arguments validation | This field is required.                            | 400         |
+| website_url       | Input arguments validation | This field is required.                            | 400         |
+| short_description | Input arguments validation | This field is required.                            | 400         |
 
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 
@@ -138,6 +234,35 @@ $ curl -X POST \
 | :-------: | :---------------: | -------------------------------------------------------- | :---------: |
 | -         | General execution | User with specified e-mail address does not exist.       | 400         |
 | -         | General execution | Block producer with specified identifier does not exist. | 400         |
+
+* `POST | /block-producers/{block_producer_identifier}/comment/` - to comment a block producer.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                      |
+| :-----------------------: | :-----: | :------: | -------------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
+| text                      | String  | Yes      | Comment text. Max length is 200. |
+
+```bash
+$ curl -X PUT -d '{"text":"Great block producer!"}' \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/block-producers/2/comment/ | python -m json.tool
+{
+    "message": "Block producer has been commented.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                               | Status code |
+| :-------: | :------------------------: | ----------------------------------------------------------- | :---------: |
+| -         | General execution          | User with specified e-mail address does not exist.          | 400         |
+| -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
+| -         | Input arguments validation | This field is required.                                     | 400         |
+| -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
 
 ## Development
 

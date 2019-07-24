@@ -27,6 +27,18 @@ class UserWithSpecifiedEmailAddressDoesNotExistError(Exception):
         self.message = 'User with specified e-mail address does not exist.'
 
 
+class UserWithSpecifiedIdentifierDoesNotExistError(Exception):
+    """
+    User with specified identifier does not exist error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User with specified identifier does not exist.'
+
+
 class SpecifiedUserPasswordIsIncorrectError(Exception):
     """
     The specified user password is incorrect error.
@@ -37,3 +49,15 @@ class SpecifiedUserPasswordIsIncorrectError(Exception):
         Constructor.
         """
         self.message = 'The specified user password is incorrect.'
+
+
+class RecoveryPasswordHasBeenAlreadySentError(Exception):
+    """
+    Recovery password has been already sent to e-mail address error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'Recovery password has been already sent to e-mail address.'
