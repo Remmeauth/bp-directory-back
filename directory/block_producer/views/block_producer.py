@@ -81,4 +81,4 @@ class BlockProducerSingle(APIView):
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
-        return JsonResponse({'result': 'Block producer card has been created.'}, status=HTTPStatus.OK)
+        return JsonResponse({'result': 'Block producer has been created.'}, status=HTTPStatus.OK)

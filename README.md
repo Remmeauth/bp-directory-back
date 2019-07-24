@@ -202,10 +202,12 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
 
 ##### Known errors
 
-| Argument | Level                      | Error message                                      | Status code |
-| :------: | :------------------------: | -------------------------------------------------- | :---------: |
-| -        | General execution          | User with specified e-mail address does not exist. | 400         |
-| -        | Input arguments validation | This field is required.                            | 400         |
+| Argument          | Level                      | Error message                                      | Status code |
+| :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -                 | General execution          | User with specified e-mail address does not exist. | 400         |
+| name              | Input arguments validation | This field is required.                            | 400         |
+| website_url       | Input arguments validation | This field is required.                            | 400         |
+| short_description | Input arguments validation | This field is required.                            | 400         |
 
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 

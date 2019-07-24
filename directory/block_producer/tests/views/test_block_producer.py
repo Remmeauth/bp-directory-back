@@ -48,7 +48,7 @@ class TestBlockProducerSingle(TestCase):
             "reddit_url": "https://reddit.com/@bpusa",
             "slack_url": "https://slack.com/bpusa",
             "wikipedia_url": "https://wikipedia.com/bpusa",
-            "steemit_url": "https://steemit.com/@bpusa"
+            "steemit_url": "https://steemit.com/@bpusa",
         }
 
         self.user_token = response.data.get('token')
@@ -59,7 +59,7 @@ class TestBlockProducerSingle(TestCase):
         Expect: block producer created in the database.
         """
         expected_result = {
-            'result': 'Block producer card has been created.',
+            'result': 'Block producer has been created.',
         }
 
         response = self.client.put(
