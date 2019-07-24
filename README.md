@@ -160,6 +160,53 @@ $ curl -X POST -H "Content-Type: application/json" \
 
 ### Block producer
 
+* `PUT | /block-producers/` - create a block producer.
+
+##### Request parameters 
+
+| Arguments         | Type   | Required | Description                                         |
+| :---------------: | :----: | :------: | --------------------------------------------------- |
+| name              | String | Yes      | Name of the block producer.                         |
+| website_url       | String | Yes      | Reference to the block producer website.            |
+| location          | String | No       | Location of the block producer.                     |
+| short_description | String | Yes      | Short description about the block producer.         |
+| full_description  | String | No       | Full detailed description about the block producer. |
+| logo_url          | String | No       | Reference to the block producer logotype.           |
+| linkedin_url      | String | No       | Reference to the Linkedin.                          |
+| twitter_url       | String | No       | Reference to the Twitter.                           |
+| medium_url        | String | No       | Reference to the Medium.                            |
+| github_url        | String | No       | Reference to the GitHub.                            |
+| facebook_url      | String | No       | Reference to the Facebook.                          |
+| telegram_url      | String | No       | Reference to the Telegram.                          |
+| reddit_url        | String | No       | Reference to the Reddit.                            |
+| slack_url         | String | No       | Reference to the Slack.                             |
+| steemit_url       | String | No       | Reference to the Steemit.                           |
+| wikipedia_url     | String | No       | Reference to the Wikipedia.                         |
+
+```bash
+$ curl -X PUT http://localhost:8000/block-producers/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+     -d $'{
+  "name": "Block Producer USA",
+  "website_url": "https://bpusa.com",
+  "location": "San Francisco, USA",
+  "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+  "linkedin_url": "https://www.linkedin.com/in/bpusa"
+}' | python -m json.tool
+{
+    "message": "Block producer has been created.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                      | Status code |
+| :------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -        | General execution          | User with specified e-mail address does not exist. | 400         |
+| -        | Input arguments validation | This field is required.                            | 400         |
+
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 
 ##### Request parameters 
