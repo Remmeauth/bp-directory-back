@@ -3,14 +3,12 @@ Provide implementation of user domain.
 """
 import uuid
 
-from services.errors import (
-    RecoveryPasswordHasBeenAlreadySentError,
-    UserWithSpecifiedIdentifierDoesNotExistError,
-)
 from user.domain.errors import (
+    RecoveryPasswordHasBeenAlreadySentError,
     SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressAlreadyExistsError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
+    UserWithSpecifiedIdentifierDoesNotExistError,
 )
 
 

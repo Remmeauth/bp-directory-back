@@ -13,11 +13,12 @@ from services.constants import (
     EmailSubject,
 )
 from services.email import Email
-from services.errors import UserWithSpecifiedIdentifierDoesNotExistError
 from services.models import PasswordRecoveryState
 from user.domain.errors import (
+    RecoveryPasswordHasBeenAlreadySentError,
     SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
+    UserWithSpecifiedIdentifierDoesNotExistError,
 )
 from user.domain.objects import (
     ChangeUserPassword,
@@ -147,7 +148,10 @@ class UserPasswordRecoverySingle(APIView):
                 user=self.user, password_recovery_state=self.password_recovery_state,
             ).do(user_identifier=user_identifier)
 
-        except UserWithSpecifiedIdentifierDoesNotExistError as error:
+        except (
+            RecoveryPasswordHasBeenAlreadySentError,
+            UserWithSpecifiedIdentifierDoesNotExistError,
+        )as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
         message = EmailBody.PASSWORD_RECOVERY_MESSAGE.value.format(new_password)

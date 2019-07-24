@@ -3,6 +3,7 @@ Provide tests for implementation of single user password endpoint.
 """
 import json
 from http import HTTPStatus
+from unittest.mock import patch
 
 from django.test import TestCase
 
@@ -103,7 +104,8 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
 
         User.objects.create_user(email=self.email, password=self.password)
 
-    def test_request_recover_user_password(self):
+    @patch('services.email.Email.send')
+    def test_request_recover_user_password(self, mock_email_send):
         """
         Case: sent request to recover user password by email.
         Expect: a password recovery email has been sent.
@@ -111,6 +113,8 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         expected_result = {
             'result': 'Forgotten password has been sent to the specified e-mail address.',
         }
+
+        mock_email_send.return_value = None
 
         response = self.client.post('/user/password/recovery/', json.dumps({
             'email': self.email,
@@ -183,13 +187,10 @@ class TestUserPasswordRecoverySingle(TestCase):
         self.email = 'martin.fowler@gmail.com'
         self.password = 'martin.fowler.1337'
 
-        self.user = User.objects.create_user(email=self.email, password='martin.fowler.1337')
+        User.objects.create_user(email=self.email, password='martin.fowler.1337')
 
-        self.client.post('/user/password/recovery/', json.dumps({
-            'email': self.email,
-        }), content_type='application/json')
-
-    def test_recovery_user_password(self):
+    @patch('services.email.Email.send')
+    def test_recovery_user_password(self, mock_email_send):
         """
         Case: recovery user password by user identifier.
         Expect: a password recovery email with new password has been sent.
@@ -198,10 +199,16 @@ class TestUserPasswordRecoverySingle(TestCase):
             'result': 'New password has been sent to e-mail address.',
         }
 
-        self.user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
+        mock_email_send.return_value = None
+
+        self.client.post('/user/password/recovery/', json.dumps({
+            'email': self.email,
+        }), content_type='application/json')
+
+        user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
 
         response = self.client.post(
-            f'/user/password/recovery/{self.user_identifier}', json.dumps({}), content_type='application/json',
+            f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json',
         )
 
         assert User.objects.get(email=self.email).password != self.password
@@ -221,6 +228,33 @@ class TestUserPasswordRecoverySingle(TestCase):
 
         response = self.client.post(
             f'/user/password/recovery/{non_existent_identifier}', json.dumps({}), content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    @patch('services.email.Email.send')
+    def test_recovery_user_password_already_sent(self, mock_email_send):
+        """
+        Case: recovery user password has been already sent.
+        Expect: recovery password has been already sent to e-mail address error message.
+        """
+        expected_result = {
+            'error': 'Recovery password has been already sent to e-mail address.',
+        }
+
+        mock_email_send.return_value = None
+
+        self.client.post('/user/password/recovery/', json.dumps({
+            'email': self.email,
+        }), content_type='application/json')
+
+        user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
+
+        self.client.post(f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json')
+
+        response = self.client.post(
+            f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json',
         )
 
         assert expected_result == response.json()
