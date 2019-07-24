@@ -111,7 +111,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         Expect: a password recovery email has been sent.
         """
         expected_result = {
-            'result': 'Forgotten password has been sent to the specified e-mail address.',
+            'result': 'Recovery link has been sent to the specified e-mail address.',
         }
 
         mock_email_send.return_value = None
@@ -175,9 +175,9 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         assert HTTPStatus.BAD_REQUEST == response.status_code
 
 
-class TestUserPasswordRecoverySingle(TestCase):
+class TestUserPasswordRecoverSingle(TestCase):
     """
-    Implements tests for implementation of single user password recovery endpoint.
+    Implements tests for implementation of single user password recover endpoint.
     """
 
     def setUp(self):
@@ -192,8 +192,8 @@ class TestUserPasswordRecoverySingle(TestCase):
     @patch('services.email.Email.send')
     def test_recovery_user_password(self, mock_email_send):
         """
-        Case: recovery user password by user identifier.
-        Expect: a password recovery email with new password has been sent.
+        Case: recover user password by user identifier.
+        Expect: a password recover email with new password has been sent.
         """
         expected_result = {
             'result': 'New password has been sent to e-mail address.',
@@ -208,7 +208,7 @@ class TestUserPasswordRecoverySingle(TestCase):
         user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
 
         response = self.client.post(
-            f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json',
+            f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert User.objects.get(email=self.email).password != self.password
@@ -217,7 +217,7 @@ class TestUserPasswordRecoverySingle(TestCase):
 
     def test_recovery_user_password_with_non_existent_identifier(self):
         """
-        Case: recovery user password with non-existent identifier.
+        Case: recover user password with non-existent identifier.
         Expect: user with specified identifier does not exist error message.
         """
         expected_result = {
@@ -227,7 +227,7 @@ class TestUserPasswordRecoverySingle(TestCase):
         non_existent_identifier = '770b420663614db4bac8a7ef0ae7a5a9'
 
         response = self.client.post(
-            f'/user/password/recovery/{non_existent_identifier}', json.dumps({}), content_type='application/json',
+            f'/user/password/recovery/{non_existent_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -236,7 +236,7 @@ class TestUserPasswordRecoverySingle(TestCase):
     @patch('services.email.Email.send')
     def test_recovery_user_password_already_sent(self, mock_email_send):
         """
-        Case: recovery user password has been already sent.
+        Case: recover user password has been already sent.
         Expect: recovery password has been already sent to e-mail address error message.
         """
         expected_result = {
@@ -251,10 +251,10 @@ class TestUserPasswordRecoverySingle(TestCase):
 
         user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
 
-        self.client.post(f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json')
+        self.client.post(f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json')
 
         response = self.client.post(
-            f'/user/password/recovery/{user_identifier}', json.dumps({}), content_type='application/json',
+            f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert expected_result == response.json()

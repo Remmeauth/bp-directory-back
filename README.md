@@ -111,7 +111,7 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
 
-* `POST | /user/password/recovery` - password recovery for an existing user by his email.
+* `POST | /user/password/recovery` - request password recovery for an existing user by his e-mail address. Send the recovery link to the e-mail address.
 
 ##### Request parameters
 
@@ -124,7 +124,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
       -H "Content-Type: application/json" \
       http://localhost:8000/user/password/recovery | python -m json.tool
 {
-    "message": "Forgotten password has been sent to the specified e-mail address.",
+    "message": "Recovery link has been sent to the specified e-mail address.",
     "status_code": 200
 }
 ```
@@ -146,7 +146,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
 
 ```bash
 $ curl -X POST -H "Content-Type: application/json" \
-      http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a | python -m json.tool
+      http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
 {
     "message": "New password has been sent to e-mail address.",
     "status_code": 200

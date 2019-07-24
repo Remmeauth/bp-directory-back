@@ -22,7 +22,7 @@ from user.domain.errors import (
 )
 from user.domain.objects import (
     ChangeUserPassword,
-    RecoveryUserPassword,
+    RecoverUserPassword,
     RequestUserPasswordRecovery,
 )
 from user.forms import (
@@ -118,13 +118,13 @@ class UserRequestPasswordRecoverySingle(APIView):
         )
 
         return JsonResponse(
-            {'result': 'Forgotten password has been sent to the specified e-mail address.'}, status=HTTPStatus.OK,
+            {'result': 'Recovery link has been sent to the specified e-mail address.'}, status=HTTPStatus.OK,
         )
 
 
-class UserPasswordRecoverySingle(APIView):
+class UserPasswordRecoverSingle(APIView):
     """
-    Single user password recovery endpoint implementation.
+    Single user password recover endpoint implementation.
     """
 
     permission_classes = (permissions.AllowAny,)
@@ -139,12 +139,12 @@ class UserPasswordRecoverySingle(APIView):
 
     def post(self, request, user_identifier):
         """
-        Recovery user password by user identifier.
+        Recover user password by user identifier.
 
         Send message to e-mail with a new password as message.
         """
         try:
-            email, new_password = RecoveryUserPassword(
+            email, new_password = RecoverUserPassword(
                 user=self.user, password_recovery_state=self.password_recovery_state,
             ).do(user_identifier=user_identifier)
 

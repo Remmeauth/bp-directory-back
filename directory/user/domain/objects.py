@@ -85,9 +85,9 @@ class RequestUserPasswordRecovery:
         return identifier
 
 
-class RecoveryUserPassword:
+class RecoverUserPassword:
     """
-    Recovery user password implementation.
+    Recover user password implementation.
     """
 
     def __init__(self, user, password_recovery_state):
@@ -99,7 +99,7 @@ class RecoveryUserPassword:
 
     def do(self, user_identifier):
         """
-        Recovery user password by user identifier.
+        Recover user password by user identifier.
         """
         if not self.password_recovery_state.does_exist(user_identifier=user_identifier):
             raise UserWithSpecifiedIdentifierDoesNotExistError
