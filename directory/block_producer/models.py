@@ -15,21 +15,21 @@ class BlockProducer(models.Model):
 
     name = models.CharField(max_length=50, null=False, blank=False)
     website_url = models.URLField(max_length=200, null=False, blank=False)
-    location = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True, null=True)
     short_description = models.CharField(max_length=100, null=False, blank=False)
-    full_description = models.TextField(blank=True)
-    logo_url = models.URLField(max_length=200, blank=True)
+    full_description = models.TextField(blank=True, null=True)
+    logo_url = models.URLField(max_length=200, blank=True, null=True)
 
-    linkedin_url = models.URLField(max_length=200, blank=True)
-    twitter_url = models.URLField(max_length=200, blank=True)
-    medium_url = models.URLField(max_length=200, blank=True)
-    github_url = models.URLField(max_length=200, blank=True)
-    facebook_url = models.URLField(max_length=200, blank=True)
-    telegram_url = models.URLField(max_length=200, blank=True)
-    reddit_url = models.URLField(max_length=200, blank=True)
-    slack_url = models.URLField(max_length=200, blank=True)
-    wikipedia_url = models.URLField(max_length=200, blank=True)
-    steemit_url = models.URLField(max_length=200, blank=True)
+    linkedin_url = models.URLField(max_length=200, blank=True, null=True)
+    twitter_url = models.URLField(max_length=200, blank=True, null=True)
+    medium_url = models.URLField(max_length=200, blank=True, null=True)
+    github_url = models.URLField(max_length=200, blank=True, null=True)
+    facebook_url = models.URLField(max_length=200, blank=True, null=True)
+    telegram_url = models.URLField(max_length=200, blank=True, null=True)
+    reddit_url = models.URLField(max_length=200, blank=True, null=True)
+    slack_url = models.URLField(max_length=200, blank=True, null=True)
+    wikipedia_url = models.URLField(max_length=200, blank=True, null=True)
+    steemit_url = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         """
@@ -46,6 +46,33 @@ class BlockProducer(models.Model):
             return True
 
         return False
+
+    @classmethod
+    def create(cls, email, info):
+        """
+        Create a block producer with specified information.
+        """
+        user = User.objects.get(email=email)
+
+        cls.objects.create(
+            user=user,
+            name=info.get('name'),
+            website_url=info.get('website_url'),
+            location=info.get('location'),
+            short_description=info.get('short_description'),
+            full_description=info.get('full_description', ''),
+            logo_url=info.get('logo_url', ''),
+            linkedin_url=info.get('linkedin_url', ''),
+            twitter_url=info.get('twitter_url', ''),
+            medium_url=info.get('medium_url', ''),
+            github_url=info.get('github_url', ''),
+            facebook_url=info.get('facebook_url', ''),
+            telegram_url=info.get('telegram_url', ''),
+            reddit_url=info.get('reddit_url', ''),
+            slack_url=info.get('slack_url', ''),
+            wikipedia_url=info.get('wikipedia_url', ''),
+            steemit_url=info.get('steemit_url', ''),
+        )
 
 
 class BlockProducerLike(models.Model):

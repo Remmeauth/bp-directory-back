@@ -5,6 +5,28 @@ from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoe
 from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 
 
+class BlockProducer:
+    """
+    Block producer implementation.
+    """
+
+    def __init__(self, user, block_producer):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+
+    def do(self, user_email, info):
+        """
+        Create a block producer.
+        """
+        if not self.user.does_exist(email=user_email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        self.block_producer.create(email=user_email, info=info)
+
+
 class LikeBlockProducer:
     """
     Liking block producer implementation.
