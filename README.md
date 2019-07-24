@@ -186,6 +186,35 @@ $ curl -X POST \
 | -         | General execution | User with specified e-mail address does not exist.       | 400         |
 | -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
+* `POST | /block-producers/{block_producer_identifier}/comment/` - to comment a block producer.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                      |
+| :-----------------------: | :-----: | :------: | -------------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
+| text                      | String  | Yes      | Comment text. Max length is 200. |
+
+```bash
+$ curl -X PUT -d '{"text":"Great block producer!"}' \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/block-producers/2/comment/ | python -m json.tool
+{
+    "message": "Block producer has been commented.",
+    "status_code": 200
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                               | Status code |
+| :-------: | :------------------------: | ----------------------------------------------------------- | :---------: |
+| -         | General execution          | User with specified e-mail address does not exist.          | 400         |
+| -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
+| -         | Input arguments validation | This field is required.                                     | 400         |
+| -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
+
 ## Development
 
 Clone the project with the following command:
