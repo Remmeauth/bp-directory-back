@@ -26,3 +26,11 @@ class CreateBlockProducerForm(forms.Form):
     slack_url = forms.URLField(required=False)
     wikipedia_url = forms.URLField(required=False)
     steemit_url = forms.URLField(required=False)
+
+
+class CommentBlockProducerForm(forms.Form):
+    """
+    Comment a block producer form implementation.
+    """
+
+    text = forms.CharField(max_length=200)
