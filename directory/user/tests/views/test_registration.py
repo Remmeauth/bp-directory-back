@@ -22,26 +22,58 @@ class TestUserRegistrationSingle(TestCase):
         expected_result = {
             'result': 'User has been created.',
         }
+
         response = self.client.post('/user/registration/', json.dumps({
             'email': 'martin.fowler@gmail.com',
+            'username': 'martin.fowler',
             'password': 'martin.fowler.1337',
         }), content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-    def test_register_already_existing_user(self):
+    def test_register_already_existing_email(self):
         """
-        Case: register already existing user with e-mail and password.
+        Case: register already existing user with e-mail address.
         Expect: user with specified e-mail address already exists error message.
         """
-        User.objects.create(email='martin.fowler@gmail.com', password='martin.fowler.1337')
+        User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
 
         expected_result = {
             'error': 'User with specified e-mail address already exists.',
         }
+
         response = self.client.post('/user/registration/', json.dumps({
             'email': 'martin.fowler@gmail.com',
+            'username': 'martin.fowler',
+            'password': 'martin.fowler.1337',
+        }), content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_register_already_existing_username(self):
+        """
+        Case: register already existing user with username.
+        Expect: user with specified username already exists error message.
+        """
+        User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
+        expected_result = {
+            'error': 'User with specified username already exists.',
+        }
+
+        response = self.client.post('/user/registration/', json.dumps({
+            'email': 'not.martin.fowler@gmail.com',
+            'username': 'martin.fowler',
             'password': 'martin.fowler.1337',
         }), content_type='application/json')
 
@@ -56,6 +88,9 @@ class TestUserRegistrationSingle(TestCase):
         expected_result = {
             'errors': {
                 'email': [
+                    'This field is required.',
+                ],
+                'username': [
                     'This field is required.',
                 ],
                 'password': [

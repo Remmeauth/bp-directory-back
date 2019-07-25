@@ -24,7 +24,7 @@ Directory of block producers based around ``Remme Protocol``.
 
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d \
-     '{"email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
+     '{"username_or_email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
       http://localhost:8000/authentication/token/obtaining/ | python -m json.tool
 {
     "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
@@ -66,7 +66,8 @@ identifying why the token was invalid.
 | password   | String  | Yes      | User password. |
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" -d '{"email":"dmytro.striletskyi@gmail.com","password":"dmytro.striletskyi.1337"}' \
+$ curl -X POST -H "Content-Type: application/json" \
+      -d '{"email":"dmytro.striletskyi@gmail.com","username":"dmytro.striletskyi","password":"dmytro.striletskyi.1337"}' \
       http://localhost:8000/user/registration/ | python -m json.tool
 {
     "message": "User has been created.",
