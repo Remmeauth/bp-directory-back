@@ -41,10 +41,10 @@ class UserProfileSingle(APIView):
         if not form.is_valid():
             return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
 
-        information = {key: form.cleaned_data[key] for key in request.data}
+        non_empty_request_data = {key: form.cleaned_data[key] for key in request.data}
 
         try:
-            UpdateUserProfile(user=self.user, profile=self.profile).do(email=user_email, info=information)
+            UpdateUserProfile(user=self.user, profile=self.profile).do(email=user_email, info=non_empty_request_data)
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 

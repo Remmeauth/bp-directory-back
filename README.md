@@ -194,7 +194,7 @@ $ curl -X POST http://localhost:8000/user/profile/ \
   "linkedin_url": "https://www.linkedin.com/in/johnsmith"
 }' | python -m json.tool
 {
-    "result": "Block producer has been created.",
+    "result": "User profile has been updated.",
 }
 ```
 
