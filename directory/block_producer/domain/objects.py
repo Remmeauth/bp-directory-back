@@ -43,7 +43,7 @@ class UpdateBlockProducer:
         """
         Update block producer.
         """
-        if not self.user.does_exist(email=user_email):
+        if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         self.block_producer.update(email=user_email, info=info)

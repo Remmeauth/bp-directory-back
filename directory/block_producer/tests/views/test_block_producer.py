@@ -111,10 +111,14 @@ class TestUpdateBlockProducerSingle(TestCase):
         """
         Setup.
         """
-        self.user = User.objects.create_user(email='martin.fowler@gmail.com', password='martin.fowler.1337')
+        self.user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
-            'email': 'martin.fowler@gmail.com',
+            'username_or_email': 'martin.fowler@gmail.com',
             'password': 'martin.fowler.1337',
         }), content_type='application/json')
 
