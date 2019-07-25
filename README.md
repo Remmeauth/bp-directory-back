@@ -71,7 +71,6 @@ $ curl -X POST -H "Content-Type: application/json" \
       http://localhost:8000/user/registration/ | python -m json.tool
 {
     "message": "User has been created.",
-    "status_code": 200
 }
 ```
 
@@ -99,7 +98,6 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
       http://localhost:8000/user/password/ | python -m json.tool
 {
     "message": "Password has been changed.",
-    "status_code": 200
 }
 ```
 
@@ -126,7 +124,6 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
       http://localhost:8000/user/password/recovery | python -m json.tool
 {
     "message": "Recovery link has been sent to the specified e-mail address.",
-    "status_code": 200
 }
 ```
 
@@ -150,7 +147,6 @@ $ curl -X POST -H "Content-Type: application/json" \
       http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
 {
     "message": "New password has been sent to e-mail address.",
-    "status_code": 200
 }
 ```
 
@@ -206,6 +202,46 @@ $ curl -X POST http://localhost:8000/user/profile/ \
 | -        | General execution | User with specified e-mail address does not exist. | 400         |
 
 ### Block producer
+
+* `GET | /block-producers/single/{block_producer_identifier}/` - get block producer by its identifier.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl http://localhost:8000/block-producers/single/2/ -H "Content-Type: application/json" | python -m json.tool
+{
+    "result": {
+        "facebook_url": "https://www.facebook.com/bpcanada",
+        "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer Canada is headquartered in Montreal, Canada and is backed by reputable Canadian financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+        "github_url": "https://github.com/bpcanada",
+        "id": 2,
+        "linkedin_url": "https://www.linkedin.com/in/bpcanada",
+        "location": "San Francisco, USA",
+        "logo_url": "",
+        "medium_url": "https://medium.com/@bpcanada",
+        "name": "Block producer Canada",
+        "reddit_url": "https://reddit.com/@bpcanada",
+        "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
+        "slack_url": "https://slack.com/bpcanada",
+        "steemit_url": "https://steemit.com/@bpcanada",
+        "telegram_url": "https://t.me/bpcanada",
+        "twitter_url": "https://twitter.com/bpcanada",
+        "user_id": 2,
+        "website_url": "https://bpcanada.com",
+        "wikipedia_url": "https://wikipedia.com/bpcanada"
+    }
+}
+```
+
+##### Known errors
+
+| Argument  | Level             | Error message                                            | Status code |
+| :-------: | :---------------: | -------------------------------------------------------- | :---------: |
+| -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
 * `GET | /block-producers/collection/` - get block producers.
 
@@ -274,7 +310,6 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
 }' | python -m json.tool
 {
     "message": "Block producer has been created.",
-    "status_code": 200
 }
 ```
 
@@ -348,7 +383,6 @@ $ curl -X POST \
       http://localhost:8000/block-producers/2/like/ | python -m json.tool
 {
     "message": "Block producer liking has been handled.",
-    "status_code": 200
 }
 ```
 
@@ -375,7 +409,6 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
       http://localhost:8000/block-producers/2/comment/ | python -m json.tool
 {
     "message": "Block producer has been commented.",
-    "status_code": 200
 }
 ```
 
