@@ -21,7 +21,7 @@ class CreateBlockProducer:
         """
         Create a block producer.
         """
-        if not self.user.does_exist(email=user_email):
+        if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         self.block_producer.create(email=user_email, info=info)
@@ -44,7 +44,7 @@ class LikeBlockProducer:
         """
         To like a block producer.
         """
-        if not self.user.does_exist(email=user_email):
+        if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         if not self.block_producer.does_exist(identifier=block_producer_id):
@@ -74,7 +74,7 @@ class CommentBlockProducer:
         """
         To comment a block producer.
         """
-        if not self.user.does_exist(email=user_email):
+        if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         if not self.block_producer.does_exist(identifier=block_producer_id):

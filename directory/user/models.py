@@ -18,6 +18,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
 
     email = models.EmailField(unique=True, blank=False)
+    username = models.CharField(unique=True, max_length=25, blank=False)
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -26,8 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         """
@@ -49,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Return the short name for the user.
         """
-        return self.first_name
+        return self.username
 
     @classmethod
     def create_with_email(cls, email, password):
@@ -60,11 +61,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         Profile.objects.create(user=user)
 
     @classmethod
-    def does_exist(cls, email):
+    def does_exist_by_email(cls, email):
         """
         Check if user exists by e-mail address.
         """
         if cls.objects.filter(email=email).exists():
+            return True
+
+        return False
+
+    @classmethod
+    def does_exist_by_username(cls, username):
+        """
+        Check if user exists by username.
+        """
+        if cls.objects.filter(username=username).exists():
             return True
 
         return False
