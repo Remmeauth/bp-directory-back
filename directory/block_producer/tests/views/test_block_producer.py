@@ -232,3 +232,88 @@ class TestBlockProducerCollection(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
+
+
+class TestGetBlockProducerSingle(TestCase):
+    """
+    Implements tests for implementation of single get block producer endpoint.
+    """
+
+    def setUp(self):
+        """
+        Setup.
+        """
+        user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer Canada',
+            website_url='https://bpcanada.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Canada.',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer USA',
+            website_url='https://bpusa.com',
+            short_description='Founded by a team of serial tech entrepreneurs in USA.',
+        )
+
+    def test_get_block_producer(self):
+        """
+        Case: get block producer.
+        Expect: block producer dictionary is returned.
+        """
+        expected_result = {
+            'result': [
+                {
+                    'id': 1,
+                    'user_id': 1,
+                    'name': 'Block producer Canada',
+                    'website_url': 'https://bpcanada.com',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
+                    'medium_url': '',
+                    'logo_url': '',
+                    'wikipedia_url': '',
+                    'reddit_url': '',
+                    'linkedin_url': '',
+                    'github_url': '',
+                    'telegram_url': '',
+                    'slack_url': '',
+                    'location': '',
+                    'facebook_url': '',
+                    'twitter_url': '',
+                    'full_description': '',
+                    'steemit_url': '',
+                },
+                {
+                    'id': 2,
+                    'user_id': 1,
+                    'name': 'Block producer USA',
+                    'website_url': 'https://bpusa.com',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
+                    'medium_url': '',
+                    'logo_url': '',
+                    'wikipedia_url': '',
+                    'reddit_url': '',
+                    'linkedin_url': '',
+                    'github_url': '',
+                    'telegram_url': '',
+                    'slack_url': '',
+                    'location': '',
+                    'facebook_url': '',
+                    'twitter_url': '',
+                    'full_description': '',
+                    'steemit_url': '',
+                },
+            ],
+        }
+
+        response = self.client.get('/block-producers/single/2', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
