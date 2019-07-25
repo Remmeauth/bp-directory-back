@@ -5,7 +5,7 @@ from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoe
 from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 
 
-class BlockProducer:
+class CreateBlockProducer:
     """
     Block producer implementation.
     """
@@ -81,3 +81,21 @@ class CommentBlockProducer:
             raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
 
         self.block_producer_comment.create(user_email=user_email, block_producer_id=block_producer_id, text=text)
+
+
+class GetBlockProducers:
+    """
+    Get block producers implementation.
+    """
+
+    def __init__(self, block_producer):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+
+    def do(self):
+        """
+        Get block producers.
+        """
+        return self.block_producer.get_all()

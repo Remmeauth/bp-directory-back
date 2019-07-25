@@ -1,3 +1,4 @@
+dataclasses-json==0.2.12
 dj-database-url==0.5.0
 django==2.2.3
 djangorestframework-jwt==1.11.0

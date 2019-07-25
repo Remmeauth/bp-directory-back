@@ -4,6 +4,8 @@
     "pk": 1,
     "fields": {
       "user": 1,
+      "first_name": "John",
+      "last_name": "Smith",
       "location": "Berlin, Germany",
       "additional_information": "Software Engineer at Travis-CI.",
       "website_url": "https://johnsmith.com",
@@ -21,6 +23,8 @@
     "pk": 2,
     "fields": {
       "user": 2,
+      "first_name": "Tony",
+      "last_name": "Stark",
       "location": "San Francisco, USA",
       "additional_information": "Engineering Manager at Facebook.",
       "website_url": "https://tonystark.com",
@@ -38,6 +42,8 @@
     "pk": 3,
     "fields": {
       "user": 3,
+      "first_name": "Paul",
+      "last_name": "Rudd",
       "location": "Tokyo, Japan",
       "additional_information": "Chief Marketing Officer at Yamaha.",
       "website_url": "https://paulrudd.com",
