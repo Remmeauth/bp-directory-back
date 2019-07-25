@@ -160,6 +160,37 @@ $ curl -X POST -H "Content-Type: application/json" \
 
 ### Block producer
 
+* `GET | /block-producers/collection/` - get block producers.
+
+```bash
+$ curl http://localhost:8000/block-producers/collection/ -H "Content-Type: application/json" | python -m json.tool
+{
+    "result": [
+        {
+            "facebook_url": "https://www.facebook.com/bpcanada",
+            "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer Canada is headquartered in Montreal, Canada and is backed by reputable Canadian financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+            "github_url": "https://github.com/bpcanada",
+            "id": 1,
+            "linkedin_url": "https://www.linkedin.com/in/bpcanada",
+            "location": "Berlin, Germany",
+            "logo_url": "",
+            "medium_url": "https://medium.com/@bpcanada",
+            "name": "Block producer Canada",
+            "reddit_url": "https://reddit.com/@bpcanada",
+            "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
+            "slack_url": "https://slack.com/bpcanada",
+            "steemit_url": "https://steemit.com/@bpcanada",
+            "telegram_url": "https://t.me/bpcanada",
+            "twitter_url": "https://twitter.com/bpcanada",
+            "user_id": 1,
+            "website_url": "https://bpcanada.com",
+            "wikipedia_url": "https://wikipedia.com/bpcanada"
+        },
+        ...
+    ]
+}
+```
+
 * `PUT | /block-producers/` - create a block producer.
 
 ##### Request parameters 
