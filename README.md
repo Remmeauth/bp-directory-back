@@ -287,6 +287,52 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
 | website_url       | Input arguments validation | This field is required.                            | 400         |
 | short_description | Input arguments validation | This field is required.                            | 400         |
 
+* `POST | /block-producers/` - update block producer information.
+
+##### Request parameters 
+
+| Arguments         | Type   | Required | Description                                         |
+| :---------------: | :----: | :------: | --------------------------------------------------- |
+| name              | String | No       | Name of the block producer.                         |
+| website_url       | String | No       | Reference to the block producer website.            |
+| location          | String | No       | Location of the block producer.                     |
+| short_description | String | No       | Short description about the block producer.         |
+| full_description  | String | No       | Full detailed description about the block producer. |
+| logo_url          | String | No       | Reference to the block producer logotype.           |
+| linkedin_url      | String | No       | Reference to the Linkedin.                          |
+| twitter_url       | String | No       | Reference to the Twitter.                           |
+| medium_url        | String | No       | Reference to the Medium.                            |
+| github_url        | String | No       | Reference to the GitHub.                            |
+| facebook_url      | String | No       | Reference to the Facebook.                          |
+| telegram_url      | String | No       | Reference to the Telegram.                          |
+| reddit_url        | String | No       | Reference to the Reddit.                            |
+| slack_url         | String | No       | Reference to the Slack.                             |
+| steemit_url       | String | No       | Reference to the Steemit.                           |
+| wikipedia_url     | String | No       | Reference to the Wikipedia.                         |
+
+```bash
+$ curl -X POST http://localhost:8000/block-producers/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+     -d $'{
+  "name": "Block producer USA",
+  "website_url": "https://bpusa.com",
+  "location": "San Francisco, USA",
+  "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+  "full_description": "# About Us\\n\\nFounded by a team of serial tech entrepreneurs, block producer USA is headquartered in San Francisco, USA and is backed by reputable American financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+  "linkedin_url": "https://www.linkedin.com/in/bpusa"
+}' | python -m json.tool
+{
+    "result": "Block producer has been updated.",
+}
+```
+
+##### Known errors
+
+| Argument          | Level                      | Error message                                      | Status code |
+| :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -                 | General execution          | User with specified e-mail address does not exist. | 400         |
+
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 
 ##### Request parameters 

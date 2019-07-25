@@ -12,9 +12,13 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from block_producer.domain.objects import (
     CreateBlockProducer,
     GetBlockProducers,
+    UpdateBlockProducer,
 )
 from block_producer.dto.block_producer import BlockProducerDto
-from block_producer.forms import CreateBlockProducerForm
+from block_producer.forms import (
+    CreateBlockProducerForm,
+    UpdateBlockProducerForm,
+)
 from block_producer.models import BlockProducer
 from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 from user.models import User
@@ -47,14 +51,36 @@ class BlockProducerSingle(APIView):
 
         try:
             CreateBlockProducer(user=self.user, block_producer=self.block_producer).do(
-                user_email=email,
-                info=form.cleaned_data,
+                user_email=email, info=form.cleaned_data,
             )
 
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
         return JsonResponse({'result': 'Block producer has been created.'}, status=HTTPStatus.OK)
+
+    def post(self, request):
+        """
+        Update block producer.
+        """
+        user_email = request.user.email
+
+        form = UpdateBlockProducerForm(request.data)
+
+        if not form.is_valid():
+            return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
+
+        non_empty_request_data = {key: form.cleaned_data[key] for key in request.data}
+
+        try:
+            UpdateBlockProducer(
+                user=self.user, block_producer=self.block_producer,
+            ).do(user_email=user_email, info=non_empty_request_data)
+
+        except UserWithSpecifiedEmailAddressDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+
+        return JsonResponse({'result': 'Block producer has been updated.'}, status=HTTPStatus.OK)
 
 
 class BlockProducerCollection(APIView):

@@ -7,7 +7,7 @@ from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 
 class CreateBlockProducer:
     """
-    Block producer implementation.
+    Create block producer implementation.
     """
 
     def __init__(self, user, block_producer):
@@ -25,6 +25,28 @@ class CreateBlockProducer:
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         self.block_producer.create(email=user_email, info=info)
+
+
+class UpdateBlockProducer:
+    """
+    Update block producer implementation.
+    """
+
+    def __init__(self, user, block_producer):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+
+    def do(self, user_email, info):
+        """
+        Update block producer.
+        """
+        if not self.user.does_exist_by_email(email=user_email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        self.block_producer.update(email=user_email, info=info)
 
 
 class LikeBlockProducer:
