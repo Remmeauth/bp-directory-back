@@ -158,6 +158,52 @@ $ curl -X POST -H "Content-Type: application/json" \
 | -        | General execution | User with specified e-mail address does not exist.         | 400         |
 | -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
 
+* `POST | /user/profile/` - update user profile information.
+
+##### Request parameters 
+
+| Arguments              | Type   | Required | Description                                |
+| :--------------------: | :----: | :------: | ------------------------------------------ |
+| first_name             | String | No       | User's first name.                         |
+| last_name              | String | No       | User's last name.                          |
+| location               | String | No       | User location.                             |
+| additional_information | String | No       | Additional information about the user.     |
+| avatar_url             | String | No       | Reference to the user avatar.              |
+| website_url            | String | No       | Reference to the user website.             |
+| linkedin_url           | String | No       | Reference to the user account on Linkedin. |
+| twitter_url            | String | No       | Reference to the user account on Twitter.  |
+| medium_url             | String | No       | Reference to the user account on Medium.   |
+| github_url             | String | No       | Reference to the user account on GitHub.   |
+| facebook_url           | String | No       | Reference to the user account on Facebook. |
+| telegram_url           | String | No       | Reference to the user account on Telegram. |
+| reddit_url             | String | No       | Reference to the user account on Reddit.   |
+| slack_url              | String | No       | Reference to the user account on Slack.    |
+| steemit_url            | String | No       | Reference to the user account on Steemit.  |
+| wikipedia_url          | String | No       | Reference to the user page on Wikipedia.   |
+
+```bash
+$ curl -X POST http://localhost:8000/user/profile/ \
+     -H "Content-Type: application/json" \
+     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+     -d $'{
+  "first_name": "John",
+  "last_name": "Smith",
+  "location": "Berlin, Germany",
+  "additional_information": "Software Engineer at Travis-CI.",
+  "website_url": "https://johnsmith.com",
+  "linkedin_url": "https://www.linkedin.com/in/johnsmith"
+}' | python -m json.tool
+{
+    "result": "User profile has been updated.",
+}
+```
+
+##### Known errors
+
+| Argument | Level             | Error message                                      | Status code |
+| :------: | :---------------: | -------------------------------------------------- | :---------: |
+| -        | General execution | User with specified e-mail address does not exist. | 400         |
+
 ### Block producer
 
 * `PUT | /block-producers/` - create a block producer.

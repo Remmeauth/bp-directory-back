@@ -115,3 +115,25 @@ class RecoverUserPassword:
 
         self.user.set_new_password(email=email, password=new_password)
         return email, new_password
+
+
+class UpdateUserProfile:
+    """
+    Update user profile implementation.
+    """
+
+    def __init__(self, user, profile):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.profile = profile
+
+    def do(self, email, info):
+        """
+        Update user profile.
+        """
+        if not self.user.does_exist(email=email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        self.profile.update(email=email, info=info)

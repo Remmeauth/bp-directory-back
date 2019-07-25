@@ -17,8 +17,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     User database model.
     """
 
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True, blank=False)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -58,7 +56,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Create a user with specified e-mail address and password.
         """
-        cls.objects.create_user(email=email, password=password)
+        user = cls.objects.create_user(email=email, password=password)
+        Profile.objects.create(user=user)
 
     @classmethod
     def does_exist(cls, email):
@@ -94,6 +93,9 @@ class Profile(models.Model):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     avatar_url = models.URLField(max_length=200, blank=True)
     additional_information = models.TextField(blank=True)
@@ -112,3 +114,11 @@ class Profile(models.Model):
         Get string representation of an object.
         """
         return self.user.email
+
+    @classmethod
+    def update(cls, email, info):
+        """
+        Update user profile with specified information.
+        """
+        user = User.objects.get(email=email)
+        cls.objects.filter(user=user).update(**info)
