@@ -45,9 +45,17 @@ class TestUserProfileSingle(TestCase):
             'first_name': 'Martin',
             'last_name': 'Fowler',
             'location': 'Berlin, Germany',
+            'avatar_url': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Webysther_20150414193208_'
+                          '-_Martin_Fowler.jpg/220px-Webysther_20150414193208_-_Martin_Fowler.jpg',
             'additional_information': 'Software Engineer at Travis-CI.',
             'website_url': 'https://martinfowler.com',
             'linkedin_url': 'https://www.linkedin.com/in/martinfowler',
+            'twitter_url': 'https://twitter.com/in/martinfowler',
+            'medium_url': 'https://medium.com/in/@martinfowler',
+            'github_url': 'https://github.com/in/martinfowler',
+            'facebook_url': 'https://www.acebook.com/in/martinfowler',
+            'telegram_url': 'https://t.me/martinfowler',
+            'steemit_url': 'https://steemit.com/@martinfowler',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
 
         assert Profile.objects.get(user=self.user).first_name == 'Martin'
