@@ -64,6 +64,14 @@ class BlockProducer(models.Model):
         user = User.objects.get(email=email)
         cls.objects.create(user=user, **info)
 
+    @classmethod
+    def update(cls, email, info):
+        """
+        Update block producer with specified information.
+        """
+        user = User.objects.get(email=email)
+        cls.objects.filter(user=user).update(**info)
+
 
 class BlockProducerLike(models.Model):
     """
