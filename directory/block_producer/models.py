@@ -72,6 +72,14 @@ class BlockProducer(models.Model):
         user = User.objects.get(email=email)
         cls.objects.filter(user=user).update(**info)
 
+    @classmethod
+    def get(cls, identifier):
+        """
+        Get block producer by its identifier.
+        """
+        block_producer_as_dict = cls.objects.filter(id=identifier).values().first()
+        return BlockProducerDto(**block_producer_as_dict)
+
 
 class BlockProducerLike(models.Model):
     """
