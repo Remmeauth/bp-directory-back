@@ -9,7 +9,6 @@ from django.test import TestCase
 from block_producer.models import BlockProducer
 from user.models import User
 
-
 BLOCK_PRODUCER_INFO = {
     'name': 'Block producer USA',
     'website_url': 'https://bpusa.com',

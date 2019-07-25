@@ -39,6 +39,18 @@ class UserWithSpecifiedEmailAddressDoesNotExistError(Exception):
         self.message = 'User with specified e-mail address does not exist.'
 
 
+class UserWithSpecifiedUsernameDoesNotExistError(Exception):
+    """
+    User with specified username does not exist error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User with specified username does not exist.'
+
+
 class UserWithSpecifiedIdentifierDoesNotExistError(Exception):
     """
     User with specified identifier does not exist error.

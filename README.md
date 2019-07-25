@@ -56,6 +56,36 @@ identifying why the token was invalid.
 
 ### User
 
+* `GET | /user/{username}/` - get user by username.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| username   | String  | Yes      | User username  |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
+{
+    "result": {
+        "created": "2019-07-25T18:45:17.347Z",
+        "email": "dmytro.striletskyi@gmail.com",
+        "id": 6,
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "last_login": null,
+        "username": "dmytro.striletskyi"
+    }
+}
+```
+
+##### Known errors
+
+| Argument  | Level                       | Error message                                 | Status code |
+| :-------: | :-------------------------: | --------------------------------------------- | :---------: |
+|  username | Input arguments validation  | User with specified username does not exists. | 400         |
+
 * `POST | /auth/registration/` - register a user with email and password.
 
 ##### Request parameters 
