@@ -3,8 +3,6 @@
     "model": "user.user",
     "pk": 1,
     "fields": {
-      "first_name": "John",
-      "last_name": "Smith",
       "email": "john.smith@gmail.com",
       "created": "2019-07-17T14:19:37+00:00",
       "is_active": true,
@@ -15,8 +13,6 @@
     "model": "user.user",
     "pk": 2,
     "fields": {
-      "first_name": "Tony",
-      "last_name": "Stark",
       "email": "tony.stark@gmail.com",
       "created": "2019-06-18T13:19:37+00:00",
       "is_active": true,
@@ -27,8 +23,6 @@
     "model": "user.user",
     "pk": 3,
     "fields": {
-      "first_name": "Paul",
-      "last_name": "Rudd",
       "email": "paul.rudd@gmail.com",
       "created": "2019-08-22T18:19:37+00:00",
       "is_active": true,

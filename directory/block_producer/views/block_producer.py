@@ -44,7 +44,7 @@ class BlockProducerSingle(APIView):
 
         if not form.is_valid():
             return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
-        print(form.cleaned_data)
+
         try:
             CreateBlockProducer(user=self.user, block_producer=self.block_producer).do(
                 user_email=email,
