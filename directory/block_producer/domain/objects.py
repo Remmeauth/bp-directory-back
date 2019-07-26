@@ -105,6 +105,27 @@ class CommentBlockProducer:
         self.block_producer_comment.create(user_email=user_email, block_producer_id=block_producer_id, text=text)
 
 
+class GetBlockProducer:
+    """
+    Get block producer implementation.
+    """
+
+    def __init__(self, block_producer):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+
+    def do(self, block_producer_id):
+        """
+        Get block producer by its identifier.
+        """
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        return self.block_producer.get(identifier=block_producer_id)
+
+
 class GetBlockProducers:
     """
     Get block producers implementation.

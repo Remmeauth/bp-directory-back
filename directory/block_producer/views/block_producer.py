@@ -9,8 +9,10 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
+from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoesNotExistError
 from block_producer.domain.objects import (
     CreateBlockProducer,
+    GetBlockProducer,
     GetBlockProducers,
     UpdateBlockProducer,
 )
@@ -83,6 +85,36 @@ class BlockProducerSingle(APIView):
         return JsonResponse({'result': 'Block producer has been updated.'}, status=HTTPStatus.OK)
 
 
+class GetBlockProducerSingle(APIView):
+    """
+    Single get block producer endpoint implementation.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.block_producer = BlockProducer()
+
+    def get(self, request, block_producer_id):
+        """
+        Get block producer.
+        """
+        try:
+            block_producer = GetBlockProducer(
+                block_producer=self.block_producer,
+            ).do(block_producer_id=block_producer_id)
+
+        except BlockProducerWithSpecifiedIdentifierDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+
+        serialized_block_producer = block_producer.to_dict()
+
+        return JsonResponse({'result': serialized_block_producer}, status=HTTPStatus.OK)
+
+
 class BlockProducerCollection(APIView):
     """
     Collection block producer endpoint implementation.
@@ -101,6 +133,7 @@ class BlockProducerCollection(APIView):
         Get block producers.
         """
         block_producers = GetBlockProducers(block_producer=self.block_producer).do()
+
         serialized_block_producers = json.loads(BlockProducerDto.schema().dumps(block_producers, many=True))
 
         return JsonResponse({'result': serialized_block_producers}, status=HTTPStatus.OK)

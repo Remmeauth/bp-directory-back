@@ -5,6 +5,8 @@ from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
+from user.dto.user import UserDto
+
 
 @dataclass_json
 @dataclass
@@ -12,6 +14,8 @@ class BlockProducerDto:
     """
     Block producer data transfer object implementation.
     """
+
+    user: UserDto
 
     user_id: int
     id: int

@@ -185,49 +185,139 @@ class TestBlockProducerCollection(TestCase):
         expected_result = {
             'result': [
                 {
-                    'id': 1,
-                    'user_id': 1,
-                    'name': 'Block producer Canada',
                     'website_url': 'https://bpcanada.com',
-                    'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
                     'medium_url': '',
-                    'logo_url': '',
-                    'wikipedia_url': '',
-                    'reddit_url': '',
-                    'linkedin_url': '',
+                    'facebook_url': '',
+                    'name': 'Block producer Canada',
+                    'twitter_url': '',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
+                    'full_description': '',
                     'github_url': '',
                     'telegram_url': '',
                     'slack_url': '',
+                    'wikipedia_url': '',
+                    'user_id': 1,
+                    'reddit_url': '',
                     'location': '',
-                    'facebook_url': '',
-                    'twitter_url': '',
-                    'full_description': '',
+                    'id': 1,
+                    'linkedin_url': '',
                     'steemit_url': '',
+                    'logo_url': '',
+                    'user': {
+                        'is_staff': False,
+                        'is_superuser': False,
+                        'last_login': None,
+                        'username': 'martin.fowler',
+                        'email': 'martin.fowler@gmail.com',
+                        'id': 1,
+                        'is_active': True,
+                    },
                 },
                 {
-                    'id': 2,
-                    'user_id': 1,
-                    'name': 'Block producer USA',
                     'website_url': 'https://bpusa.com',
-                    'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
                     'medium_url': '',
-                    'logo_url': '',
-                    'wikipedia_url': '',
-                    'reddit_url': '',
-                    'linkedin_url': '',
+                    'facebook_url': '',
+                    'name': 'Block producer USA',
+                    'twitter_url': '',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
+                    'full_description': '',
                     'github_url': '',
                     'telegram_url': '',
                     'slack_url': '',
+                    'wikipedia_url': '',
+                    'user_id': 1,
+                    'reddit_url': '',
                     'location': '',
-                    'facebook_url': '',
-                    'twitter_url': '',
-                    'full_description': '',
+                    'id': 2,
+                    'linkedin_url': '',
                     'steemit_url': '',
+                    'logo_url': '',
+                    'user': {
+                        'is_staff': False,
+                        'is_superuser': False,
+                        'last_login': None,
+                        'username': 'martin.fowler',
+                        'email': 'martin.fowler@gmail.com',
+                        'id': 1,
+                        'is_active': True,
+                    },
                 },
             ],
         }
 
         response = self.client.get('/block-producers/collection/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+
+class TestGetBlockProducerSingle(TestCase):
+    """
+    Implements tests for implementation of single get block producer endpoint.
+    """
+
+    def setUp(self):
+        """
+        Setup.
+        """
+        user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer Canada',
+            website_url='https://bpcanada.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Canada.',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer USA',
+            website_url='https://bpusa.com',
+            short_description='Founded by a team of serial tech entrepreneurs in USA.',
+        )
+
+    def test_get_block_producer(self):
+        """
+        Case: get block producer.
+        Expect: information of the block producer is returned.
+        """
+        expected_result = {
+            'result': {
+                'user': {
+                    'id': 4,
+                    'last_login': None,
+                    'is_superuser': False,
+                    'email': 'martin.fowler@gmail.com',
+                    'username': 'martin.fowler',
+                    'is_active': True,
+                    'is_staff': False,
+                },
+                'user_id': 4,
+                'id': 4,
+                'name': 'Block producer Canada',
+                'website_url': 'https://bpcanada.com',
+                'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
+                'location': '',
+                'full_description': '',
+                'logo_url': '',
+                'linkedin_url': '',
+                'twitter_url': '',
+                'medium_url': '',
+                'github_url': '',
+                'facebook_url': '',
+                'telegram_url': '',
+                'reddit_url': '',
+                'slack_url': '',
+                'wikipedia_url': '',
+                'steemit_url': '',
+            },
+        }
+
+        response = self.client.get('/block-producers/single/4/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
