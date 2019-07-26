@@ -81,9 +81,9 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 
 ##### Known errors
 
-| Argument  | Level              | Error message                                 | Status code |
-| :-------: | :----------------: | --------------------------------------------- | :---------: |
-|  username | General execution  | User with specified username does not exists. | 400         |
+| Argument | Level                      | Error message                                 | Status code |
+| :------: | :------------------------: | --------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists. | 400         |
 
 * `POST | /auth/registration/` - register a user with email and password.
 
@@ -225,9 +225,9 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith
 
 ##### Known errors
 
-| Argument | Level             | Error message                                 | Status code |
-| :------: | :---------------: | --------------------------------------------- | :---------: |
-| username | General execution | User with specified username does not exists. | 400         |
+| Argument | Level                      | Error message                                 | Status code |
+| :------: | :------------------------: | --------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists. | 400         |
 
 * `POST | /user/profile/` - update user profile information.
 
