@@ -21,10 +21,9 @@ class TestUserProfileSingle(TestCase):
         """
         Setup.
         """
+        self.username = 'martin.fowler'
         self.user = User.objects.create_user(
-            email='martin.fowler@gmail.com',
-            username='martin.fowler',
-            password='martin.fowler.1337',
+            email='martin.fowler@gmail.com', username=self.username, password='martin.fowler.1337',
         )
 
         Profile.objects.create(user=self.user, first_name='John')
@@ -65,3 +64,79 @@ class TestUserProfileSingle(TestCase):
         assert Profile.objects.get(user=self.user).first_name == 'Martin'
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
+
+
+class TestGetUserProfileSingle(TestCase):
+    """
+    Implements tests for implementation of single user profile get endpoint.
+    """
+
+    def setUp(self):
+        """
+        Setup.
+        """
+        self.username = 'martin.fowler'
+        self.user = User.objects.create_user(
+            email='martin.fowler@gmail.com', username=self.username, password='martin.fowler.1337',
+        )
+
+        Profile.objects.create(
+            user=self.user,
+            first_name='Martin',
+            last_name='Fowler',
+            location='Berlin, Germany',
+            additional_information='Software Engineer at Travis-CI.',
+            website_url='https://martinfowler.com',
+        )
+
+    def test_get_user_profile(self):
+        """
+        Case: get user profile.
+        Expect: information of the user profile is received.
+        """
+        expected_result = {
+            'result': {
+                'user': {
+                    'id': 24,
+                    'last_login': None,
+                    'is_superuser': False,
+                    'email': 'martin.fowler@gmail.com',
+                    'username': 'martin.fowler',
+                    'is_active': True,
+                    'is_staff': False,
+                },
+                'user_id': 24,
+                'first_name': 'Martin',
+                'last_name': 'Fowler',
+                'location': 'Berlin, Germany',
+                'avatar_url': '',
+                'additional_information': 'Software Engineer at Travis-CI.',
+                'website_url': 'https://martinfowler.com',
+                'linkedin_url': '',
+                'twitter_url': '',
+                'medium_url': '',
+                'github_url': '',
+                'facebook_url': '',
+                'telegram_url': '',
+                'steemit_url': '',
+            },
+        }
+
+        response = self.client.get(f'/user/{self.username}/profile/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_get_user_by_non_existing_username(self):
+        """
+        Case: get user profile by non-existing username.
+        Expect: user profile with specified username does not exist error message.
+        """
+        expected_result = {
+            'error': 'User with specified username does not exist.',
+        }
+
+        response = self.client.get('/user/not.martin.fowler/profile/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
