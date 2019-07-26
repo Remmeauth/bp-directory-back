@@ -9,6 +9,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from user.dto.user import UserDto
 from user.managers import UserManager
 
 
@@ -17,9 +18,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     User database model.
     """
 
-    first_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True, blank=False)
+    username = models.CharField(unique=True, max_length=25, blank=False)
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -28,8 +28,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     class Meta:
         """
@@ -51,21 +51,32 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Return the short name for the user.
         """
-        return self.first_name
+        return self.username
 
     @classmethod
-    def create_with_email(cls, email, password):
+    def create_with_email(cls, email, username, password):
         """
         Create a user with specified e-mail address and password.
         """
-        cls.objects.create_user(email=email, password=password)
+        user = cls.objects.create_user(email=email, username=username, password=password)
+        Profile.objects.create(user=user)
 
     @classmethod
-    def does_exist(cls, email):
+    def does_exist_by_email(cls, email):
         """
         Check if user exists by e-mail address.
         """
         if cls.objects.filter(email=email).exists():
+            return True
+
+        return False
+
+    @classmethod
+    def does_exist_by_username(cls, username):
+        """
+        Check if user exists by username.
+        """
+        if cls.objects.filter(username=username).exists():
             return True
 
         return False
@@ -87,6 +98,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         user.set_password(password)
         user.save()
 
+    @classmethod
+    def get(cls, username):
+        """
+        Get user.
+        """
+        user_as_dict = cls.objects.filter(username=username).values().first()
+        del user_as_dict['password']
+        del user_as_dict['created']
+        return UserDto(**user_as_dict)
+
 
 class Profile(models.Model):
     """
@@ -94,6 +115,9 @@ class Profile(models.Model):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     avatar_url = models.URLField(max_length=200, blank=True)
     additional_information = models.TextField(blank=True)
@@ -112,3 +136,11 @@ class Profile(models.Model):
         Get string representation of an object.
         """
         return self.user.email
+
+    @classmethod
+    def update(cls, email, info):
+        """
+        Update user profile with specified information.
+        """
+        user = User.objects.get(email=email)
+        cls.objects.filter(user=user).update(**info)

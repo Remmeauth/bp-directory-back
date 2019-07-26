@@ -22,7 +22,12 @@ class TestBlockProducerLikeSingle(TestCase):
         """
         Setup.
         """
-        user = User.objects.create_user(email='martin.fowler@gmail.com', password='martin.fowler.1337')
+        user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
         block_producer = BlockProducer.objects.create(
             user=user,
             name='Block producer Canada',
@@ -31,7 +36,7 @@ class TestBlockProducerLikeSingle(TestCase):
         )
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
-            'email': 'martin.fowler@gmail.com',
+            'username_or_email': 'martin.fowler@gmail.com',
             'password': 'martin.fowler.1337',
         }), content_type='application/json')
 

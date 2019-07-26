@@ -15,6 +15,18 @@ class UserWithSpecifiedEmailAddressAlreadyExistsError(Exception):
         self.message = 'User with specified e-mail address already exists.'
 
 
+class UserWithSpecifiedUsernameAlreadyExistsError(Exception):
+    """
+    User with specified username already exists error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User with specified username already exists.'
+
+
 class UserWithSpecifiedEmailAddressDoesNotExistError(Exception):
     """
     User with specified e-mail address does not exist error.
@@ -25,6 +37,18 @@ class UserWithSpecifiedEmailAddressDoesNotExistError(Exception):
         Constructor.
         """
         self.message = 'User with specified e-mail address does not exist.'
+
+
+class UserWithSpecifiedUsernameDoesNotExistError(Exception):
+    """
+    User with specified username does not exist error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User with specified username does not exist.'
 
 
 class UserWithSpecifiedIdentifierDoesNotExistError(Exception):

@@ -9,6 +9,8 @@ from user.domain.errors import (
     UserWithSpecifiedEmailAddressAlreadyExistsError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedIdentifierDoesNotExistError,
+    UserWithSpecifiedUsernameAlreadyExistsError,
+    UserWithSpecifiedUsernameDoesNotExistError,
 )
 
 
@@ -23,14 +25,17 @@ class RegisterUser:
         """
         self.user = user
 
-    def by_email(self, email, password):
+    def by_credentials(self, email, username, password):
         """
         Create a user with specified e-mail address and password.
         """
-        if self.user.does_exist(email=email):
+        if self.user.does_exist_by_email(email=email):
             raise UserWithSpecifiedEmailAddressAlreadyExistsError
 
-        self.user.create_with_email(email=email, password=password)
+        if self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameAlreadyExistsError
+
+        self.user.create_with_email(email=email, username=username, password=password)
 
 
 class ChangeUserPassword:
@@ -48,7 +53,7 @@ class ChangeUserPassword:
         """
         Change user password.
         """
-        if not self.user.does_exist(email=email):
+        if not self.user.does_exist_by_email(email=email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         is_password_matched = self.user.verify_password(email=email, password=old_password)
@@ -75,7 +80,7 @@ class RequestUserPasswordRecovery:
         """
         Request to recover user password by email.
         """
-        if not self.user.does_exist(email=email):
+        if not self.user.does_exist_by_email(email=email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         identifier = uuid.uuid4().hex
@@ -115,3 +120,46 @@ class RecoverUserPassword:
 
         self.user.set_new_password(email=email, password=new_password)
         return email, new_password
+
+
+class UpdateUserProfile:
+    """
+    Update user profile implementation.
+    """
+
+    def __init__(self, user, profile):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.profile = profile
+
+    def do(self, email, info):
+        """
+        Update user profile.
+        """
+        if not self.user.does_exist_by_email(email=email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        self.profile.update(email=email, info=info)
+
+
+class GetUser:
+    """
+    Get user implementation.
+    """
+
+    def __init__(self, user):
+        """
+        Constructor.
+        """
+        self.user = user
+
+    def do(self, username):
+        """
+        Get user profile.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        return self.user.get(username=username)
