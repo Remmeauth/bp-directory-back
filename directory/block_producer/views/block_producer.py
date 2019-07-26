@@ -133,6 +133,7 @@ class BlockProducerCollection(APIView):
         Get block producers.
         """
         block_producers = GetBlockProducers(block_producer=self.block_producer).do()
+
         serialized_block_producers = json.loads(BlockProducerDto.schema().dumps(block_producers, many=True))
 
         return JsonResponse({'result': serialized_block_producers}, status=HTTPStatus.OK)

@@ -54,6 +54,17 @@ class BlockProducer(models.Model):
         Get block producers.
         """
         block_producers_as_dicts = cls.objects.all().values()
+
+        for block_producer in block_producers_as_dicts:
+
+            user_identifier = block_producer.get('user_id')
+            user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+            del user_as_dict['password']
+            del user_as_dict['created']
+
+            block_producer['user'] = user_as_dict
+
         return BlockProducerDto.schema().load(block_producers_as_dicts, many=True)
 
     @classmethod
@@ -78,6 +89,15 @@ class BlockProducer(models.Model):
         Get block producer by its identifier.
         """
         block_producer_as_dict = cls.objects.filter(id=identifier).values().first()
+
+        user_identifier = block_producer_as_dict.get('user_id')
+        user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+        del user_as_dict['password']
+        del user_as_dict['created']
+
+        block_producer_as_dict['user'] = user_as_dict
+
         return BlockProducerDto(**block_producer_as_dict)
 
 
