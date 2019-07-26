@@ -283,7 +283,7 @@ class TestGetBlockProducerSingle(TestCase):
     def test_get_block_producer(self):
         """
         Case: get block producer.
-        Expect: dictionary of block producer is returned.
+        Expect: information of the block producer is returned.
         """
         expected_result = {
             'result': {
