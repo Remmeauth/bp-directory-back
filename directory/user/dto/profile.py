@@ -1,5 +1,5 @@
 """
-Provide implementation of block producer data transfer object.
+Provide implementation of user profile data transfer object.
 """
 from dataclasses import dataclass
 
@@ -10,31 +10,26 @@ from user.dto.user import UserDto
 
 @dataclass_json
 @dataclass
-class BlockProducerDto:
+class UserProfileDto:
     """
-    Block producer data transfer object implementation.
+    User profile data transfer object implementation.
     """
 
     user: UserDto
 
     user_id: int
-    id: int
 
-    name: str
-    website_url: str
-    short_description: str
-
+    first_name: str = ''
+    last_name: str = ''
     location: str = ''
-    full_description: str = ''
-    logo_url: str = ''
+    avatar_url: str = ''
+    additional_information: str = ''
 
+    website_url: str = ''
     linkedin_url: str = ''
     twitter_url: str = ''
     medium_url: str = ''
     github_url: str = ''
     facebook_url: str = ''
     telegram_url: str = ''
-    reddit_url: str = ''
-    slack_url: str = ''
-    wikipedia_url: str = ''
     steemit_url: str = ''

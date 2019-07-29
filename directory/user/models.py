@@ -9,6 +9,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from user.dto.user import UserDto
+from user.dto.profile import UserProfileDto
 from user.managers import UserManager
 
 
@@ -53,11 +55,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     @classmethod
-    def create_with_email(cls, email, password):
+    def create_with_email(cls, email, username, password):
         """
         Create a user with specified e-mail address and password.
         """
-        user = cls.objects.create_user(email=email, password=password)
+        user = cls.objects.create_user(email=email, username=username, password=password)
         Profile.objects.create(user=user)
 
     @classmethod
@@ -97,6 +99,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         user.set_password(password)
         user.save()
 
+    @classmethod
+    def get(cls, username):
+        """
+        Get user.
+        """
+        user_as_dict = cls.objects.filter(username=username).values().first()
+        del user_as_dict['password']
+        del user_as_dict['created']
+        return UserDto(**user_as_dict)
+
 
 class Profile(models.Model):
     """
@@ -133,3 +145,20 @@ class Profile(models.Model):
         """
         user = User.objects.get(email=email)
         cls.objects.filter(user=user).update(**info)
+
+    @classmethod
+    def get(cls, username):
+        """
+        Get user profile information by username.
+        """
+        user = User.objects.get(username=username)
+        user_profile_as_dict = cls.objects.filter(user=user).values().first()
+
+        user_as_dict = User.objects.filter(username=username).values().first()
+
+        del user_as_dict['password']
+        del user_as_dict['created']
+
+        user_profile_as_dict['user'] = user_as_dict
+
+        return UserProfileDto(**user_profile_as_dict)

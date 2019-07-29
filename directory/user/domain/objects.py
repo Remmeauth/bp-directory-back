@@ -10,6 +10,7 @@ from user.domain.errors import (
     UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedIdentifierDoesNotExistError,
     UserWithSpecifiedUsernameAlreadyExistsError,
+    UserWithSpecifiedUsernameDoesNotExistError,
 )
 
 
@@ -34,7 +35,7 @@ class RegisterUser:
         if self.user.does_exist_by_username(username=username):
             raise UserWithSpecifiedUsernameAlreadyExistsError
 
-        self.user.create_with_email(email=email, password=password)
+        self.user.create_with_email(email=email, username=username, password=password)
 
 
 class ChangeUserPassword:
@@ -141,3 +142,46 @@ class UpdateUserProfile:
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
         self.profile.update(email=email, info=info)
+
+
+class GetUser:
+    """
+    Get user implementation.
+    """
+
+    def __init__(self, user):
+        """
+        Constructor.
+        """
+        self.user = user
+
+    def do(self, username):
+        """
+        Get user information by username.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        return self.user.get(username=username)
+
+
+class GetUserProfile:
+    """
+    Get user profile implementation.
+    """
+
+    def __init__(self, user, profile):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.profile = profile
+
+    def do(self, username):
+        """
+        Get user profile information by username.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        return self.profile.get(username=username)

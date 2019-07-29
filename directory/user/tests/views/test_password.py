@@ -106,7 +106,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         self.email = 'martin.fowler@gmail.com'
         self.password = 'martin.fowler.1337'
 
-        User.objects.create_user(email=self.email, password=self.password)
+        User.objects.create_user(email=self.email, username='martin.fowler', password=self.password)
 
     @patch('services.email.Email.send')
     def test_request_recover_user_password(self, mock_email_send):
@@ -191,7 +191,7 @@ class TestUserPasswordRecoverSingle(TestCase):
         self.email = 'martin.fowler@gmail.com'
         self.password = 'martin.fowler.1337'
 
-        User.objects.create_user(email=self.email, password='martin.fowler.1337')
+        User.objects.create_user(email=self.email, username='martin.fowler', password='martin.fowler.1337')
 
     @patch('services.email.Email.send')
     def test_recovery_user_password(self, mock_email_send):
