@@ -120,7 +120,9 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 | username  | String | Yes      | User username |
 
 ```bash
-$ curl -X DELETE -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
+$ curl -X DELETE -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
 {
     "result": "User has been deleted."
 }
@@ -128,9 +130,10 @@ $ curl -X DELETE -H "Content-Type: application/json" http://localhost:8000/user/
 
 ##### Known errors
 
-| Argument | Level                      | Error message                                 | Status code |
-| :------: | :------------------------: | --------------------------------------------- | :---------: |
-| username | Input arguments validation | User with specified username does not exists. | 400         |
+| Argument | Level                      | Error message                                                       | Status code |
+| :------: | :------------------------: | ------------------------------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists.                       | 400         |
+| username | Input arguments validation | User has no authority to delete this account by specified username. | 400         |
 
 * `POST | /user/password/` - change user password.
 
@@ -413,7 +416,7 @@ $ curl http://localhost:8000/block-producers/collection/ -H "Content-Type: appli
 ```bash
 $ curl -X PUT http://localhost:8000/block-producers/ \
      -H "Content-Type: application/json" \
-     -H "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2LCJ1c2VybmFtZSI6ImRteXRyby5zdHJpbGV0c2t5aSIsImV4cCI6MTU2NDQ5NjI4OSwiZW1haWwiOiJkbXl0cm8uc3RyaWxldHNreWlAZ21haWwuY29tIiwib3JpZ19pYXQiOjE1NjQ0OTI2ODl9.QgNpjP_2Vn0tXQ1_NLRTxmlJ5X9NqA2NFXIOWiomaiI" \
+     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
      -d $'{
   "name": "Block Producer USA",
   "website_url": "https://bpusa.com",

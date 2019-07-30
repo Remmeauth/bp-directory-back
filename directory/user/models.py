@@ -9,8 +9,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from user.dto.user import UserDto
 from user.dto.profile import UserProfileDto
+from user.dto.user import UserDto
 from user.managers import UserManager
 
 

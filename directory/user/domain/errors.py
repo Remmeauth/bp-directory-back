@@ -85,3 +85,15 @@ class RecoveryPasswordHasBeenAlreadySentError(Exception):
         Constructor.
         """
         self.message = 'Recovery password has been already sent to e-mail address.'
+
+
+class UserHasNoAuthorityToDeleteThisAccountError(Exception):
+    """
+    User has no authority to delete this account by specified username error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User has no authority to delete this account by specified username.'

@@ -7,7 +7,10 @@ from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.views import APIView
 
-from user.domain.errors import UserWithSpecifiedUsernameDoesNotExistError
+from user.domain.errors import (
+    UserHasNoAuthorityToDeleteThisAccountError,
+    UserWithSpecifiedUsernameDoesNotExistError,
+)
 from user.domain.objects import (
     DeleteUser,
     GetUser,
@@ -44,6 +47,11 @@ class UserSingle(APIView):
         """
         Delete user.
         """
+        if username != request.user.username:
+            return JsonResponse(
+                {'error': UserHasNoAuthorityToDeleteThisAccountError().message}, status=HTTPStatus.BAD_REQUEST,
+            )
+
         try:
             DeleteUser(user=self.user).do(username=username)
         except UserWithSpecifiedUsernameDoesNotExistError as error:

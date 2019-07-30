@@ -1,6 +1,7 @@
 """
 Provide tests for implementation of single user endpoint.
 """
+import json
 from http import HTTPStatus
 
 from django.test import TestCase
@@ -23,6 +24,13 @@ class TestUserSingle(TestCase):
             username='martin.fowler',
             password='martin.fowler.1337',
         )
+
+        response = self.client.post('/authentication/token/obtaining/', json.dumps({
+            'username_or_email': 'martin.fowler@gmail.com',
+            'password': 'martin.fowler.1337',
+        }), content_type='application/json')
+
+        self.user_token = response.data.get('token')
 
     def test_get_user_by_username(self):
         """
@@ -69,21 +77,25 @@ class TestUserSingle(TestCase):
             'result': 'User has been deleted.',
         }
 
-        response = self.client.delete('/user/martin.fowler/', content_type='application/json')
+        response = self.client.delete(
+            '/user/martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+        )
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-    def test_delete_user_by_non_existing_username(self):
+    def test_delete_user_without_deletion_rights(self):
         """
-        Case: delete user by non-existing username.
-        Expect: user with specified username does not exist error message.
+        Case: deleting a user without deletion rights.
+        Expect: user has no authority to delete this account by specified username error message.
         """
         expected_result = {
-            'error': 'User with specified username does not exist.',
+            'error': 'User has no authority to delete this account by specified username.',
         }
 
-        response = self.client.delete('/user/not.martin.fowler/', content_type='application/json')
+        response = self.client.delete(
+            '/user/not.martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+        )
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
