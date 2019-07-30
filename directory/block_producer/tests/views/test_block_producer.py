@@ -288,16 +288,16 @@ class TestGetBlockProducerSingle(TestCase):
         expected_result = {
             'result': {
                 'user': {
-                    'id': 4,
+                    'id': 6,
                     'last_login': None,
                     'is_superuser': False,
                     'email': 'martin.fowler@gmail.com',
                     'username': 'martin.fowler',
                     'is_active': True,
-                    'is_staff': False,
+                    'is_staff': False
                 },
-                'user_id': 4,
-                'id': 4,
+                'user_id': 6,
+                'id': 8,
                 'name': 'Block producer Canada',
                 'website_url': 'https://bpcanada.com',
                 'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
@@ -313,11 +313,97 @@ class TestGetBlockProducerSingle(TestCase):
                 'reddit_url': '',
                 'slack_url': '',
                 'wikipedia_url': '',
-                'steemit_url': '',
-            },
+                'steemit_url': ''
+            }
         }
 
-        response = self.client.get('/block-producers/single/4/', content_type='application/json')
+        response = self.client.get('/block-producers/single/8/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+
+class TestBlockProducerSearchCollection(TestCase):
+    """
+    Implements tests for implementation of collection search block producers endpoint.
+    """
+
+    def setUp(self):
+        """
+        Setup.
+        """
+        user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer Canada',
+            website_url='https://bpcanada.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Canada.',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer USA',
+            website_url='https://bpusa.com',
+            short_description='Founded by a team of serial tech entrepreneurs in USA.',
+        )
+
+    def test_search_block_producers(self):
+        """
+        Case: search block producers by phrase.
+        Expect: list of block producers is returned.
+        """
+        expected_result = {
+            'result': [
+                {
+                    'website_url': 'https://bpusa.com',
+                    'name': 'Block producer USA',
+                    'facebook_url': '',
+                    'location': '',
+                    'telegram_url': '',
+                    'id': 4,
+                    'user_id': 2,
+                    'github_url': '',
+                    'slack_url': '',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
+                    'user': {
+                        'is_active': True,
+                        'id': 2,
+                        'email': 'martin.fowler@gmail.com',
+                        'last_login': None,
+                        'is_superuser': False,
+                        'is_staff': False,
+                        'username': 'martin.fowler'
+                    },
+                    'medium_url': '',
+                    'reddit_url': '',
+                    'wikipedia_url': '',
+                    'steemit_url': '',
+                    'linkedin_url': '',
+                    'twitter_url': '',
+                    'full_description': '',
+                    'logo_url': ''
+                }
+            ]
+        }
+
+        response = self.client.get('/block-producers/search/?phrase=producer%usa', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_search_block_producers_by_non_existent_phrase(self):
+        """
+        Case: search block producers by non-existent phrase.
+        Expect: empty list of block producers is returned.
+        """
+        expected_result = {'result': []}
+
+        response = self.client.get('/block-producers/search/?phrase=queen', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
