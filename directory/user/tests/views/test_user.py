@@ -59,3 +59,31 @@ class TestUserSingle(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_delete_user_by_username(self):
+        """
+        Case: delete user.
+        Expect: user account is deleted.
+        """
+        expected_result = {
+            'result': 'User has been deleted.',
+        }
+
+        response = self.client.delete('/user/martin.fowler/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_delete_user_by_non_existing_username(self):
+        """
+        Case: delete user by non-existing username.
+        Expect: user with specified username does not exist error message.
+        """
+        expected_result = {
+            'error': 'User with specified username does not exist.',
+        }
+
+        response = self.client.delete('/user/not.martin.fowler/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
