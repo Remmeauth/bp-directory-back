@@ -56,6 +56,32 @@ identifying why the token was invalid.
 
 ### User
 
+* `POST | /auth/registration/` - register a user with email and password.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| email      | String  | Yes      | User e-mail.   |
+| password   | String  | Yes      | User password. |
+
+```bash
+$ curl -X POST -H "Content-Type: application/json" \
+      -d '{"email":"dmytro.striletskyi@gmail.com","username":"dmytro.striletskyi","password":"dmytro.striletskyi.1337"}' \
+      http://localhost:8000/user/registration/ | python -m json.tool
+{
+    "result": "User has been created."
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                      | Status code |
+| :-------: | :------------------------: | -------------------------------------------------- | :---------: |
+|  -        | General execution          | User with specified e-mail address already exists. | 400         |
+|  email    | Input arguments validation | This field is required.                            | 400         |
+|  password | Input arguments validation | This field is required.                            | 400         |
+
 * `GET | /user/{username}/` - get user by username.
 
 ##### Request parameters 
@@ -85,31 +111,29 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 | :------: | :------------------------: | --------------------------------------------- | :---------: |
 | username | Input arguments validation | User with specified username does not exists. | 400         |
 
-* `POST | /auth/registration/` - register a user with email and password.
+* `DELETE | /user/{username}/` - delete user by username.
 
 ##### Request parameters 
 
-| Arguments  | Type    | Required | Description    |
-| :--------: | :-----: | :------: | -------------- |
-| email      | String  | Yes      | User e-mail.   |
-| password   | String  | Yes      | User password. |
+| Arguments | Type   | Required | Description   |
+| :-------: | :----: | :------: | ------------- |
+| username  | String | Yes      | User username |
 
 ```bash
-$ curl -X POST -H "Content-Type: application/json" \
-      -d '{"email":"dmytro.striletskyi@gmail.com","username":"dmytro.striletskyi","password":"dmytro.striletskyi.1337"}' \
-      http://localhost:8000/user/registration/ | python -m json.tool
+$ curl -X DELETE -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
 {
-    "result": "User has been created."
+    "result": "User has been deleted."
 }
 ```
 
 ##### Known errors
 
-| Argument  | Level                      | Error message                                      | Status code |
-| :-------: | :------------------------: | -------------------------------------------------- | :---------: |
-|  -        | General execution          | User with specified e-mail address already exists. | 400         |
-|  email    | Input arguments validation | This field is required.                            | 400         |
-|  password | Input arguments validation | This field is required.                            | 400         |
+| Argument | Level                      | Error message                                                       | Status code |
+| :------: | :------------------------: | ------------------------------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists.                       | 400         |
+| username | Input arguments validation | User has no authority to delete this account by specified username. | 400         |
 
 * `POST | /user/password/` - change user password.
 

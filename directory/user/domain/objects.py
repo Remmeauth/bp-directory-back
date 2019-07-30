@@ -185,3 +185,24 @@ class GetUserProfile:
             raise UserWithSpecifiedUsernameDoesNotExistError
 
         return self.profile.get(username=username)
+
+
+class DeleteUser:
+    """
+    Delete user implementation.
+    """
+
+    def __init__(self, user):
+        """
+        Constructor.
+        """
+        self.user = user
+
+    def do(self, username):
+        """
+        Delete user by username.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        return self.user.delete_(username=username)
