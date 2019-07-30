@@ -460,6 +460,52 @@ $ curl -X POST http://localhost:8000/block-producers/ \
 | :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
 | -                 | General execution          | User with specified e-mail address does not exist. | 400         |
 
+* `GET | /block-producers/search/?phrase=block%20producer%20usa` - search block producers by phrase.
+
+##### Request parameters 
+
+| Arguments | Type   | Required | Description                                         |
+| :-------: | :----: | :------: | --------------------------------------------------- |
+| phrase    | String | Yes      | Phrase by which you can search for block producers. |
+
+```bash
+$ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20usa \
+     -H "Content-Type: application/json" | python -m json.tool
+{
+    "result": [
+        {
+            "facebook_url": "https://www.facebook.com/bpusa",
+            "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer USA is headquartered in San Francisco, USA and is backed by reputable American financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+            "github_url": "https://github.com/bpusa",
+            "id": 3,
+            "linkedin_url": "https://www.linkedin.com/in/bpusa",
+            "location": "San Francisco, USA",
+            "logo_url": "",
+            "medium_url": "https://medium.com/@bpusa",
+            "name": "Block producer USA",
+            "reddit_url": "https://reddit.com/@bpusa",
+            "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+            "slack_url": "https://slack.com/bpusa",
+            "steemit_url": "https://steemit.com/@bpusa",
+            "telegram_url": "https://t.me/bpusa",
+            "twitter_url": "https://twitter.com/bpusa",
+            "user": {
+                "email": "tony.stark@gmail.com",
+                "id": 2,
+                "is_active": true,
+                "is_staff": false,
+                "is_superuser": false,
+                "last_login": null,
+                "username": "tony.stark"
+            },
+            "user_id": 2,
+            "website_url": "https://bpusa.com",
+            "wikipedia_url": "https://wikipedia.com/bpusa"
+        }
+    ]
+}
+```
+
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 
 ##### Request parameters 
