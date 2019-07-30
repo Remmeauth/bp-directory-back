@@ -157,9 +157,31 @@ class GetUser:
 
     def do(self, username):
         """
-        Get user profile.
+        Get user information by username.
         """
         if not self.user.does_exist_by_username(username=username):
             raise UserWithSpecifiedUsernameDoesNotExistError
 
         return self.user.get(username=username)
+
+
+class GetUserProfile:
+    """
+    Get user profile implementation.
+    """
+
+    def __init__(self, user, profile):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.profile = profile
+
+    def do(self, username):
+        """
+        Get user profile information by username.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        return self.profile.get(username=username)

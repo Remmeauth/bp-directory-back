@@ -14,6 +14,7 @@ from block_producer.domain.objects import (
     CreateBlockProducer,
     GetBlockProducer,
     GetBlockProducers,
+    SearchBlockProducer,
     UpdateBlockProducer,
 )
 from block_producer.dto.block_producer import BlockProducerDto
@@ -133,6 +134,32 @@ class BlockProducerCollection(APIView):
         Get block producers.
         """
         block_producers = GetBlockProducers(block_producer=self.block_producer).do()
+
+        serialized_block_producers = json.loads(BlockProducerDto.schema().dumps(block_producers, many=True))
+
+        return JsonResponse({'result': serialized_block_producers}, status=HTTPStatus.OK)
+
+
+class BlockProducerSearchCollection(APIView):
+    """
+    Collection search block producer endpoint implementation.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.block_producer = BlockProducer()
+
+    def get(self, request):
+        """
+        Search by block producers.
+        """
+        phrase = request.GET.get('phrase')
+
+        block_producers = SearchBlockProducer(block_producer=self.block_producer).do(phrase=phrase)
 
         serialized_block_producers = json.loads(BlockProducerDto.schema().dumps(block_producers, many=True))
 

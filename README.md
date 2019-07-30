@@ -68,7 +68,6 @@ identifying why the token was invalid.
 $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
 {
     "result": {
-        "created": "2019-07-25T18:45:17.347Z",
         "email": "dmytro.striletskyi@gmail.com",
         "id": 6,
         "is_active": true,
@@ -82,9 +81,9 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 
 ##### Known errors
 
-| Argument  | Level                       | Error message                                 | Status code |
-| :-------: | :-------------------------: | --------------------------------------------- | :---------: |
-|  username | Input arguments validation  | User with specified username does not exists. | 400         |
+| Argument | Level                      | Error message                                 | Status code |
+| :------: | :------------------------: | --------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists. | 400         |
 
 * `POST | /auth/registration/` - register a user with email and password.
 
@@ -100,7 +99,7 @@ $ curl -X POST -H "Content-Type: application/json" \
       -d '{"email":"dmytro.striletskyi@gmail.com","username":"dmytro.striletskyi","password":"dmytro.striletskyi.1337"}' \
       http://localhost:8000/user/registration/ | python -m json.tool
 {
-    "message": "User has been created.",
+    "result": "User has been created."
 }
 ```
 
@@ -127,7 +126,7 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
       http://localhost:8000/user/password/ | python -m json.tool
 {
-    "message": "Password has been changed.",
+    "result": "Password has been changed."
 }
 ```
 
@@ -153,7 +152,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
       -H "Content-Type: application/json" \
       http://localhost:8000/user/password/recovery | python -m json.tool
 {
-    "message": "Recovery link has been sent to the specified e-mail address.",
+    "result": "Recovery link has been sent to the specified e-mail address."
 }
 ```
 
@@ -176,7 +175,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
 $ curl -X POST -H "Content-Type: application/json" \
       http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
 {
-    "message": "New password has been sent to e-mail address.",
+    "result": "New password has been sent to e-mail address."
 }
 ```
 
@@ -184,6 +183,51 @@ $ curl -X POST -H "Content-Type: application/json" \
 | :------: | :---------------: | ---------------------------------------------------------- | :---------: |
 | -        | General execution | User with specified e-mail address does not exist.         | 400         |
 | -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
+
+* `GET | /user/{username}/profile/` - get user profile information by username.
+
+##### Request parameters 
+
+| Argument | Type   | Required | Description    |
+| :------: | :----: | :------: | -------------- |
+| username | String | Yes      | User username. |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith/profile/ | python -m json.tool
+{
+    "result": {
+        "additional_information": "Software Engineer at Travis-CI.",
+        "avatar_url": "",
+        "facebook_url": "",
+        "first_name": "John",
+        "github_url": "",
+        "last_name": "Smith",
+        "linkedin_url": "https://www.linkedin.com/in/johnsmith",
+        "location": "Berlin, Germany",
+        "medium_url": "",
+        "steemit_url": "",
+        "telegram_url": "",
+        "twitter_url": "",
+        "user": {
+            "email": "john.smith@gmail.com",
+            "id": 5,
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "last_login": null,
+            "username": "john.smith"
+        },
+        "user_id": 5,
+        "website_url": "https://johnsmith.com"
+    }
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                 | Status code |
+| :------: | :------------------------: | --------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists. | 400         |
 
 * `POST | /user/profile/` - update user profile information.
 
@@ -221,7 +265,7 @@ $ curl -X POST http://localhost:8000/user/profile/ \
   "linkedin_url": "https://www.linkedin.com/in/johnsmith"
 }' | python -m json.tool
 {
-    "result": "User profile has been updated.",
+    "result": "User profile has been updated."
 }
 ```
 
@@ -357,7 +401,7 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
   "linkedin_url": "https://www.linkedin.com/in/bpusa"
 }' | python -m json.tool
 {
-    "message": "Block producer has been created.",
+    "result": "Block producer has been created."
 }
 ```
 
@@ -406,7 +450,7 @@ $ curl -X POST http://localhost:8000/block-producers/ \
   "linkedin_url": "https://www.linkedin.com/in/bpusa"
 }' | python -m json.tool
 {
-    "result": "Block producer has been updated.",
+    "result": "Block producer has been updated."
 }
 ```
 
@@ -415,6 +459,52 @@ $ curl -X POST http://localhost:8000/block-producers/ \
 | Argument          | Level                      | Error message                                      | Status code |
 | :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
 | -                 | General execution          | User with specified e-mail address does not exist. | 400         |
+
+* `GET | /block-producers/search/?phrase=block%20producer%20usa` - search block producers by phrase.
+
+##### Request parameters 
+
+| Arguments | Type   | Required | Description                                         |
+| :-------: | :----: | :------: | --------------------------------------------------- |
+| phrase    | String | Yes      | Phrase by which you can search for block producers. |
+
+```bash
+$ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20usa \
+     -H "Content-Type: application/json" | python -m json.tool
+{
+    "result": [
+        {
+            "facebook_url": "https://www.facebook.com/bpusa",
+            "full_description": "# About Us\n\nFounded by a team of serial tech entrepreneurs, block producer USA is headquartered in San Francisco, USA and is backed by reputable American financial players. We believe that BP.IO will fundamentally change our economic and social systems and as such we are deeply committed to contribute to the growth of the ecosystem.",
+            "github_url": "https://github.com/bpusa",
+            "id": 3,
+            "linkedin_url": "https://www.linkedin.com/in/bpusa",
+            "location": "San Francisco, USA",
+            "logo_url": "",
+            "medium_url": "https://medium.com/@bpusa",
+            "name": "Block producer USA",
+            "reddit_url": "https://reddit.com/@bpusa",
+            "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+            "slack_url": "https://slack.com/bpusa",
+            "steemit_url": "https://steemit.com/@bpusa",
+            "telegram_url": "https://t.me/bpusa",
+            "twitter_url": "https://twitter.com/bpusa",
+            "user": {
+                "email": "tony.stark@gmail.com",
+                "id": 2,
+                "is_active": true,
+                "is_staff": false,
+                "is_superuser": false,
+                "last_login": null,
+                "username": "tony.stark"
+            },
+            "user_id": 2,
+            "website_url": "https://bpusa.com",
+            "wikipedia_url": "https://wikipedia.com/bpusa"
+        }
+    ]
+}
+```
 
 * `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
 
@@ -430,7 +520,7 @@ $ curl -X POST \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
       http://localhost:8000/block-producers/2/like/ | python -m json.tool
 {
-    "message": "Block producer liking has been handled.",
+    "result": "Block producer liking has been handled."
 }
 ```
 
@@ -456,7 +546,7 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
       http://localhost:8000/block-producers/2/comment/ | python -m json.tool
 {
-    "message": "Block producer has been commented.",
+    "result": "Block producer has been commented."
 }
 ```
 
