@@ -23,4 +23,5 @@ user_endpoints = [
     path('profile/', UserProfileSingle.as_view()),
     path('<str:username>/profile/', GetUserProfileSingle.as_view()),
     path('<str:username>/', UserSingle.as_view()),
+    path('<str:username>/', UserSingle.as_view()),
 ]

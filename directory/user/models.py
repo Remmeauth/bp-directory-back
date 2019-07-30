@@ -109,6 +109,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         del user_as_dict['created']
         return UserDto(**user_as_dict)
 
+    @classmethod
+    def delete_(cls, username):
+        """
+        Delete user.
+        """
+        cls.objects.filter(username=username).delete()
+
 
 class Profile(models.Model):
     """
