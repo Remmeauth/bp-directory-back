@@ -6,6 +6,7 @@ from http import HTTPStatus
 from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.views import APIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from user.domain.errors import (
     UserHasNoAuthorityToDeleteThisAccountError,
@@ -42,6 +43,20 @@ class UserSingle(APIView):
 
         serialized_user = user.to_dict()
         return JsonResponse({'result': serialized_user}, status=HTTPStatus.OK)
+
+
+class UserDeletionSingle(APIView):
+    """
+    Single user deletion endpoint implementation.
+    """
+
+    authentication_classes = (JSONWebTokenAuthentication,)
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.user = User()
 
     def delete(self, request, username):
         """

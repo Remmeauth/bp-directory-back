@@ -116,6 +116,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         cls.objects.filter(username=username).delete()
 
+    @classmethod
+    def set_new_email(cls, username, email):
+        """
+        Set new user e-mail by specified username.
+        """
+        user = cls.objects.get(username=username)
+        user.email = email
+        user.save()
+
 
 class Profile(models.Model):
     """
