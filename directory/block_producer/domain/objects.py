@@ -142,3 +142,21 @@ class GetBlockProducers:
         Get block producers.
         """
         return self.block_producer.get_all()
+
+
+class SearchBlockProducer:
+    """
+    Search block producers implementation.
+    """
+
+    def __init__(self, block_producer):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+
+    def do(self, phrase):
+        """
+        Search block producers by phrase.
+        """
+        return self.block_producer.search(phrase=phrase)

@@ -1,6 +1,10 @@
 """
 Provide database models for block producer.
 """
+from django.contrib.postgres.search import (
+    SearchQuery,
+    SearchVector,
+)
 from django.db import models
 
 from block_producer.dto.block_producer import BlockProducerDto
@@ -99,6 +103,32 @@ class BlockProducer(models.Model):
         block_producer_as_dict['user'] = user_as_dict
 
         return BlockProducerDto(**block_producer_as_dict)
+
+    @classmethod
+    def search(cls, phrase):
+        """
+        Search block producers by phrase.
+        """
+        vector = SearchVector('name', weight='A') + \
+            SearchVector('location', weight='B') + \
+            SearchVector('short_description', weight='B') + \
+            SearchVector('full_description', weight='B')
+
+        block_producers_as_list = cls.objects.annotate(search=vector).filter(search=SearchQuery(phrase)).values()
+
+        for block_producer_as_dict in block_producers_as_list:
+            user_identifier = block_producer_as_dict.get('user_id')
+
+            user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+            del user_as_dict['password']
+            del user_as_dict['created']
+
+            del block_producer_as_dict['search']
+
+            block_producer_as_dict['user'] = user_as_dict
+
+        return BlockProducerDto.schema().load(block_producers_as_list, many=True)
 
 
 class BlockProducerLike(models.Model):
