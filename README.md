@@ -56,35 +56,6 @@ identifying why the token was invalid.
 
 ### User
 
-* `GET | /user/{username}/` - get user by username.
-
-##### Request parameters 
-
-| Arguments  | Type    | Required | Description    |
-| :--------: | :-----: | :------: | -------------- |
-| username   | String  | Yes      | User username  |
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
-{
-    "result": {
-        "email": "dmytro.striletskyi@gmail.com",
-        "id": 6,
-        "is_active": true,
-        "is_staff": false,
-        "is_superuser": false,
-        "last_login": null,
-        "username": "dmytro.striletskyi"
-    }
-}
-```
-
-##### Known errors
-
-| Argument | Level                      | Error message                                 | Status code |
-| :------: | :------------------------: | --------------------------------------------- | :---------: |
-| username | Input arguments validation | User with specified username does not exists. | 400         |
-
 * `POST | /auth/registration/` - register a user with email and password.
 
 ##### Request parameters 
@@ -110,6 +81,85 @@ $ curl -X POST -H "Content-Type: application/json" \
 |  -        | General execution          | User with specified e-mail address already exists. | 400         |
 |  email    | Input arguments validation | This field is required.                            | 400         |
 |  password | Input arguments validation | This field is required.                            | 400         |
+
+* `GET | /user/{username}/` - get user by username.
+
+##### Request parameters 
+
+| Arguments  | Type    | Required | Description    |
+| :--------: | :-----: | :------: | -------------- |
+| username   | String  | Yes      | User username. |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
+{
+    "result": {
+        "email": "dmytro.striletskyi@gmail.com",
+        "id": 6,
+        "is_active": true,
+        "is_staff": false,
+        "is_superuser": false,
+        "last_login": null,
+        "username": "dmytro.striletskyi"
+    }
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                 | Status code |
+| :------: | :------------------------: | --------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists. | 400         |
+
+* `DELETE | /user/{username}/deletion/` - delete user by username.
+
+##### Request parameters 
+
+| Arguments | Type   | Required | Description    |
+| :-------: | :----: | :------: | -------------- |
+| username  | String | Yes      | User username. |
+
+```bash
+$ curl -X DELETE -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/user/dmytro.striletskyi/deletion/ | python -m json.tool
+{
+    "result": "User has been deleted."
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                                       | Status code |
+| :------: | :------------------------: | ------------------------------------------------------------------- | :---------: |
+| username | Input arguments validation | User with specified username does not exists.                       | 400         |
+| username | Input arguments validation | User has no authority to delete this account by specified username. | 400         |
+
+* `POST | /user/{username}/email/` - change user e-mail by username.
+
+##### Request parameters
+
+| Arguments | Type   | Required | Description      |
+| :-------: | :----: | :------: | ---------------- |
+| username  | String | Yes      | User username.   |
+| new_email | String | Yes      | New user e-mail. |
+
+```bash
+$ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/user/dmytro.striletskyi/email/ | python -m json.tool
+{
+    "result": "E-mail has been changed."
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                 | Status code |
+| :-------: | :------------------------: | --------------------------------------------- | :---------: |
+| username  | Input arguments validation | User with specified username does not exists. | 400         |
+| new_email | Input arguments validation | This field is required.                       | 400         |
 
 * `POST | /user/password/` - change user password.
 

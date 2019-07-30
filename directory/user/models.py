@@ -9,8 +9,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from user.dto.user import UserDto
 from user.dto.profile import UserProfileDto
+from user.dto.user import UserDto
 from user.managers import UserManager
 
 
@@ -108,6 +108,22 @@ class User(AbstractBaseUser, PermissionsMixin):
         del user_as_dict['password']
         del user_as_dict['created']
         return UserDto(**user_as_dict)
+
+    @classmethod
+    def delete_(cls, username):
+        """
+        Delete user.
+        """
+        cls.objects.filter(username=username).delete()
+
+    @classmethod
+    def set_new_email(cls, username, email):
+        """
+        Set new user e-mail by specified username.
+        """
+        user = cls.objects.get(username=username)
+        user.email = email
+        user.save()
 
 
 class Profile(models.Model):
