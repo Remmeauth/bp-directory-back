@@ -109,12 +109,14 @@ class BlockProducer(models.Model):
         """
         Search block producers by phrase.
         """
-        vector = SearchVector('name', weight='A') + \
+        search_vector = SearchVector('name', weight='A') + \
             SearchVector('location', weight='B') + \
             SearchVector('short_description', weight='B') + \
             SearchVector('full_description', weight='B')
 
-        block_producers_as_list = cls.objects.annotate(search=vector).filter(search=SearchQuery(phrase)).values()
+        block_producers_as_list = cls.objects.annotate(
+            search=search_vector,
+        ).filter(search=SearchQuery(phrase)).values()
 
         for block_producer_as_dict in block_producers_as_list:
             user_identifier = block_producer_as_dict.get('user_id')
