@@ -97,7 +97,7 @@ class TestGetUserProfileSingle(TestCase):
         expected_result = {
             'result': {
                 'user': {
-                    'id': 26,
+                    'id': 29,
                     'last_login': None,
                     'is_superuser': False,
                     'email': 'martin.fowler@gmail.com',
@@ -105,7 +105,7 @@ class TestGetUserProfileSingle(TestCase):
                     'is_active': True,
                     'is_staff': False,
                 },
-                'user_id': 26,
+                'user_id': 29,
                 'first_name': 'Martin',
                 'last_name': 'Fowler',
                 'location': 'Berlin, Germany',
