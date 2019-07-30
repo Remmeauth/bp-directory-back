@@ -64,6 +64,27 @@ class ChangeUserPassword:
         self.user.set_new_password(email=email, password=new_password)
 
 
+class ChangeUserEmail:
+    """
+    Change user e-mail implementation.
+    """
+
+    def __init__(self, user):
+        """
+        Constructor.
+        """
+        self.user = user
+
+    def do(self, username, new_email):
+        """
+        Change user e-mail.
+        """
+        if not self.user.does_exist_by_username(username=username):
+            raise UserWithSpecifiedUsernameDoesNotExistError
+
+        self.user.set_new_email(username=username, email=new_email)
+
+
 class RequestUserPasswordRecovery:
     """
     Request to recovery user password implementation.

@@ -31,6 +31,14 @@ class ChangeUserPasswordForm(forms.Form):
     new_password = forms.CharField(widget=forms.PasswordInput)
 
 
+class ChangeUserEmailForm(forms.Form):
+    """
+    Change user e-mail form implementation.
+    """
+
+    new_email = forms.EmailField()
+
+
 class UpdateProfileForm(forms.Form):
     """
     Update user profile form implementation.
