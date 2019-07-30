@@ -294,7 +294,7 @@ class TestGetBlockProducerSingle(TestCase):
                     'email': 'martin.fowler@gmail.com',
                     'username': 'martin.fowler',
                     'is_active': True,
-                    'is_staff': False
+                    'is_staff': False,
                 },
                 'user_id': 6,
                 'id': 8,
@@ -313,8 +313,8 @@ class TestGetBlockProducerSingle(TestCase):
                 'reddit_url': '',
                 'slack_url': '',
                 'wikipedia_url': '',
-                'steemit_url': ''
-            }
+                'steemit_url': '',
+            },
         }
 
         response = self.client.get('/block-producers/single/8/', content_type='application/json')
@@ -377,7 +377,7 @@ class TestBlockProducerSearchCollection(TestCase):
                         'last_login': None,
                         'is_superuser': False,
                         'is_staff': False,
-                        'username': 'martin.fowler'
+                        'username': 'martin.fowler',
                     },
                     'medium_url': '',
                     'reddit_url': '',
@@ -386,9 +386,9 @@ class TestBlockProducerSearchCollection(TestCase):
                     'linkedin_url': '',
                     'twitter_url': '',
                     'full_description': '',
-                    'logo_url': ''
-                }
-            ]
+                    'logo_url': '',
+                },
+            ],
         }
 
         response = self.client.get('/block-producers/search/?phrase=producer%usa', content_type='application/json')
