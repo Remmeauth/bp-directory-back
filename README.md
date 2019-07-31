@@ -33,6 +33,12 @@ $ curl -v -X POST -H "Content-Type: application/json" -d \
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
+##### Request parameters 
+
+| Arguments | Type   | Required | Description     |
+| :-------: | :----: | :------: | --------------- |
+| token     | String | Yes      | User JWT token. |
+
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX....NzZ..."}' \
       http://localhost:8000/authentication/token/refreshing/ | python -m json.tool
@@ -42,6 +48,12 @@ $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ
 ```
 
 * `POST | /authentication/token/verification/` - check if `JWT token` token is valid.
+
+##### Request parameters 
+
+| Arguments | Type   | Required | Description     |
+| :-------: | :----: | :------: | --------------- |
+| token     | String | Yes      | User JWT token. |
 
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX2....sOx4S9zpC..."}' \

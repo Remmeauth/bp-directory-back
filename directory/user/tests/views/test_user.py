@@ -78,9 +78,7 @@ class TestUserSingle(TestCase):
         }
 
         response = self.client.delete(
-            '/user/martin.fowler/deletion/',
-            HTTP_AUTHORIZATION='JWT ' + self.user_token,
-            content_type='application/json',
+            '/user/martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -96,9 +94,7 @@ class TestUserSingle(TestCase):
         }
 
         response = self.client.delete(
-            '/user/not.martin.fowler/deletion/',
-            HTTP_AUTHORIZATION='JWT ' + self.user_token,
-            content_type='application/json',
+            '/user/not.martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()

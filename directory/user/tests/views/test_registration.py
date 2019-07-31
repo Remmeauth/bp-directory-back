@@ -80,7 +80,7 @@ class TestUserRegistrationSingle(TestCase):
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
 
-    def test_register_user_with_no_data(self):
+    def test_register_user_without_no_data(self):
         """
         Case: register user without e-mail address and password.
         Expect: e-mail address and password are required.
