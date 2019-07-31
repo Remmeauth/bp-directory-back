@@ -4,7 +4,11 @@ Provide implementation of single user password endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
-from rest_framework import permissions
+from rest_framework.decorators import (
+    authentication_classes,
+    permission_classes,
+)
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -19,6 +23,7 @@ from user.domain.errors import (
     SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedIdentifierDoesNotExistError,
+    UserHasNoAuthorityToChangePasswordForThisUserError,
 )
 from user.domain.objects import (
     ChangeUserPassword,
@@ -37,18 +42,22 @@ class UserPasswordSingle(APIView):
     Single user password endpoint implementation.
     """
 
-    authentication_classes = (JSONWebTokenAuthentication,)
-
     def __init__(self):
         """
         Constructor.
         """
         self.user = User()
 
-    def post(self, request):
+    @authentication_classes((JSONWebTokenAuthentication, ))
+    def post(self, request, username):
         """
         Change user password.
         """
+        if username != request.user.username:
+            return JsonResponse(
+                {'error': UserHasNoAuthorityToChangePasswordForThisUserError().message}, status=HTTPStatus.BAD_REQUEST,
+            )
+
         email = request.user.email
 
         old_password = request.data.get('old_password')
@@ -78,8 +87,6 @@ class UserRequestPasswordRecoverySingle(APIView):
     Single request to recover user password endpoint implementation.
     """
 
-    permission_classes = (permissions.AllowAny,)
-
     def __init__(self):
         """
         Constructor.
@@ -88,6 +95,7 @@ class UserRequestPasswordRecoverySingle(APIView):
         self.email_service = Email()
         self.password_recovery_state = PasswordRecoveryState()
 
+    @permission_classes((AllowAny, ))
     def post(self, request):
         """
         Request to recover user password by email.
@@ -127,8 +135,6 @@ class UserPasswordRecoverSingle(APIView):
     Single user password recover endpoint implementation.
     """
 
-    permission_classes = (permissions.AllowAny,)
-
     def __init__(self):
         """
         Constructor.
@@ -137,6 +143,7 @@ class UserPasswordRecoverSingle(APIView):
         self.email_service = Email()
         self.password_recovery_state = PasswordRecoveryState()
 
+    @permission_classes((AllowAny, ))
     def post(self, request, user_identifier):
         """
         Recover user password by user identifier.

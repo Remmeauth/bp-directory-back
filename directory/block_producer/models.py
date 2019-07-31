@@ -80,12 +80,12 @@ class BlockProducer(models.Model):
         cls.objects.create(user=user, **info)
 
     @classmethod
-    def update(cls, email, info):
+    def update(cls, email, identifier, info):
         """
         Update block producer with specified information.
         """
         user = User.objects.get(email=email)
-        cls.objects.filter(user=user).update(**info)
+        cls.objects.filter(user=user, id=identifier).update(**info)
 
     @classmethod
     def get(cls, identifier):

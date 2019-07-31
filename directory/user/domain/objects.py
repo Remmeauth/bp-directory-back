@@ -155,14 +155,14 @@ class UpdateUserProfile:
         self.user = user
         self.profile = profile
 
-    def do(self, email, info):
+    def do(self, username, info):
         """
         Update user profile.
         """
-        if not self.user.does_exist_by_email(email=email):
+        if not self.user.does_exist_by_username(username=username):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
-        self.profile.update(email=email, info=info)
+        self.profile.update(username=username, info=info)
 
 
 class GetUser:
