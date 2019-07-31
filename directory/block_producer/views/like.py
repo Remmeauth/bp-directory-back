@@ -4,6 +4,7 @@ Provide implementation of single block producer like endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
+from rest_framework.decorators import authentication_classes
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -22,8 +23,6 @@ class BlockProducerLikeSingle(APIView):
     Single block producer like endpoint implementation.
     """
 
-    authentication_classes = (JSONWebTokenAuthentication,)
-
     def __init__(self):
         """
         Constructor.
@@ -32,6 +31,7 @@ class BlockProducerLikeSingle(APIView):
         self.block_producer = BlockProducer()
         self.block_producer_like = BlockProducerLike()
 
+    @authentication_classes((JSONWebTokenAuthentication, ))
     def post(self, request, block_producer_id):
         """
         To like the block producer.

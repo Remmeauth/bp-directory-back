@@ -4,6 +4,7 @@ Provide implementation of single user e-mail endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
+from rest_framework.decorators import authentication_classes
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -18,14 +19,13 @@ class UserEmailSingle(APIView):
     Single user email endpoint implementation.
     """
 
-    authentication_classes = (JSONWebTokenAuthentication,)
-
     def __init__(self):
         """
         Constructor.
         """
         self.user = User()
 
+    @authentication_classes((JSONWebTokenAuthentication, ))
     def post(self, request, username):
         """
         Change user e-mail.

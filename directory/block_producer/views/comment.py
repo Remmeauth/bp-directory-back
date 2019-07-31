@@ -4,6 +4,7 @@ Provide implementation of single block producer comment endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
+from rest_framework.decorators import authentication_classes
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -23,8 +24,6 @@ class BlockProducerCommentSingle(APIView):
     Single block producer comment endpoint implementation.
     """
 
-    authentication_classes = (JSONWebTokenAuthentication,)
-
     def __init__(self):
         """
         Constructor.
@@ -33,6 +32,7 @@ class BlockProducerCommentSingle(APIView):
         self.block_producer = BlockProducer()
         self.block_producer_comment = BlockProducerComment()
 
+    @authentication_classes((JSONWebTokenAuthentication, ))
     def put(self, request, block_producer_id):
         """
         To comment the block producer.

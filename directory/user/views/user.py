@@ -4,7 +4,11 @@ Provide implementation of single user password endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
-from rest_framework import permissions
+from rest_framework.decorators import (
+    authentication_classes,
+    permission_classes,
+)
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -24,14 +28,13 @@ class UserSingle(APIView):
     Single user endpoint implementation.
     """
 
-    permission_classes = (permissions.AllowAny,)
-
     def __init__(self):
         """
         Constructor.
         """
         self.user = User()
 
+    @permission_classes((AllowAny, ))
     def get(self, request, username):
         """
         Get user.
@@ -44,20 +47,7 @@ class UserSingle(APIView):
         serialized_user = user.to_dict()
         return JsonResponse({'result': serialized_user}, status=HTTPStatus.OK)
 
-
-class UserDeletionSingle(APIView):
-    """
-    Single user deletion endpoint implementation.
-    """
-
-    authentication_classes = (JSONWebTokenAuthentication,)
-
-    def __init__(self):
-        """
-        Constructor.
-        """
-        self.user = User()
-
+    @authentication_classes((JSONWebTokenAuthentication, ))
     def delete(self, request, username):
         """
         Delete user.

@@ -42,13 +42,30 @@ class TestUserPasswordSingle(TestCase):
             'result': 'Password has been changed.',
         }
 
-        response = self.client.post('/user/password/', json.dumps({
+        response = self.client.post('/user/martin.fowler/password/', json.dumps({
             'old_password': 'martin.fowler.1337',
             'new_password': 'martin.f.1337',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
+
+    def test_change_user_password_without_deletion_rights(self):
+        """
+        Case: changing a user password without deletion rights.
+        Expect: user has no authority to change password for this user by specified username error message.
+        """
+        expected_result = {
+            'error': 'User has no authority to change password for this user by specified username.',
+        }
+
+        response = self.client.post('/user/john.smith/password/', json.dumps({
+            'old_password': 'martin.fowler.1111',
+            'new_password': 'martin.f.1337',
+        }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
 
     def test_change_user_password_with_incorrect_password(self):
         """
@@ -59,7 +76,7 @@ class TestUserPasswordSingle(TestCase):
             'error': 'The specified user password is incorrect.',
         }
 
-        response = self.client.post('/user/password/', json.dumps({
+        response = self.client.post('/user/martin.fowler/password/', json.dumps({
             'old_password': 'martin.fowler.1111',
             'new_password': 'martin.f.1337',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
@@ -84,7 +101,7 @@ class TestUserPasswordSingle(TestCase):
         }
 
         response = self.client.post(
-            '/user/password/',
+            '/user/martin.fowler/password/',
             json.dumps({}),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',

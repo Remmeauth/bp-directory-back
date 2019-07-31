@@ -39,14 +39,17 @@ class UpdateBlockProducer:
         self.user = user
         self.block_producer = block_producer
 
-    def do(self, user_email, info):
+    def do(self, user_email, block_producer_id, info):
         """
         Update block producer.
         """
         if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
-        self.block_producer.update(email=user_email, info=info)
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        self.block_producer.update(email=user_email, identifier=block_producer_id, info=info)
 
 
 class LikeBlockProducer:
