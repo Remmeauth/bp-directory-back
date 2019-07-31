@@ -155,11 +155,11 @@ class Profile(models.Model):
         return self.user.email
 
     @classmethod
-    def update(cls, email, info):
+    def update(cls, username, info):
         """
         Update user profile with specified information.
         """
-        user = User.objects.get(email=email)
+        user = User.objects.get(username=username)
         cls.objects.filter(user=user).update(**info)
 
     @classmethod

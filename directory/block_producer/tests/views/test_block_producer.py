@@ -50,6 +50,20 @@ class TestBlockProducerSingle(TestCase):
             password='martin.fowler.1337',
         )
 
+        BlockProducer.objects.create(
+            user=self.user,
+            name='Block producer Canada',
+            website_url='https://bpcanada.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Canada.',
+        )
+
+        BlockProducer.objects.create(
+            user=self.user,
+            name='Block producer Spain',
+            website_url='https://bpspain.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Spain.',
+        )
+
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
             'username_or_email': 'martin.fowler@gmail.com',
             'password': 'martin.fowler.1337',
@@ -57,41 +71,103 @@ class TestBlockProducerSingle(TestCase):
 
         self.user_token = response.data.get('token')
 
-    def test_create_block_producer(self):
+    def test_get_block_producer(self):
         """
-        Case: create block producer with specified information.
-        Expect: block producer created in the database.
+        Case: get block producer.
+        Expect: information of the block producer is returned.
         """
         expected_result = {
-            'result': 'Block producer has been created.',
+            'result': {
+                'user': {
+                    'id': 6,
+                    'last_login': None,
+                    'is_superuser': False,
+                    'email': 'martin.fowler@gmail.com',
+                    'username': 'martin.fowler',
+                    'is_active': True,
+                    'is_staff': False,
+                },
+                'user_id': 6,
+                'id': 12,
+                'name': 'Block producer Canada',
+                'website_url': 'https://bpcanada.com',
+                'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
+                'location': '',
+                'full_description': '',
+                'logo_url': '',
+                'linkedin_url': '',
+                'twitter_url': '',
+                'medium_url': '',
+                'github_url': '',
+                'facebook_url': '',
+                'telegram_url': '',
+                'reddit_url': '',
+                'slack_url': '',
+                'wikipedia_url': '',
+                'steemit_url': '',
+            },
         }
 
-        response = self.client.put(
-            f'/block-producers/',
+        response = self.client.get('/block-producers/12/', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_get_block_producer_by_non_exiting_identifier(self):
+        """
+        Case: get block producer by non-exiting identifier.
+        Expect: block producer with specified identifier does not exist error message.
+        """
+        expected_result = {
+            'error': 'Block producer with specified identifier does not exist.',
+        }
+
+        non_existing_block_producer_identifier = 100500
+
+        response = self.client.get(
+            f'/block-producers/{non_existing_block_producer_identifier}/', content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_update_block_producer(self):
+        """
+        Case: update block producer with specified information.
+        Expect: block producer updated in the database.
+        """
+        expected_result = {
+            'result': 'Block producer has been updated.',
+        }
+
+        block_producer_identifier = 17
+
+        BLOCK_PRODUCER_INFO.update(name='Block producer Japan')
+
+        response = self.client.post(
+            f'/block-producers/{block_producer_identifier}/',
             json.dumps(BLOCK_PRODUCER_INFO),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
 
-        assert BlockProducer.objects.get(user=self.user).name == 'Block producer USA'
+        assert BlockProducer.objects.get(id=block_producer_identifier).name == 'Block producer Japan'
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-    def test_create_block_producer_without_mandatory_argument(self):
+    def test_update_block_producer_by_non_exiting_identifier(self):
         """
-        Case: create block producer without mandatory argument.
-        Expect: field name is required error message.
+        Case: update block producer by non-exiting identifier.
+        Expect: block producer with specified identifier does not exist error message.
         """
         expected_result = {
-            'errors': {
-                'name': ['This field is required.'],
-            },
+            'error': 'Block producer with specified identifier does not exist.',
         }
 
-        del BLOCK_PRODUCER_INFO['name']
+        non_existing_block_producer_identifier = 100500
 
-        response = self.client.put(
-            f'/block-producers/',
+        response = self.client.post(
+            f'/block-producers/{non_existing_block_producer_identifier}/',
             json.dumps(BLOCK_PRODUCER_INFO),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
@@ -101,9 +177,9 @@ class TestBlockProducerSingle(TestCase):
         assert HTTPStatus.BAD_REQUEST == response.status_code
 
 
-class TestUpdateBlockProducerSingle(TestCase):
+class TestBlockProducerCollection(TestCase):
     """
-    Implements tests for implementation of single block producer update endpoint.
+    Implements tests for implementation of collection block producer endpoint.
     """
 
     def setUp(self):
@@ -116,66 +192,26 @@ class TestUpdateBlockProducerSingle(TestCase):
             password='martin.fowler.1337',
         )
 
-        response = self.client.post('/authentication/token/obtaining/', json.dumps({
-            'username_or_email': 'martin.fowler@gmail.com',
-            'password': 'martin.fowler.1337',
-        }), content_type='application/json')
-
-        self.user_token = response.data.get('token')
-
-        BlockProducer.objects.create(user=self.user)
-
-    def test_update_block_producer(self):
-        """
-        Case: update block producer with specified information.
-        Expect: block producer updated in the database.
-        """
-        expected_result = {
-            'result': 'Block producer has been updated.',
-        }
-
-        BLOCK_PRODUCER_INFO.update(name='Block producer Japan')
-
-        response = self.client.post(
-            f'/block-producers/',
-            json.dumps(BLOCK_PRODUCER_INFO),
-            HTTP_AUTHORIZATION='JWT ' + self.user_token,
-            content_type='application/json',
-        )
-
-        assert BlockProducer.objects.get(user=self.user).name == 'Block producer Japan'
-        assert expected_result == response.json()
-        assert HTTPStatus.OK == response.status_code
-
-
-class TestBlockProducerCollection(TestCase):
-    """
-    Implements tests for implementation of collection block producer endpoint.
-    """
-
-    def setUp(self):
-        """
-        Setup.
-        """
-        user = User.objects.create_user(
-            email='martin.fowler@gmail.com',
-            username='martin.fowler',
-            password='martin.fowler.1337',
-        )
-
         BlockProducer.objects.create(
-            user=user,
+            user=self.user,
             name='Block producer Canada',
             website_url='https://bpcanada.com',
             short_description='Founded by a team of serial tech entrepreneurs in Canada.',
         )
 
         BlockProducer.objects.create(
-            user=user,
-            name='Block producer USA',
-            website_url='https://bpusa.com',
-            short_description='Founded by a team of serial tech entrepreneurs in USA.',
+            user=self.user,
+            name='Block producer United Kingdom',
+            website_url='https://bpunitedkingdom.com',
+            short_description='Founded by a team of serial tech entrepreneurs in United Kingdom.',
         )
+
+        response = self.client.post('/authentication/token/obtaining/', json.dumps({
+            'username_or_email': 'martin.fowler@gmail.com',
+            'password': 'martin.fowler.1337',
+        }), content_type='application/json')
+
+        self.user_token = response.data.get('token')
 
     def test_get_block_producers(self):
         """
@@ -196,10 +232,10 @@ class TestBlockProducerCollection(TestCase):
                     'telegram_url': '',
                     'slack_url': '',
                     'wikipedia_url': '',
-                    'user_id': 1,
+                    'user_id': 3,
                     'reddit_url': '',
                     'location': '',
-                    'id': 1,
+                    'id': 6,
                     'linkedin_url': '',
                     'steemit_url': '',
                     'logo_url': '',
@@ -209,26 +245,26 @@ class TestBlockProducerCollection(TestCase):
                         'last_login': None,
                         'username': 'martin.fowler',
                         'email': 'martin.fowler@gmail.com',
-                        'id': 1,
+                        'id': 3,
                         'is_active': True,
                     },
                 },
                 {
-                    'website_url': 'https://bpusa.com',
+                    'website_url': 'https://bpunitedkingdom.com',
                     'medium_url': '',
                     'facebook_url': '',
-                    'name': 'Block producer USA',
+                    'name': 'Block producer United Kingdom',
                     'twitter_url': '',
-                    'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in United Kingdom.',
                     'full_description': '',
                     'github_url': '',
                     'telegram_url': '',
                     'slack_url': '',
                     'wikipedia_url': '',
-                    'user_id': 1,
+                    'user_id': 3,
                     'reddit_url': '',
                     'location': '',
-                    'id': 2,
+                    'id': 7,
                     'linkedin_url': '',
                     'steemit_url': '',
                     'logo_url': '',
@@ -238,89 +274,60 @@ class TestBlockProducerCollection(TestCase):
                         'last_login': None,
                         'username': 'martin.fowler',
                         'email': 'martin.fowler@gmail.com',
-                        'id': 1,
+                        'id': 3,
                         'is_active': True,
                     },
                 },
             ],
         }
 
-        response = self.client.get('/block-producers/collection/', content_type='application/json')
+        response = self.client.get('/block-producers/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-
-class TestGetBlockProducerSingle(TestCase):
-    """
-    Implements tests for implementation of single get block producer endpoint.
-    """
-
-    def setUp(self):
+    def test_create_block_producer(self):
         """
-        Setup.
-        """
-        user = User.objects.create_user(
-            email='martin.fowler@gmail.com',
-            username='martin.fowler',
-            password='martin.fowler.1337',
-        )
-
-        BlockProducer.objects.create(
-            user=user,
-            name='Block producer Canada',
-            website_url='https://bpcanada.com',
-            short_description='Founded by a team of serial tech entrepreneurs in Canada.',
-        )
-
-        BlockProducer.objects.create(
-            user=user,
-            name='Block producer USA',
-            website_url='https://bpusa.com',
-            short_description='Founded by a team of serial tech entrepreneurs in USA.',
-        )
-
-    def test_get_block_producer(self):
-        """
-        Case: get block producer.
-        Expect: information of the block producer is returned.
+        Case: create block producer with specified information.
+        Expect: block producer created in the database.
         """
         expected_result = {
-            'result': {
-                'user': {
-                    'id': 6,
-                    'last_login': None,
-                    'is_superuser': False,
-                    'email': 'martin.fowler@gmail.com',
-                    'username': 'martin.fowler',
-                    'is_active': True,
-                    'is_staff': False,
-                },
-                'user_id': 6,
-                'id': 8,
-                'name': 'Block producer Canada',
-                'website_url': 'https://bpcanada.com',
-                'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
-                'location': '',
-                'full_description': '',
-                'logo_url': '',
-                'linkedin_url': '',
-                'twitter_url': '',
-                'medium_url': '',
-                'github_url': '',
-                'facebook_url': '',
-                'telegram_url': '',
-                'reddit_url': '',
-                'slack_url': '',
-                'wikipedia_url': '',
-                'steemit_url': '',
+            'result': 'Block producer has been created.',
+        }
+
+        response = self.client.put(
+            '/block-producers/',
+            json.dumps(BLOCK_PRODUCER_INFO),
+            HTTP_AUTHORIZATION='JWT ' + self.user_token,
+            content_type='application/json',
+        )
+
+        assert BlockProducer.objects.get(id=3).name == 'Block producer USA'
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_create_block_producer_without_mandatory_argument(self):
+        """
+        Case: create block producer without mandatory argument.
+        Expect: field name is required error message.
+        """
+        expected_result = {
+            'errors': {
+                'name': ['This field is required.'],
             },
         }
 
-        response = self.client.get('/block-producers/single/8/', content_type='application/json')
+        del BLOCK_PRODUCER_INFO['name']
+
+        response = self.client.put(
+            '/block-producers/',
+            json.dumps(BLOCK_PRODUCER_INFO),
+            HTTP_AUTHORIZATION='JWT ' + self.user_token,
+            content_type='application/json',
+        )
 
         assert expected_result == response.json()
-        assert HTTPStatus.OK == response.status_code
+        assert HTTPStatus.BAD_REQUEST == response.status_code
 
 
 class TestBlockProducerSearchCollection(TestCase):
@@ -365,14 +372,14 @@ class TestBlockProducerSearchCollection(TestCase):
                     'facebook_url': '',
                     'location': '',
                     'telegram_url': '',
-                    'id': 4,
-                    'user_id': 2,
+                    'id': 9,
+                    'user_id': 4,
                     'github_url': '',
                     'slack_url': '',
                     'short_description': 'Founded by a team of serial tech entrepreneurs in USA.',
                     'user': {
                         'is_active': True,
-                        'id': 2,
+                        'id': 4,
                         'email': 'martin.fowler@gmail.com',
                         'last_login': None,
                         'is_superuser': False,

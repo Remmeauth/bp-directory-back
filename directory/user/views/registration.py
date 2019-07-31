@@ -4,7 +4,8 @@ Provide implementation of single user registration endpoint.
 from http import HTTPStatus
 
 from django.http import JsonResponse
-from rest_framework import permissions
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 
 from user.domain.errors import (
@@ -21,14 +22,13 @@ class UserRegistrationSingle(APIView):
     Single user registration endpoint implementation.
     """
 
-    permission_classes = (permissions.AllowAny,)
-
     def __init__(self):
         """
         Constructor.
         """
         self.user = User()
 
+    @permission_classes((AllowAny,))
     def post(self, request):
         """
         Create a user with e-mail address and password.

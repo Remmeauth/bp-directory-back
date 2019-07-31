@@ -97,3 +97,27 @@ class UserHasNoAuthorityToDeleteThisAccountError(Exception):
         Constructor.
         """
         self.message = 'User has no authority to delete this account by specified username.'
+
+
+class UserHasNoAuthorityToUpdateThisUserProfileError(Exception):
+    """
+    User has no authority to update this user profile by specified username error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User has no authority to update this user profile by specified username.'
+
+
+class UserHasNoAuthorityToChangePasswordForThisUserError(Exception):
+    """
+    User has no authority to change password for this user by specified username error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User has no authority to change password for this user by specified username.'

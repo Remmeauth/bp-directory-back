@@ -33,6 +33,12 @@ $ curl -v -X POST -H "Content-Type: application/json" -d \
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
+##### Request parameters 
+
+| Arguments | Type   | Required | Description     |
+| :-------: | :----: | :------: | --------------- |
+| token     | String | Yes      | User JWT token. |
+
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX....NzZ..."}' \
       http://localhost:8000/authentication/token/refreshing/ | python -m json.tool
@@ -42,6 +48,12 @@ $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ
 ```
 
 * `POST | /authentication/token/verification/` - check if `JWT token` token is valid.
+
+##### Request parameters 
+
+| Arguments | Type   | Required | Description     |
+| :-------: | :----: | :------: | --------------- |
+| token     | String | Yes      | User JWT token. |
 
 ```bash
 $ curl -v -X POST -H "Content-Type: application/json" -d '{"token":"eyJ0e....eyJ1c2VyX2....sOx4S9zpC..."}' \
@@ -111,7 +123,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 | :------: | :------------------------: | --------------------------------------------- | :---------: |
 | username | Input arguments validation | User with specified username does not exists. | 400         |
 
-* `DELETE | /user/{username}/deletion/` - delete user by username.
+* `DELETE | /user/{username}/` - delete user by username.
 
 ##### Request parameters 
 
@@ -122,7 +134,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 ```bash
 $ curl -X DELETE -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/user/dmytro.striletskyi/deletion/ | python -m json.tool
+      http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
 {
     "result": "User has been deleted."
 }
@@ -161,7 +173,7 @@ $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
 | username  | Input arguments validation | User with specified username does not exists. | 400         |
 | new_email | Input arguments validation | This field is required.                       | 400         |
 
-* `POST | /user/password/` - change user password.
+* `POST | /user/{username}/password/` - change user password.
 
 ##### Request parameters
 
@@ -174,7 +186,7 @@ $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
 $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dmytro.1337"}' \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/user/password/ | python -m json.tool
+      http://localhost:8000/user/dmytro.striletskyi/password/ | python -m json.tool
 {
     "result": "Password has been changed."
 }
@@ -279,7 +291,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith
 | :------: | :------------------------: | --------------------------------------------- | :---------: |
 | username | Input arguments validation | User with specified username does not exists. | 400         |
 
-* `POST | /user/profile/` - update user profile information.
+* `POST | /user/{username}/profile/` - update user profile information.
 
 ##### Request parameters 
 
@@ -303,7 +315,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith
 | wikipedia_url          | String | No       | Reference to the user page on Wikipedia.   |
 
 ```bash
-$ curl -X POST http://localhost:8000/user/profile/ \
+$ curl -X POST http://localhost:8000/user/dmytro.striletskyi/profile/ \
      -H "Content-Type: application/json" \
      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
      -d $'{
@@ -327,7 +339,7 @@ $ curl -X POST http://localhost:8000/user/profile/ \
 
 ### Block producer
 
-* `GET | /block-producers/single/{block_producer_identifier}/` - get block producer by its identifier.
+* `GET | /block-producers/{block_producer_identifier}/` - get block producer by its identifier.
 
 ##### Request parameters 
 
@@ -336,7 +348,7 @@ $ curl -X POST http://localhost:8000/user/profile/ \
 | block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
-$ curl http://localhost:8000/block-producers/single/2/ -H "Content-Type: application/json" | python -m json.tool
+$ curl http://localhost:8000/block-producers/2/ -H "Content-Type: application/json" | python -m json.tool
 {
     "result": {
         "facebook_url": "https://www.facebook.com/bpcanada",
@@ -376,10 +388,10 @@ $ curl http://localhost:8000/block-producers/single/2/ -H "Content-Type: applica
 | :-------: | :---------------: | -------------------------------------------------------- | :---------: |
 | -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
-* `GET | /block-producers/collection/` - get block producers.
+* `GET | /block-producers/` - get all block producers.
 
 ```bash
-$ curl http://localhost:8000/block-producers/collection/ -H "Content-Type: application/json" | python -m json.tool
+$ curl http://localhost:8000/block-producers/ -H "Content-Type: application/json" | python -m json.tool
 {
     "result": [
         {
@@ -464,31 +476,32 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
 | website_url       | Input arguments validation | This field is required.                            | 400         |
 | short_description | Input arguments validation | This field is required.                            | 400         |
 
-* `POST | /block-producers/` - update block producer information.
+* `POST | /block-producers/{block_producer_identifier}/` - update block producer information.
 
 ##### Request parameters 
 
-| Arguments         | Type   | Required | Description                                         |
-| :---------------: | :----: | :------: | --------------------------------------------------- |
-| name              | String | No       | Name of the block producer.                         |
-| website_url       | String | No       | Reference to the block producer website.            |
-| location          | String | No       | Location of the block producer.                     |
-| short_description | String | No       | Short description about the block producer.         |
-| full_description  | String | No       | Full detailed description about the block producer. |
-| logo_url          | String | No       | Reference to the block producer logotype.           |
-| linkedin_url      | String | No       | Reference to the Linkedin.                          |
-| twitter_url       | String | No       | Reference to the Twitter.                           |
-| medium_url        | String | No       | Reference to the Medium.                            |
-| github_url        | String | No       | Reference to the GitHub.                            |
-| facebook_url      | String | No       | Reference to the Facebook.                          |
-| telegram_url      | String | No       | Reference to the Telegram.                          |
-| reddit_url        | String | No       | Reference to the Reddit.                            |
-| slack_url         | String | No       | Reference to the Slack.                             |
-| steemit_url       | String | No       | Reference to the Steemit.                           |
-| wikipedia_url     | String | No       | Reference to the Wikipedia.                         |
+| Arguments                 | Type    | Required | Description                                         |
+| :-----------------------: | :-----: | :------: | --------------------------------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer.                       |
+| name                      | String  | No       | Name of the block producer.                         |
+| website_url               | String  | No       | Reference to the block producer website.            |
+| location                  | String  | No       | Location of the block producer.                     |
+| short_description         | String  | No       | Short description about the block producer.         |
+| full_description          | String  | No       | Full detailed description about the block producer. |
+| logo_url                  | String  | No       | Reference to the block producer logotype.           |
+| linkedin_url              | String  | No       | Reference to the Linkedin.                          |
+| twitter_url               | String  | No       | Reference to the Twitter.                           |
+| medium_url                | String  | No       | Reference to the Medium.                            |
+| github_url                | String  | No       | Reference to the GitHub.                            |
+| facebook_url              | String  | No       | Reference to the Facebook.                          |
+| telegram_url              | String  | No       | Reference to the Telegram.                          |
+| reddit_url                | String  | No       | Reference to the Reddit.                            |
+| slack_url                 | String  | No       | Reference to the Slack.                             |
+| steemit_url               | String  | No       | Reference to the Steemit.                           |
+| wikipedia_url             | String  | No       | Reference to the Wikipedia.                         |
 
 ```bash
-$ curl -X POST http://localhost:8000/block-producers/ \
+$ curl -X POST http://localhost:8000/block-producers/2/ \
      -H "Content-Type: application/json" \
      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
      -d $'{
@@ -506,9 +519,10 @@ $ curl -X POST http://localhost:8000/block-producers/ \
 
 ##### Known errors
 
-| Argument          | Level                      | Error message                                      | Status code |
-| :---------------: | :------------------------: | -------------------------------------------------- | :---------: |
-| -                 | General execution          | User with specified e-mail address does not exist. | 400         |
+| Argument | Level             | Error message                                            | Status code |
+| :------: | :---------------: | -------------------------------------------------------- | :---------: |
+| -        | General execution | User with specified e-mail address does not exist.       | 400         |
+| -        | General execution | Block producer with specified identifier does not exist. | 400         |
 
 * `GET | /block-producers/search/?phrase=block%20producer%20usa` - search block producers by phrase.
 

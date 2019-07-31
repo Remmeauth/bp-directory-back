@@ -26,7 +26,14 @@ class TestUserProfileSingle(TestCase):
             email='martin.fowler@gmail.com', username=self.username, password='martin.fowler.1337',
         )
 
-        Profile.objects.create(user=self.user, first_name='John')
+        Profile.objects.create(
+            user=self.user,
+            first_name='John',
+            last_name='Smith',
+            location='Tokyo, Japan',
+            additional_information='Senior Software Engineer at Yamaha.',
+            website_url='https://johnsmith.com',
+        )
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
             'username_or_email': 'martin.fowler@gmail.com',
@@ -44,7 +51,7 @@ class TestUserProfileSingle(TestCase):
             'result': 'User profile has been updated.',
         }
 
-        response = self.client.post('/user/profile/', json.dumps({
+        response = self.client.post(f'/user/{self.username}/profile/', json.dumps({
             'first_name': 'Martin',
             'last_name': 'Fowler',
             'location': 'Berlin, Germany',
@@ -65,29 +72,21 @@ class TestUserProfileSingle(TestCase):
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-
-class TestGetUserProfileSingle(TestCase):
-    """
-    Implements tests for implementation of single user profile get endpoint.
-    """
-
-    def setUp(self):
+    def test_update_user_profile_without_deletion_rights(self):
         """
-        Setup.
+        Case: updating a user profile without deletion rights.
+        Expect: user has no authority to update this user profile by specified username error message.
         """
-        self.username = 'martin.fowler'
-        self.user = User.objects.create_user(
-            email='martin.fowler@gmail.com', username=self.username, password='martin.fowler.1337',
+        expected_result = {
+            'error': 'User has no authority to update this user profile by specified username.',
+        }
+
+        response = self.client.post(
+            '/user/john.smith/profile/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
-        Profile.objects.create(
-            user=self.user,
-            first_name='Martin',
-            last_name='Fowler',
-            location='Berlin, Germany',
-            additional_information='Software Engineer at Travis-CI.',
-            website_url='https://martinfowler.com',
-        )
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
 
     def test_get_user_profile(self):
         """
@@ -97,7 +96,7 @@ class TestGetUserProfileSingle(TestCase):
         expected_result = {
             'result': {
                 'user': {
-                    'id': 29,
+                    'id': 32,
                     'last_login': None,
                     'is_superuser': False,
                     'email': 'martin.fowler@gmail.com',
@@ -105,13 +104,13 @@ class TestGetUserProfileSingle(TestCase):
                     'is_active': True,
                     'is_staff': False,
                 },
-                'user_id': 29,
-                'first_name': 'Martin',
-                'last_name': 'Fowler',
-                'location': 'Berlin, Germany',
+                'user_id': 32,
+                'first_name': 'John',
+                'last_name': 'Smith',
+                'location': 'Tokyo, Japan',
                 'avatar_url': '',
-                'additional_information': 'Software Engineer at Travis-CI.',
-                'website_url': 'https://martinfowler.com',
+                'additional_information': 'Senior Software Engineer at Yamaha.',
+                'website_url': 'https://johnsmith.com',
                 'linkedin_url': '',
                 'twitter_url': '',
                 'medium_url': '',
