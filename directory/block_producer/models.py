@@ -1,6 +1,7 @@
 """
 Provide database models for block producer.
 """
+from django.conf import settings
 from django.contrib.postgres.search import (
     SearchQuery,
     SearchVector,
@@ -23,7 +24,7 @@ class BlockProducer(models.Model):
     location = models.CharField(max_length=100, blank=True)
     short_description = models.CharField(max_length=100, blank=False)
     full_description = models.TextField(blank=True)
-    logo_url = models.URLField(max_length=200, blank=True)
+    logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
     twitter_url = models.URLField(max_length=200, blank=True)

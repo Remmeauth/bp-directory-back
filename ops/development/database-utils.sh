@@ -5,7 +5,7 @@ CURRENT_POSTGRES_CONNECTIONS_ATTEMPTS=0
 CREATE_SUPER_USER_SCRIPT="
 from django.contrib.auth import get_user_model
 User = get_user_model()
-User.objects.create_superuser('directory@gmail.com', 'directory-1337')
+User.objects.create_superuser('directory@gmail.com', 'directory', 'directory-1337')
 "
 
 function wait_until_postgres_is_started() {
