@@ -40,7 +40,7 @@ class TestUserPasswordSingle(TestCase):
             'result': 'E-mail has been changed.',
         }
 
-        response = self.client.post('/user/martin.fowler/email/', json.dumps({
+        response = self.client.post('/users/martin.fowler/email/', json.dumps({
             'new_email': 'martin.fowler.1337@gmail.com',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
 
@@ -57,7 +57,7 @@ class TestUserPasswordSingle(TestCase):
             'error': 'User with specified username does not exist.',
         }
 
-        response = self.client.post('/user/not.martin.fowler/email/', json.dumps({
+        response = self.client.post('/users/not.martin.fowler/email/', json.dumps({
             'new_email': 'martin.fowler.1337@gmail.com',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
 
@@ -76,7 +76,7 @@ class TestUserPasswordSingle(TestCase):
         }
 
         response = self.client.post(
-            '/user/martin.fowler/email/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+            '/users/martin.fowler/email/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()

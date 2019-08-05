@@ -49,7 +49,7 @@ class TestUserSingle(TestCase):
             },
         }
 
-        response = self.client.get('/user/martin.fowler/', content_type='application/json')
+        response = self.client.get('/users/martin.fowler/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
@@ -63,7 +63,7 @@ class TestUserSingle(TestCase):
             'error': 'User with specified username does not exist.',
         }
 
-        response = self.client.get('/user/not.martin.fowler/', content_type='application/json')
+        response = self.client.get('/users/not.martin.fowler/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
@@ -78,7 +78,7 @@ class TestUserSingle(TestCase):
         }
 
         response = self.client.delete(
-            '/user/martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+            '/users/martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -94,7 +94,7 @@ class TestUserSingle(TestCase):
         }
 
         response = self.client.delete(
-            '/user/not.martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+            '/users/not.martin.fowler/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()

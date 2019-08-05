@@ -42,7 +42,7 @@ class TestUserPasswordSingle(TestCase):
             'result': 'Password has been changed.',
         }
 
-        response = self.client.post('/user/martin.fowler/password/', json.dumps({
+        response = self.client.post('/users/martin.fowler/password/', json.dumps({
             'old_password': 'martin.fowler.1337',
             'new_password': 'martin.f.1337',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
@@ -59,7 +59,7 @@ class TestUserPasswordSingle(TestCase):
             'error': 'User has no authority to change password for this user by specified username.',
         }
 
-        response = self.client.post('/user/john.smith/password/', json.dumps({
+        response = self.client.post('/users/john.smith/password/', json.dumps({
             'old_password': 'martin.fowler.1111',
             'new_password': 'martin.f.1337',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
@@ -76,7 +76,7 @@ class TestUserPasswordSingle(TestCase):
             'error': 'The specified user password is incorrect.',
         }
 
-        response = self.client.post('/user/martin.fowler/password/', json.dumps({
+        response = self.client.post('/users/martin.fowler/password/', json.dumps({
             'old_password': 'martin.fowler.1111',
             'new_password': 'martin.f.1337',
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
@@ -101,7 +101,7 @@ class TestUserPasswordSingle(TestCase):
         }
 
         response = self.client.post(
-            '/user/martin.fowler/password/',
+            '/users/martin.fowler/password/',
             json.dumps({}),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
@@ -137,7 +137,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
 
         mock_email_send.return_value = None
 
-        response = self.client.post('/user/password/recovery/', json.dumps({
+        response = self.client.post('/users/password/recovery/', json.dumps({
             'email': self.email,
         }), content_type='application/json')
 
@@ -156,7 +156,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
             },
         }
 
-        response = self.client.post('/user/password/recovery/', json.dumps({
+        response = self.client.post('/users/password/recovery/', json.dumps({
             'email': 'martin.fowler.1337',
         }), content_type='application/json')
 
@@ -172,7 +172,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
             'error': 'User with specified e-mail address does not exist.',
         }
 
-        response = self.client.post('/user/password/recovery/', json.dumps({
+        response = self.client.post('/users/password/recovery/', json.dumps({
             'email': 'martin.flower@gmail.com',
         }), content_type='application/json')
 
@@ -190,7 +190,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
             },
         }
 
-        response = self.client.post('/user/password/recovery/', json.dumps({}), content_type='application/json')
+        response = self.client.post('/users/password/recovery/', json.dumps({}), content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code
@@ -222,14 +222,14 @@ class TestUserPasswordRecoverSingle(TestCase):
 
         mock_email_send.return_value = None
 
-        self.client.post('/user/password/recovery/', json.dumps({
+        self.client.post('/users/password/recovery/', json.dumps({
             'email': self.email,
         }), content_type='application/json')
 
         user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
 
         response = self.client.post(
-            f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
+            f'/users/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert User.objects.get(email=self.email).password != self.password
@@ -248,7 +248,7 @@ class TestUserPasswordRecoverSingle(TestCase):
         non_existent_identifier = '770b420663614db4bac8a7ef0ae7a5a9'
 
         response = self.client.post(
-            f'/user/password/recovery/{non_existent_identifier}/', json.dumps({}), content_type='application/json',
+            f'/users/password/recovery/{non_existent_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -266,16 +266,18 @@ class TestUserPasswordRecoverSingle(TestCase):
 
         mock_email_send.return_value = None
 
-        self.client.post('/user/password/recovery/', json.dumps({
+        self.client.post('/users/password/recovery/', json.dumps({
             'email': self.email,
         }), content_type='application/json')
 
         user_identifier = PasswordRecoveryState.objects.get(email=self.email).identifier
 
-        self.client.post(f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json')
+        self.client.post(
+            f'/users/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
+        )
 
         response = self.client.post(
-            f'/user/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
+            f'/users/password/recovery/{user_identifier}/', json.dumps({}), content_type='application/json',
         )
 
         assert expected_result == response.json()
