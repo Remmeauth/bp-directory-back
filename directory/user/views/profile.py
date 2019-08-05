@@ -14,7 +14,6 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from user.domain.errors import (
     UserHasNoAuthorityToUpdateThisUserProfileError,
-    UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedUsernameDoesNotExistError,
 )
 from user.domain.objects import (
@@ -49,7 +48,7 @@ class UserProfileSingle(APIView):
             user_profile = GetUserProfile(user=self.user, profile=self.profile).do(username=username)
 
         except UserWithSpecifiedUsernameDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         serialized_user = user_profile.to_dict()
 
@@ -75,7 +74,7 @@ class UserProfileSingle(APIView):
         try:
             UpdateUserProfile(user=self.user, profile=self.profile).do(username=username, info=non_empty_request_data)
 
-        except UserWithSpecifiedEmailAddressDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+        except UserWithSpecifiedUsernameDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'User profile has been updated.'}, status=HTTPStatus.OK)

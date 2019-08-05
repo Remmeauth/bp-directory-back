@@ -66,7 +66,7 @@ class TestUserSingle(TestCase):
         response = self.client.get('/users/not.martin.fowler/', content_type='application/json')
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_delete_user_by_username(self):
         """

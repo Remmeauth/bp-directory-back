@@ -62,7 +62,7 @@ class TestUserPasswordSingle(TestCase):
         }), HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json')
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_change_user_email_without_data(self):
         """

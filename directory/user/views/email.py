@@ -42,6 +42,6 @@ class UserEmailSingle(APIView):
         try:
             ChangeUserEmail(user=self.user).do(username=username, new_email=new_email)
         except UserWithSpecifiedUsernameDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'E-mail has been changed.'}, status=HTTPStatus.OK)

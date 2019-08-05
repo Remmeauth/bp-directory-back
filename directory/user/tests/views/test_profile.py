@@ -138,4 +138,4 @@ class TestUserProfileSingle(TestCase):
         response = self.client.get('/users/not.martin.fowler/profile/', content_type='application/json')
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code

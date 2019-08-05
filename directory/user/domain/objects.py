@@ -160,7 +160,7 @@ class UpdateUserProfile:
         Update user profile.
         """
         if not self.user.does_exist_by_username(username=username):
-            raise UserWithSpecifiedEmailAddressDoesNotExistError
+            raise UserWithSpecifiedUsernameDoesNotExistError
 
         self.profile.update(username=username, info=info)
 

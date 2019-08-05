@@ -177,7 +177,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         }), content_type='application/json')
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_request_recover_user_password_without_email(self):
         """
@@ -252,7 +252,7 @@ class TestUserPasswordRecoverSingle(TestCase):
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     @patch('services.email.Email.send')
     def test_recovery_user_password_already_sent(self, mock_email_send):

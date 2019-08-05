@@ -42,7 +42,7 @@ class UserSingle(APIView):
         try:
             user = GetUser(user=self.user).do(username=username)
         except UserWithSpecifiedUsernameDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         serialized_user = user.to_dict()
         return JsonResponse({'result': serialized_user}, status=HTTPStatus.OK)
@@ -60,6 +60,6 @@ class UserSingle(APIView):
         try:
             DeleteUser(user=self.user).do(username=username)
         except UserWithSpecifiedUsernameDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'User has been deleted.'}, status=HTTPStatus.OK)
