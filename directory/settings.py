@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
 
     'block_producer',
@@ -34,6 +35,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,3 +119,5 @@ DEFAULT_USER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amaz
 
 DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
                                      'bps/logos/default-block-producer-logotype.png'
+
+CORS_ORIGIN_ALLOW_ALL = True
