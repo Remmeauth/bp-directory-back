@@ -51,7 +51,7 @@ class TestUserProfileSingle(TestCase):
             'result': 'User profile has been updated.',
         }
 
-        response = self.client.post(f'/user/{self.username}/profile/', json.dumps({
+        response = self.client.post(f'/users/{self.username}/profile/', json.dumps({
             'first_name': 'Martin',
             'last_name': 'Fowler',
             'location': 'Berlin, Germany',
@@ -82,7 +82,7 @@ class TestUserProfileSingle(TestCase):
         }
 
         response = self.client.post(
-            '/user/john.smith/profile/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
+            '/users/john.smith/profile/', HTTP_AUTHORIZATION='JWT ' + self.user_token, content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -122,7 +122,7 @@ class TestUserProfileSingle(TestCase):
             },
         }
 
-        response = self.client.get(f'/user/{self.username}/profile/', content_type='application/json')
+        response = self.client.get(f'/users/{self.username}/profile/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
@@ -136,7 +136,7 @@ class TestUserProfileSingle(TestCase):
             'error': 'User with specified username does not exist.',
         }
 
-        response = self.client.get('/user/not.martin.fowler/profile/', content_type='application/json')
+        response = self.client.get('/users/not.martin.fowler/profile/', content_type='application/json')
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code

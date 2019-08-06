@@ -41,13 +41,11 @@ class BlockProducerLikeSingle(APIView):
         try:
             LikeBlockProducer(
                 user=self.user, block_producer=self.block_producer, block_producer_like=self.block_producer_like,
-            ).do(
-                user_email=email, block_producer_id=block_producer_id,
-            )
+            ).do(user_email=email, block_producer_id=block_producer_id)
         except (
-                BlockProducerWithSpecifiedIdentifierDoesNotExistError,
-                UserWithSpecifiedEmailAddressDoesNotExistError,
+            BlockProducerWithSpecifiedIdentifierDoesNotExistError,
+            UserWithSpecifiedEmailAddressDoesNotExistError,
         ) as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer liking has been handled.'}, status=HTTPStatus.OK)

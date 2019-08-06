@@ -57,6 +57,6 @@ class BlockProducerCommentSingle(APIView):
             BlockProducerWithSpecifiedIdentifierDoesNotExistError,
             UserWithSpecifiedEmailAddressDoesNotExistError,
         ) as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer has been commented.'}, status=HTTPStatus.OK)

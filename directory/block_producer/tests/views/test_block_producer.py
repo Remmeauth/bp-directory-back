@@ -130,7 +130,7 @@ class TestBlockProducerSingle(TestCase):
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_update_block_producer(self):
         """
@@ -175,7 +175,7 @@ class TestBlockProducerSingle(TestCase):
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
 
 class TestBlockProducerCollection(TestCase):
