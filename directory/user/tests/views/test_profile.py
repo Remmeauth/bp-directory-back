@@ -108,7 +108,8 @@ class TestUserProfileSingle(TestCase):
                 'first_name': 'John',
                 'last_name': 'Smith',
                 'location': 'Tokyo, Japan',
-                'avatar_url': '',
+                'avatar_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
+                              'user/avatars/default-user-logotype.png',
                 'additional_information': 'Senior Software Engineer at Yamaha.',
                 'website_url': 'https://johnsmith.com',
                 'linkedin_url': '',

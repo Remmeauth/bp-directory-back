@@ -94,7 +94,8 @@ class TestBlockProducerSingle(TestCase):
                 'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
                 'location': '',
                 'full_description': '',
-                'logo_url': '',
+                'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
+                            'bps/logos/default-block-producer-logotype.png',
                 'linkedin_url': '',
                 'twitter_url': '',
                 'medium_url': '',
@@ -238,7 +239,8 @@ class TestBlockProducerCollection(TestCase):
                     'id': 6,
                     'linkedin_url': '',
                     'steemit_url': '',
-                    'logo_url': '',
+                    'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
+                                'bps/logos/default-block-producer-logotype.png',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -267,7 +269,8 @@ class TestBlockProducerCollection(TestCase):
                     'id': 7,
                     'linkedin_url': '',
                     'steemit_url': '',
-                    'logo_url': '',
+                    'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
+                                'bps/logos/default-block-producer-logotype.png',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -393,7 +396,8 @@ class TestBlockProducerSearchCollection(TestCase):
                     'linkedin_url': '',
                     'twitter_url': '',
                     'full_description': '',
-                    'logo_url': '',
+                    'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
+                                'bps/logos/default-block-producer-logotype.png',
                 },
             ],
         }

@@ -114,4 +114,10 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'user.User'
 
+DEFAULT_USER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
+                             'user/avatars/default-user-logotype.png'
+
+DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
+                                     'bps/logos/default-block-producer-logotype.png'
+
 CORS_ORIGIN_ALLOW_ALL = True
