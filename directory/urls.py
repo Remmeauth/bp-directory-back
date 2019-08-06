@@ -25,6 +25,6 @@ authentication_endpoints = [
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include(authentication_endpoints)),
-    path('user/', include(user_endpoints)),
+    path('users/', include(user_endpoints)),
     path('block-producers/', include(block_producer_endpoints)),
 ]

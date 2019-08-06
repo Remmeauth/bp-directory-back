@@ -23,7 +23,7 @@ class TestUserRegistrationSingle(TestCase):
             'result': 'User has been created.',
         }
 
-        response = self.client.post('/user/registration/', json.dumps({
+        response = self.client.post('/users/registration/', json.dumps({
             'email': 'martin.fowler@gmail.com',
             'username': 'martin.fowler',
             'password': 'martin.fowler.1337',
@@ -47,7 +47,7 @@ class TestUserRegistrationSingle(TestCase):
             'error': 'User with specified e-mail address already exists.',
         }
 
-        response = self.client.post('/user/registration/', json.dumps({
+        response = self.client.post('/users/registration/', json.dumps({
             'email': 'martin.fowler@gmail.com',
             'username': 'martin.fowler',
             'password': 'martin.fowler.1337',
@@ -71,7 +71,7 @@ class TestUserRegistrationSingle(TestCase):
             'error': 'User with specified username already exists.',
         }
 
-        response = self.client.post('/user/registration/', json.dumps({
+        response = self.client.post('/users/registration/', json.dumps({
             'email': 'not.martin.fowler@gmail.com',
             'username': 'martin.fowler',
             'password': 'martin.fowler.1337',
@@ -99,7 +99,7 @@ class TestUserRegistrationSingle(TestCase):
             },
         }
 
-        response = self.client.post('/user/registration/', json.dumps({}), content_type='application/json')
+        response = self.client.post('/users/registration/', json.dumps({}), content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.BAD_REQUEST == response.status_code

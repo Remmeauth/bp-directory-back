@@ -21,9 +21,9 @@ from services.models import PasswordRecoveryState
 from user.domain.errors import (
     RecoveryPasswordHasBeenAlreadySentError,
     SpecifiedUserPasswordIsIncorrectError,
+    UserHasNoAuthorityToChangePasswordForThisUserError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedIdentifierDoesNotExistError,
-    UserHasNoAuthorityToChangePasswordForThisUserError,
 )
 from user.domain.objects import (
     ChangeUserPassword,
@@ -73,10 +73,9 @@ class UserPasswordSingle(APIView):
 
         try:
             ChangeUserPassword(user=self.user).do(email=email, old_password=old_password, new_password=new_password)
-        except (
-            SpecifiedUserPasswordIsIncorrectError,
-            UserWithSpecifiedEmailAddressDoesNotExistError,
-        ) as error:
+        except UserWithSpecifiedEmailAddressDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+        except SpecifiedUserPasswordIsIncorrectError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
         return JsonResponse({'result': 'Password has been changed.'}, status=HTTPStatus.OK)
@@ -117,7 +116,7 @@ class UserRequestPasswordRecoverySingle(APIView):
             ).do(email=email)
 
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         message = EmailBody.REQUEST_PASSWORD_RECOVERY_MESSAGE.value.format(recovery_identifier)
 
@@ -155,10 +154,9 @@ class UserPasswordRecoverSingle(APIView):
                 user=self.user, password_recovery_state=self.password_recovery_state,
             ).do(user_identifier=user_identifier)
 
-        except (
-            RecoveryPasswordHasBeenAlreadySentError,
-            UserWithSpecifiedIdentifierDoesNotExistError,
-        )as error:
+        except UserWithSpecifiedIdentifierDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+        except RecoveryPasswordHasBeenAlreadySentError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
 
         message = EmailBody.PASSWORD_RECOVERY_MESSAGE.value.format(new_password)

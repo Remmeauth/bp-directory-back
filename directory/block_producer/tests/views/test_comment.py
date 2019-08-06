@@ -82,7 +82,7 @@ class TestBlockProducerCommentSingle(TestCase):
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_comment_block_producer_without_data(self):
         """
