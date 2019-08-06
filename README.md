@@ -68,7 +68,7 @@ identifying why the token was invalid.
 
 ### User
 
-* `POST | /auth/registration/` - register a user with email and password.
+* `POST | /users/registration/` - register a user with email and password.
 
 ##### Request parameters 
 
@@ -80,7 +80,7 @@ identifying why the token was invalid.
 ```bash
 $ curl -X POST -H "Content-Type: application/json" \
       -d '{"email":"dmytro.striletskyi@gmail.com","username":"dmytro.striletskyi","password":"dmytro.striletskyi.1337"}' \
-      http://localhost:8000/user/registration/ | python -m json.tool
+      http://localhost:8000/users/registration/ | python -m json.tool
 {
     "result": "User has been created."
 }
@@ -94,7 +94,7 @@ $ curl -X POST -H "Content-Type: application/json" \
 |  email    | Input arguments validation | This field is required.                            | 400         |
 |  password | Input arguments validation | This field is required.                            | 400         |
 
-* `GET | /user/{username}/` - get user by username.
+* `GET | /users/{username}/` - get user by username.
 
 ##### Request parameters 
 
@@ -103,7 +103,7 @@ $ curl -X POST -H "Content-Type: application/json" \
 | username   | String  | Yes      | User username. |
 
 ```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
+$ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.striletskyi/ | python -m json.tool
 {
     "result": {
         "email": "dmytro.striletskyi@gmail.com",
@@ -123,7 +123,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 | :------: | :------------------------: | --------------------------------------------- | :---------: |
 | username | Input arguments validation | User with specified username does not exists. | 400         |
 
-* `DELETE | /user/{username}/` - delete user by username.
+* `DELETE | /users/{username}/` - delete user by username.
 
 ##### Request parameters 
 
@@ -134,7 +134,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/dmytro.str
 ```bash
 $ curl -X DELETE -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/user/dmytro.striletskyi/ | python -m json.tool
+      http://localhost:8000/users/dmytro.striletskyi/ | python -m json.tool
 {
     "result": "User has been deleted."
 }
@@ -147,7 +147,7 @@ $ curl -X DELETE -H "Content-Type: application/json" \
 | username | Input arguments validation | User with specified username does not exists.                       | 400         |
 | username | Input arguments validation | User has no authority to delete this account by specified username. | 400         |
 
-* `POST | /user/{username}/email/` - change user e-mail by username.
+* `POST | /users/{username}/email/` - change user e-mail by username.
 
 ##### Request parameters
 
@@ -160,7 +160,7 @@ $ curl -X DELETE -H "Content-Type: application/json" \
 $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/user/dmytro.striletskyi/email/ | python -m json.tool
+      http://localhost:8000/users/dmytro.striletskyi/email/ | python -m json.tool
 {
     "result": "E-mail has been changed."
 }
@@ -173,7 +173,7 @@ $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
 | username  | Input arguments validation | User with specified username does not exists. | 400         |
 | new_email | Input arguments validation | This field is required.                       | 400         |
 
-* `POST | /user/{username}/password/` - change user password.
+* `POST | /users/{username}/password/` - change user password.
 
 ##### Request parameters
 
@@ -186,7 +186,7 @@ $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
 $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dmytro.1337"}' \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/user/dmytro.striletskyi/password/ | python -m json.tool
+      http://localhost:8000/users/dmytro.striletskyi/password/ | python -m json.tool
 {
     "result": "Password has been changed."
 }
@@ -201,7 +201,7 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 | old_password | Input arguments validation | This field is required.                            | 400         |
 | new_password | Input arguments validation | This field is required.                            | 400         |
 
-* `POST | /user/password/recovery` - request password recovery for an existing user by his e-mail address. Send the recovery link to the e-mail address.
+* `POST | /users/password/recovery` - request password recovery for an existing user by his e-mail address. Send the recovery link to the e-mail address.
 
 ##### Request parameters
 
@@ -212,7 +212,7 @@ $ curl -X POST -d '{"old_password":"dmytro.striletskyi.1337", "new_password":"dm
 ```bash
 $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
       -H "Content-Type: application/json" \
-      http://localhost:8000/user/password/recovery | python -m json.tool
+      http://localhost:8000/users/password/recovery | python -m json.tool
 {
     "result": "Recovery link has been sent to the specified e-mail address."
 }
@@ -225,7 +225,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
 | -        | General execution          | User with specified e-mail address does not exist. | 400         |
 | email    | Input arguments validation | This field is required.                            | 400         |
 
-* `POST | /user/password/recovery/{user_identifier}` - send a new password to an existing user who previously requested a password recovery.
+* `POST | /users/password/recovery/{user_identifier}` - send a new password to an existing user who previously requested a password recovery.
 
 ##### Request parameters
 
@@ -235,7 +235,7 @@ $ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
 
 ```bash
 $ curl -X POST -H "Content-Type: application/json" \
-      http://localhost:8000/user/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
+      http://localhost:8000/users/password/recovery/dd76b112f590494fb76e4954ee50961a/ | python -m json.tool
 {
     "result": "New password has been sent to e-mail address."
 }
@@ -246,7 +246,7 @@ $ curl -X POST -H "Content-Type: application/json" \
 | -        | General execution | User with specified e-mail address does not exist.         | 400         |
 | -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
 
-* `GET | /user/{username}/profile/` - get user profile information by username.
+* `GET | /users/{username}/profile/` - get user profile information by username.
 
 ##### Request parameters 
 
@@ -255,7 +255,7 @@ $ curl -X POST -H "Content-Type: application/json" \
 | username | String | Yes      | User username. |
 
 ```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith/profile/ | python -m json.tool
+$ curl -H "Content-Type: application/json" http://localhost:8000/users/john.smith/profile/ | python -m json.tool
 {
     "result": {
         "additional_information": "Software Engineer at Travis-CI.",
@@ -291,7 +291,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith
 | :------: | :------------------------: | --------------------------------------------- | :---------: |
 | username | Input arguments validation | User with specified username does not exists. | 400         |
 
-* `POST | /user/{username}/profile/` - update user profile information.
+* `POST | /users/{username}/profile/` - update user profile information.
 
 ##### Request parameters 
 
@@ -315,7 +315,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/user/john.smith
 | wikipedia_url          | String | No       | Reference to the user page on Wikipedia.   |
 
 ```bash
-$ curl -X POST http://localhost:8000/user/dmytro.striletskyi/profile/ \
+$ curl -X POST http://localhost:8000/users/dmytro.striletskyi/profile/ \
      -H "Content-Type: application/json" \
      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
      -d $'{
