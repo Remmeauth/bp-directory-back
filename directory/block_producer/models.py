@@ -9,6 +9,7 @@ from django.contrib.postgres.search import (
 from django.db import models
 
 from block_producer.dto.block_producer import BlockProducerDto
+from block_producer.dto.comment import BlockProducerCommentDto
 from user.models import User
 
 
@@ -208,3 +209,24 @@ class BlockProducerComment(models.Model):
         block_producer = BlockProducer.objects.get(id=block_producer_id)
 
         cls.objects.create(user=user, block_producer=block_producer, text=text)
+
+    @classmethod
+    def get_all(cls, block_producer_id):
+        """
+        Get comments for block producer.
+        """
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        block_producer_comments_as_dicts = cls.objects.filter(block_producer=block_producer).values()
+
+        for block_producer_comment in block_producer_comments_as_dicts:
+
+            user_identifier = block_producer_comment.get('user_id')
+            user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+            del user_as_dict['password']
+            del user_as_dict['created']
+
+            block_producer_comment['user'] = user_as_dict
+
+        return BlockProducerCommentDto.schema().load(block_producer_comments_as_dicts, many=True)
