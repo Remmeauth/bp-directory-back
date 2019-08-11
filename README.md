@@ -595,7 +595,7 @@ $ curl -X POST \
 | -         | General execution | User with specified e-mail address does not exist.       | 400         |
 | -         | General execution | Block producer with specified identifier does not exist. | 400         |
 
-* `POST | /block-producers/{block_producer_identifier}/comment/` - to comment a block producer.
+* `PUT | /block-producers/{block_producer_identifier}/comments/` - to comment a block producer.
 
 ##### Request parameters 
 
@@ -608,9 +608,42 @@ $ curl -X POST \
 $ curl -X PUT -d '{"text":"Great block producer!"}' \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/block-producers/2/comment/ | python -m json.tool
+      http://localhost:8000/block-producers/2/comments/ | python -m json.tool
 {
     "result": "Block producer has been commented."
+}
+```
+
+* `GET | /block-producers/{block_producer_identifier}/comments/` - get block producer's comments.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                      |
+| :-----------------------: | :-----: | :------: | -------------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/comments/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 2,
+            "created_at": 1560950377.0,
+            "id": 10,
+            "text": "Great block producer!",
+            "user": {
+                "email": "paul.rudd@gmail.com",
+                "id": 3,
+                "is_active": true,
+                "is_staff": false,
+                "is_superuser": false,
+                "last_login": null,
+                "username": "paul.rudd"
+            },
+            "user_id": 3
+        },
+        ...
+    ]
 }
 ```
 
