@@ -73,7 +73,7 @@ class BlockProducerCommentCollection(APIView):
     @permission_classes((permissions.AllowAny,))
     def get(self, request, block_producer_id):
         """
-        Get block producers.
+        Get block producer's comments.
         """
         block_producer_comments = GetBlockProducerComments(
             block_producer=self.block_producer,

@@ -570,7 +570,7 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
 }
 ```
 
-* `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
+* `PUT | /block-producers/{block_producer_identifier}/likes/` - to like or unlike block producer.
 
 ##### Request parameters 
 
@@ -579,10 +579,10 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
 | block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
-$ curl -X POST \
+$ curl -X PUT \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/block-producers/2/like/ | python -m json.tool
+      http://localhost:8000/block-producers/2/likes/ | python -m json.tool
 {
     "result": "Block producer liking has been handled."
 }
@@ -614,13 +614,51 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
 }
 ```
 
+* `GET | /block-producers/{block_producer_identifier}/likes/` - get block producer's likes.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/likes/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 2,
+            "id": 2,
+            "user": {
+                "email": "john.smith@gmail.com",
+                "id": 1,
+                "is_active": true,
+                "is_staff": false,
+                "is_superuser": false,
+                "last_login": null,
+                "username": "john.smith"
+            },
+            "user_id": 1
+        },
+        ...
+    ]
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                            | Status code |
+| :-------: | :------------------------: | -------------------------------------------------------- | :---------: |
+| -         | General execution          | Block producer with specified identifier does not exist. | 400         |
+| -         | Input arguments validation | This field is required.                                  | 400         |
+
 * `GET | /block-producers/{block_producer_identifier}/comments/` - get block producer's comments.
 
 ##### Request parameters 
 
-| Arguments                 | Type    | Required | Description                      |
-| :-----------------------: | :-----: | :------: | -------------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
 $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/comments/ | python -m json.tool
@@ -651,7 +689,6 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 
 | Argument  | Level                      | Error message                                               | Status code |
 | :-------: | :------------------------: | ----------------------------------------------------------- | :---------: |
-| -         | General execution          | User with specified e-mail address does not exist.          | 400         |
 | -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
 | -         | Input arguments validation | This field is required.                                     | 400         |
 | -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |

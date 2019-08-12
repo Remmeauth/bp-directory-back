@@ -1,15 +1,24 @@
 """
-Provide implementation of single block producer like endpoint.
+Provide implementation of collection block producer like endpoint.
 """
+import json
 from http import HTTPStatus
 
 from django.http import JsonResponse
-from rest_framework.decorators import authentication_classes
+from rest_framework import permissions
+from rest_framework.decorators import (
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoesNotExistError
-from block_producer.domain.objects import LikeBlockProducer
+from block_producer.domain.objects import (
+    GetBlockProducerLikes,
+    LikeBlockProducer,
+)
+from block_producer.dto.like import BlockProducerLikeDto
 from block_producer.models import (
     BlockProducer,
     BlockProducerLike,
@@ -18,9 +27,9 @@ from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 from user.models import User
 
 
-class BlockProducerLikeSingle(APIView):
+class BlockProducerLikeCollection(APIView):
     """
-    Single block producer like endpoint implementation.
+    Collection block producer likes endpoint implementation.
     """
 
     def __init__(self):
@@ -31,8 +40,23 @@ class BlockProducerLikeSingle(APIView):
         self.block_producer = BlockProducer()
         self.block_producer_like = BlockProducerLike()
 
+    @permission_classes((permissions.AllowAny, ))
+    def get(self, request, block_producer_id):
+        """
+        Get block producer's likes.
+        """
+        block_producer_likes = GetBlockProducerLikes(
+            block_producer=self.block_producer, block_producer_like=self.block_producer_like,
+        ).do(block_producer_id=block_producer_id)
+
+        serialized_block_producer_likes = json.loads(
+            BlockProducerLikeDto.schema().dumps(block_producer_likes, many=True),
+        )
+
+        return JsonResponse({'result': serialized_block_producer_likes}, status=HTTPStatus.OK)
+
     @authentication_classes((JSONWebTokenAuthentication, ))
-    def post(self, request, block_producer_id):
+    def put(self, request, block_producer_id):
         """
         To like the block producer.
         """
