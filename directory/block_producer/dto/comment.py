@@ -1,13 +1,12 @@
 """
 Provide implementation of block producer's comment data transfer object.
 """
+import typing
 from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
 from user.dto.user import UserDto
-
-import typing
 
 
 @dataclass_json
