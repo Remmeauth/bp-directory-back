@@ -570,7 +570,7 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
 }
 ```
 
-* `POST | /block-producers/{block_producer_identifier}/like/` - to like or unlike block producer.
+* `PUT | /block-producers/{block_producer_identifier}/likes/` - to like or unlike block producer.
 
 ##### Request parameters 
 
@@ -579,10 +579,10 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
 | block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
-$ curl -X POST \
+$ curl -X PUT \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/block-producers/2/like/ | python -m json.tool
+      http://localhost:8000/block-producers/2/likes/ | python -m json.tool
 {
     "result": "Block producer liking has been handled."
 }
@@ -614,7 +614,7 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
 }
 ```
 
-* `GET | /block-producers/{block_producer_identifier}/like/` - get block producer's likes.
+* `GET | /block-producers/{block_producer_identifier}/likes/` - get block producer's likes.
 
 ##### Request parameters 
 
@@ -623,7 +623,7 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
 | block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/like/ | python -m json.tool
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/likes/ | python -m json.tool
 {
     "result": [
         {

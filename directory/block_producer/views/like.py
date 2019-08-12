@@ -1,5 +1,5 @@
 """
-Provide implementation of single block producer like endpoint.
+Provide implementation of collection block producer like endpoint.
 """
 import json
 from http import HTTPStatus
@@ -27,9 +27,9 @@ from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 from user.models import User
 
 
-class BlockProducerLikeSingle(APIView):
+class BlockProducerLikeCollection(APIView):
     """
-    Single block producer like endpoint implementation.
+    Collection block producer likes endpoint implementation.
     """
 
     def __init__(self):
@@ -56,7 +56,7 @@ class BlockProducerLikeSingle(APIView):
         return JsonResponse({'result': serialized_block_producer_likes}, status=HTTPStatus.OK)
 
     @authentication_classes((JSONWebTokenAuthentication, ))
-    def post(self, request, block_producer_id):
+    def put(self, request, block_producer_id):
         """
         To like the block producer.
         """
