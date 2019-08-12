@@ -614,13 +614,51 @@ $ curl -X PUT -d '{"text":"Great block producer!"}' \
 }
 ```
 
+* `GET | /block-producers/{block_producer_identifier}/like/` - get block producer's likes.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/like/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 2,
+            "id": 2,
+            "user": {
+                "email": "john.smith@gmail.com",
+                "id": 1,
+                "is_active": true,
+                "is_staff": false,
+                "is_superuser": false,
+                "last_login": null,
+                "username": "john.smith"
+            },
+            "user_id": 1
+        },
+        ...
+    ]
+}
+```
+
+##### Known errors
+
+| Argument  | Level                      | Error message                                            | Status code |
+| :-------: | :------------------------: | -------------------------------------------------------- | :---------: |
+| -         | General execution          | Block producer with specified identifier does not exist. | 400         |
+| -         | Input arguments validation | This field is required.                                  | 400         |
+
 * `GET | /block-producers/{block_producer_identifier}/comments/` - get block producer's comments.
 
 ##### Request parameters 
 
-| Arguments                 | Type    | Required | Description                      |
-| :-----------------------: | :-----: | :------: | -------------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
 $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/comments/ | python -m json.tool
@@ -651,7 +689,6 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 
 | Argument  | Level                      | Error message                                               | Status code |
 | :-------: | :------------------------: | ----------------------------------------------------------- | :---------: |
-| -         | General execution          | User with specified e-mail address does not exist.          | 400         |
 | -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
 | -         | Input arguments validation | This field is required.                                     | 400         |
 | -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
