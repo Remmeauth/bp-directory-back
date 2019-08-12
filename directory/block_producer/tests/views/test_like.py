@@ -53,8 +53,8 @@ class TestBlockProducerLikeSingle(TestCase):
             'result': 'Block producer liking has been handled.',
         }
 
-        response = self.client.post(
-            f'/block-producers/{self.block_producer.id}/like/',
+        response = self.client.put(
+            f'/block-producers/{self.block_producer.id}/likes/',
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
@@ -65,7 +65,7 @@ class TestBlockProducerLikeSingle(TestCase):
 
     def test_unlike(self):
         """
-        Case: to nlike block producer.
+        Case: to like block producer.
         Expect: block producer like record is deleted from database.
         """
         BlockProducerLike.objects.create(user=self.user, block_producer=self.block_producer)
@@ -74,8 +74,8 @@ class TestBlockProducerLikeSingle(TestCase):
             'result': 'Block producer liking has been handled.',
         }
 
-        response = self.client.post(
-            f'/block-producers/{self.block_producer.id}/like/',
+        response = self.client.put(
+            f'/block-producers/{self.block_producer.id}/likes/',
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
@@ -84,7 +84,7 @@ class TestBlockProducerLikeSingle(TestCase):
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
-    def test_like_non_existing_lock_producer(self):
+    def test_like_non_existing_block_producer(self):
         """
         Case: to like non-exiting block producer.
         Expect: block producer with specified identifier does not exist error message.
@@ -95,11 +95,11 @@ class TestBlockProducerLikeSingle(TestCase):
             'error': 'Block producer with specified identifier does not exist.',
         }
 
-        response = self.client.post(
-            f'/block-producers/{non_existing_block_producer_id}/like/',
+        response = self.client.put(
+            f'/block-producers/{non_existing_block_producer_id}/likes/',
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code

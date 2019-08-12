@@ -1,6 +1,7 @@
 """
 Provide database models for block producer.
 """
+from django.conf import settings
 from django.contrib.postgres.search import (
     SearchQuery,
     SearchVector,
@@ -8,6 +9,8 @@ from django.contrib.postgres.search import (
 from django.db import models
 
 from block_producer.dto.block_producer import BlockProducerDto
+from block_producer.dto.comment import BlockProducerCommentDto
+from block_producer.dto.like import BlockProducerLikeDto
 from user.models import User
 
 
@@ -23,7 +26,7 @@ class BlockProducer(models.Model):
     location = models.CharField(max_length=100, blank=True)
     short_description = models.CharField(max_length=100, blank=False)
     full_description = models.TextField(blank=True)
-    logo_url = models.URLField(max_length=200, blank=True)
+    logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
     twitter_url = models.URLField(max_length=200, blank=True)
@@ -181,6 +184,26 @@ class BlockProducerLike(models.Model):
         block_producer_like = cls.objects.get(user=user, block_producer=block_producer)
         block_producer_like.delete()
 
+    @classmethod
+    def get_all(cls, block_producer_id):
+        """
+        Get likes for block producer.
+        """
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        block_producer_likes_as_dicts = cls.objects.filter(block_producer=block_producer).values()
+
+        for block_producer_like in block_producer_likes_as_dicts:
+            user_identifier = block_producer_like.get('user_id')
+            user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+            del user_as_dict['password']
+            del user_as_dict['created']
+
+            block_producer_like['user'] = user_as_dict
+
+        return BlockProducerLikeDto.schema().load(block_producer_likes_as_dicts, many=True)
+
 
 class BlockProducerComment(models.Model):
     """
@@ -207,3 +230,24 @@ class BlockProducerComment(models.Model):
         block_producer = BlockProducer.objects.get(id=block_producer_id)
 
         cls.objects.create(user=user, block_producer=block_producer, text=text)
+
+    @classmethod
+    def get_all(cls, block_producer_id):
+        """
+        Get comments for block producer.
+        """
+        block_producer = BlockProducer.objects.get(id=block_producer_id)
+
+        block_producer_comments_as_dicts = cls.objects.filter(block_producer=block_producer).values()
+
+        for block_producer_comment in block_producer_comments_as_dicts:
+
+            user_identifier = block_producer_comment.get('user_id')
+            user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+            del user_as_dict['password']
+            del user_as_dict['created']
+
+            block_producer_comment['user'] = user_as_dict
+
+        return BlockProducerCommentDto.schema().load(block_producer_comments_as_dicts, many=True)

@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
 
     'block_producer',
@@ -34,6 +35,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -72,7 +75,7 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_VERIFY_EXPIRATION': False,
     'JWT_ALLOW_REFRESH': True,
 }
 
@@ -110,3 +113,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'user.User'
+
+DEFAULT_USER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
+                             'user/avatars/default-user-logotype.png'
+
+DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
+                                     'bps/logos/default-block-producer-logotype.png'
+
+CORS_ORIGIN_ALLOW_ALL = True

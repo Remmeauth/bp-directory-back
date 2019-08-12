@@ -54,7 +54,7 @@ class BlockProducerSingle(APIView):
             ).do(block_producer_id=block_producer_id)
 
         except BlockProducerWithSpecifiedIdentifierDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         serialized_block_producer = block_producer.to_dict()
 
@@ -83,7 +83,7 @@ class BlockProducerSingle(APIView):
             BlockProducerWithSpecifiedIdentifierDoesNotExistError,
             UserWithSpecifiedEmailAddressDoesNotExistError,
         ) as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer has been updated.'}, status=HTTPStatus.OK)
 
@@ -129,7 +129,7 @@ class BlockProducerCollection(APIView):
             )
 
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
-            return JsonResponse({'error': error.message}, status=HTTPStatus.BAD_REQUEST)
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer has been created.'}, status=HTTPStatus.OK)
 

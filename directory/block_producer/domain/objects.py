@@ -163,3 +163,47 @@ class SearchBlockProducer:
         Search block producers by phrase.
         """
         return self.block_producer.search(phrase=phrase)
+
+
+class GetBlockProducerComments:
+    """
+    Getting block producer's comments implementation.
+    """
+
+    def __init__(self, block_producer, block_producer_comment):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+        self.block_producer_comment = block_producer_comment
+
+    def do(self, block_producer_id):
+        """
+        Get block producer's comments.
+        """
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        return self.block_producer_comment.get_all(block_producer_id=block_producer_id)
+
+
+class GetBlockProducerLikes:
+    """
+    Getting block producer's likes implementation.
+    """
+
+    def __init__(self, block_producer, block_producer_like):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+        self.block_producer_like = block_producer_like
+
+    def do(self, block_producer_id):
+        """
+        Get block producer's likes.
+        """
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        return self.block_producer_like.get_all(block_producer_id=block_producer_id)

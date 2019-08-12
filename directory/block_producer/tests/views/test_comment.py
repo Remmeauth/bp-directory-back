@@ -53,7 +53,7 @@ class TestBlockProducerCommentSingle(TestCase):
         }
 
         response = self.client.put(
-            f'/block-producers/{self.block_producer.id}/comment/',
+            f'/block-producers/{self.block_producer.id}/comments/',
             json.dumps({'text': 'Great block producer!'}),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
@@ -75,14 +75,14 @@ class TestBlockProducerCommentSingle(TestCase):
         }
 
         response = self.client.put(
-            f'/block-producers/{non_existing_block_producer_id}/comment/',
+            f'/block-producers/{non_existing_block_producer_id}/comments/',
             json.dumps({'text': 'Great block producer!'}),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
 
         assert expected_result == response.json()
-        assert HTTPStatus.BAD_REQUEST == response.status_code
+        assert HTTPStatus.NOT_FOUND == response.status_code
 
     def test_comment_block_producer_without_data(self):
         """
@@ -98,7 +98,7 @@ class TestBlockProducerCommentSingle(TestCase):
         }
 
         response = self.client.put(
-            f'/block-producers/{self.block_producer.id}/comment/',
+            f'/block-producers/{self.block_producer.id}/comments/',
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
@@ -120,7 +120,7 @@ class TestBlockProducerCommentSingle(TestCase):
         }
 
         response = self.client.put(
-            f'/block-producers/{self.block_producer.id}/comment/',
+            f'/block-producers/{self.block_producer.id}/comments/',
             json.dumps({'text': 'T' * 201}),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',

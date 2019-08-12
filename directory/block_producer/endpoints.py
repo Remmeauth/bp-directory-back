@@ -8,13 +8,13 @@ from block_producer.views.block_producer import (
     BlockProducerSearchCollection,
     BlockProducerSingle,
 )
-from block_producer.views.comment import BlockProducerCommentSingle
-from block_producer.views.like import BlockProducerLikeSingle
+from block_producer.views.comment import BlockProducerCommentCollection
+from block_producer.views.like import BlockProducerLikeCollection
 
 block_producer_endpoints = [
     path('', BlockProducerCollection.as_view()),
     path('search/', BlockProducerSearchCollection.as_view()),
     path('<int:block_producer_id>/', BlockProducerSingle.as_view()),
-    path('<int:block_producer_id>/comment/', BlockProducerCommentSingle.as_view()),
-    path('<int:block_producer_id>/like/', BlockProducerLikeSingle.as_view()),
+    path('<int:block_producer_id>/comments/', BlockProducerCommentCollection.as_view()),
+    path('<int:block_producer_id>/likes/', BlockProducerLikeCollection.as_view()),
 ]
