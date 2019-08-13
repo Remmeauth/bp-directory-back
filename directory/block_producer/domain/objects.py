@@ -207,3 +207,22 @@ class GetBlockProducerLikes:
             raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
 
         return self.block_producer_like.get_all(block_producer_id=block_producer_id)
+
+
+class GetBlockProducerCommentsNumber:
+    """
+    Getting block producers' comments' number implementation.
+    """
+
+    def __init__(self, block_producer, block_producer_comment):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+        self.block_producer_comment = block_producer_comment
+
+    def do(self):
+        """
+        Get block producers' comments number.
+        """
+        return self.block_producer_comment.get_numbers()
