@@ -226,3 +226,22 @@ class GetBlockProducerCommentsNumber:
         Get block producers' comments number.
         """
         return self.block_producer_comment.get_numbers()
+
+
+class GetBlockProducerLikesNumber:
+    """
+    Getting block producers' likes' number implementation.
+    """
+
+    def __init__(self, block_producer, block_producer_like):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+        self.block_producer_like = block_producer_like
+
+    def do(self):
+        """
+        Get block producers' likes number.
+        """
+        return self.block_producer_like.get_numbers()

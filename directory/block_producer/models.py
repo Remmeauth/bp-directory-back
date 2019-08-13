@@ -14,7 +14,10 @@ from block_producer.dto.comment import (
     BlockProducerCommentDto,
     BlockProducerCommentNumberDto,
 )
-from block_producer.dto.like import BlockProducerLikeDto
+from block_producer.dto.like import (
+    BlockProducerLikeDto,
+    BlockProducerLikeNumberDto,
+)
 from user.models import User
 
 
@@ -207,6 +210,17 @@ class BlockProducerLike(models.Model):
             block_producer_like['user'] = user_as_dict
 
         return BlockProducerLikeDto.schema().load(block_producer_likes_as_dicts, many=True)
+
+    @classmethod
+    def get_numbers(cls):
+        """
+        Get likes numbers for block producers.
+        """
+        block_producer_likes_numbers = cls.objects.all().values(
+            'block_producer_id',
+        ).annotate(likes=Count('id'))
+
+        return BlockProducerLikeNumberDto.schema().load(block_producer_likes_numbers, many=True)
 
 
 class BlockProducerComment(models.Model):

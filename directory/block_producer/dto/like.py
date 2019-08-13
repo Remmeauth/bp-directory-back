@@ -20,3 +20,14 @@ class BlockProducerLikeDto:
     block_producer_id: int
 
     user: UserDto
+
+
+@dataclass_json
+@dataclass
+class BlockProducerLikeNumberDto:
+    """
+    Block producer like number data transfer object implementation.
+    """
+
+    block_producer_id: int
+    likes: int
