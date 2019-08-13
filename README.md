@@ -693,6 +693,32 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 | -         | Input arguments validation | This field is required.                                     | 400         |
 | -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
 
+* `GET | /block-producers/likes/numbers/` - get block producer's likes numbers.
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/likes/numbers/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 3,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 4,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 2,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 1,
+            "likes": 3
+        }
+    ]
+}
+```
+
 * `GET | /block-producers/comments/numbers/` - get block producer's comments numbers.
 
 ```bash
