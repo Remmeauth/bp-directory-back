@@ -11,9 +11,13 @@ from user.views.password import (
 )
 from user.views.profile import UserProfileSingle
 from user.views.registration import UserRegistrationSingle
-from user.views.user import UserSingle
+from user.views.user import (
+    UserFromTokenSingle,
+    UserSingle,
+)
 
 user_endpoints = [
+    path('', UserFromTokenSingle.as_view()),
     path('<str:username>/password/', UserPasswordSingle.as_view()),
     path('password/recovery/', UserRequestPasswordRecoverySingle.as_view()),
     path('password/recovery/<user_identifier>/', UserPasswordRecoverSingle.as_view()),
