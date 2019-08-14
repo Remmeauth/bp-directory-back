@@ -29,7 +29,7 @@ $ curl -v -X POST -H "Content-Type: application/json" -d \
 {
     "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
 }
-```   
+```
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
@@ -122,7 +122,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.st
 ##### Request parameters 
 
 ```bash
-$ curl -X DELETE -H "Content-Type: application/json" \
+$ curl -H "Content-Type: application/json" \
       -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
       http://localhost:8000/users/ | python -m json.tool
 {

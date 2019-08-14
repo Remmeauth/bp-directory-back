@@ -70,17 +70,12 @@ class UserFromTokenSingle(APIView):
     Single user from token endpoint implementation.
     """
 
-    def __init__(self):
-        """
-        Constructor.
-        """
-        self.user = User()
-
     @permission_classes((JSONWebTokenAuthentication, ))
     def get(self, request):
         """
         Get user.
         """
-        return JsonResponse(
-            {'result': {'email': request.user.email, 'username': request.user.username}}, status=HTTPStatus.OK,
-        )
+        return JsonResponse({'result': {
+            'email': request.user.email,
+            'username': request.user.username,
+        }}, status=HTTPStatus.OK)
