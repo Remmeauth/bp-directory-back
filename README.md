@@ -29,7 +29,7 @@ $ curl -v -X POST -H "Content-Type: application/json" -d \
 {
     "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
 }
-```   
+```
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
@@ -117,11 +117,21 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.st
 }
 ```
 
-##### Known errors
+* `GET | /users/` - get user from token.
 
-| Argument | Level                      | Error message                                 | Status code |
-| :------: | :------------------------: | --------------------------------------------- | :---------: |
-| username | Input arguments validation | User with specified username does not exists. | 400         |
+##### Request parameters 
+
+```bash
+$ curl -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/users/ | python -m json.tool
+{
+    "result": {
+        "email": "dmytro.striletskyi@gmail.com",
+        "username": "dmytro.striletskyi"
+    }
+}
+```
 
 * `DELETE | /users/{username}/` - delete user by username.
 
