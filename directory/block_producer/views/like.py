@@ -16,9 +16,13 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoesNotExistError
 from block_producer.domain.objects import (
     GetBlockProducerLikes,
+    GetBlockProducerLikesNumber,
     LikeBlockProducer,
 )
-from block_producer.dto.like import BlockProducerLikeDto
+from block_producer.dto.like import (
+    BlockProducerLikeDto,
+    BlockProducerLikeNumberDto,
+)
 from block_producer.models import (
     BlockProducer,
     BlockProducerLike,
@@ -73,3 +77,33 @@ class BlockProducerLikeCollection(APIView):
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer liking has been handled.'}, status=HTTPStatus.OK)
+
+
+class BlockProducerLikeNumberCollection(APIView):
+    """
+    Collection block producer's likes number endpoint implementation.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.user = User()
+        self.block_producer = BlockProducer()
+        self.block_producer_like = BlockProducerLike()
+
+    @permission_classes((permissions.AllowAny, ))
+    def get(self, request):
+        """
+        Get block producers' likes number.
+        """
+        block_producer_likes_number = GetBlockProducerLikesNumber(
+            block_producer=self.block_producer,
+            block_producer_like=self.block_producer_like,
+        ).do()
+
+        serialized_block_producer_likes_number = json.loads(
+            BlockProducerLikeNumberDto.schema().dumps(block_producer_likes_number, many=True),
+        )
+
+        return JsonResponse({'result': serialized_block_producer_likes_number}, status=HTTPStatus.OK)
