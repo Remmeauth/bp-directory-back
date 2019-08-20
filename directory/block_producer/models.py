@@ -142,6 +142,28 @@ class BlockProducer(models.Model):
 
         return BlockProducerDto.schema().load(block_producers_as_list, many=True)
 
+    @classmethod
+    def get_last(cls, username):
+        """
+        Get user's last block producer by username.
+        """
+        block_producers_as_dict = cls.objects.filter(user__username=username)
+
+        if not block_producers_as_dict:
+            return None
+
+        last_block_producer = block_producers_as_dict.values().last()
+
+        user_identifier = last_block_producer.get('user_id')
+        user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+        del user_as_dict['password']
+        del user_as_dict['created']
+
+        last_block_producer['user'] = user_as_dict
+
+        return BlockProducerDto(**last_block_producer)
+
 
 class BlockProducerLike(models.Model):
     """

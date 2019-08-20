@@ -473,7 +473,35 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
   "linkedin_url": "https://www.linkedin.com/in/bpusa"
 }' | python -m json.tool
 {
-    "result": "Block producer has been created."
+    "result": {
+        "facebook_url": "",
+        "full_description": "",
+        "github_url": "",
+        "id": 6,
+        "linkedin_url": "https://www.linkedin.com/in/bpusa",
+        "location": "San Francisco, USA",
+        "logo_url": "",
+        "medium_url": "",
+        "name": "Block Producer USA",
+        "reddit_url": "",
+        "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+        "slack_url": "",
+        "steemit_url": "",
+        "telegram_url": "",
+        "twitter_url": "",
+        "user": {
+            "email": "dmytro.striletskyi@gmail.com",
+            "id": 5,
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "last_login": null,
+            "username": "dmytro.striletskyi"
+        },
+        "user_id": 5,
+        "website_url": "https://bpusa.com",
+        "wikipedia_url": ""
+    }
 }
 ```
 
