@@ -1,7 +1,10 @@
 """
 Provide implementation of block producer domain.
 """
-from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoesNotExistError
+from block_producer.domain.errors import (
+    BlockProducerDoesNotExistForSpecifiedUsername,
+    BlockProducerWithSpecifiedIdentifierDoesNotExistError,
+)
 from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
 
 
@@ -127,6 +130,29 @@ class GetBlockProducer:
             raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
 
         return self.block_producer.get(identifier=block_producer_id)
+
+
+class GetUserLastBlockProducer:
+    """
+    Get user's last block producer implementation.
+    """
+
+    def __init__(self, block_producer):
+        """
+        Constructor.
+        """
+        self.block_producer = block_producer
+
+    def do(self, username):
+        """
+        Get user's last block producer by username.
+        """
+        last_block_producer = self.block_producer.get_last(username=username)
+
+        if last_block_producer is None:
+            raise BlockProducerDoesNotExistForSpecifiedUsername
+
+        return last_block_producer
 
 
 class GetBlockProducers:

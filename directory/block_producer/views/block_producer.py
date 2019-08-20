@@ -13,11 +13,15 @@ from rest_framework.decorators import (
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoesNotExistError
+from block_producer.domain.errors import (
+    BlockProducerDoesNotExistForSpecifiedUsername,
+    BlockProducerWithSpecifiedIdentifierDoesNotExistError,
+)
 from block_producer.domain.objects import (
     CreateBlockProducer,
     GetBlockProducer,
     GetBlockProducers,
+    GetUserLastBlockProducer,
     SearchBlockProducer,
     UpdateBlockProducer,
 )
@@ -117,6 +121,7 @@ class BlockProducerCollection(APIView):
         Create a block producer.
         """
         email = request.user.email
+        username = request.user.username
 
         form = CreateBlockProducerForm(data=request.data)
 
@@ -131,7 +136,15 @@ class BlockProducerCollection(APIView):
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
-        return JsonResponse({'result': 'Block producer has been created.'}, status=HTTPStatus.OK)
+        try:
+            last_block_producer = GetUserLastBlockProducer(block_producer=self.block_producer).do(username=username)
+
+        except BlockProducerDoesNotExistForSpecifiedUsername as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+
+        serialized_lst_block_producer = last_block_producer.to_dict()
+
+        return JsonResponse({'result': serialized_lst_block_producer}, status=HTTPStatus.OK)
 
 
 class BlockProducerSearchCollection(APIView):
