@@ -29,7 +29,7 @@ $ curl -v -X POST -H "Content-Type: application/json" -d \
 {
     "token": "eyJ0e....eyJ1c2VyX2....NzZ0sVpa5..."
 }
-```   
+```
 
 * `POST | /authentication/token/refreshing/` - refresh `JWT token` for existing user by previously obtained token.
 
@@ -117,11 +117,21 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.st
 }
 ```
 
-##### Known errors
+* `GET | /users/` - get user from token.
 
-| Argument | Level                      | Error message                                 | Status code |
-| :------: | :------------------------: | --------------------------------------------- | :---------: |
-| username | Input arguments validation | User with specified username does not exists. | 400         |
+##### Request parameters 
+
+```bash
+$ curl -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/users/ | python -m json.tool
+{
+    "result": {
+        "email": "dmytro.striletskyi@gmail.com",
+        "username": "dmytro.striletskyi"
+    }
+}
+```
 
 * `DELETE | /users/{username}/` - delete user by username.
 
@@ -463,7 +473,35 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
   "linkedin_url": "https://www.linkedin.com/in/bpusa"
 }' | python -m json.tool
 {
-    "result": "Block producer has been created."
+    "result": {
+        "facebook_url": "",
+        "full_description": "",
+        "github_url": "",
+        "id": 6,
+        "linkedin_url": "https://www.linkedin.com/in/bpusa",
+        "location": "San Francisco, USA",
+        "logo_url": "",
+        "medium_url": "",
+        "name": "Block Producer USA",
+        "reddit_url": "",
+        "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
+        "slack_url": "",
+        "steemit_url": "",
+        "telegram_url": "",
+        "twitter_url": "",
+        "user": {
+            "email": "dmytro.striletskyi@gmail.com",
+            "id": 5,
+            "is_active": true,
+            "is_staff": false,
+            "is_superuser": false,
+            "last_login": null,
+            "username": "dmytro.striletskyi"
+        },
+        "user_id": 5,
+        "website_url": "https://bpusa.com",
+        "wikipedia_url": ""
+    }
 }
 ```
 
@@ -692,6 +730,58 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 | -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
 | -         | Input arguments validation | This field is required.                                     | 400         |
 | -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
+
+* `GET | /block-producers/likes/numbers/` - get block producer's likes numbers.
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/likes/numbers/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 3,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 4,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 2,
+            "likes": 3
+        },
+        {
+            "block_producer_id": 1,
+            "likes": 3
+        }
+    ]
+}
+```
+
+* `GET | /block-producers/comments/numbers/` - get block producer's comments numbers.
+
+```bash
+$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/comments/numbers/ | python -m json.tool
+{
+    "result": [
+        {
+            "block_producer_id": 3,
+            "comments": 3
+        },
+        {
+            "block_producer_id": 4,
+            "comments": 3
+        },
+        {
+            "block_producer_id": 2,
+            "comments": 3
+        },
+        {
+            "block_producer_id": 1,
+            "comments": 3
+        }
+    ]
+}
+```
 
 ## Development
 

@@ -294,10 +294,6 @@ class TestBlockProducerCollection(TestCase):
         Case: create block producer with specified information.
         Expect: block producer created in the database.
         """
-        expected_result = {
-            'result': 'Block producer has been created.',
-        }
-
         response = self.client.put(
             '/block-producers/',
             json.dumps(BLOCK_PRODUCER_INFO),
@@ -306,7 +302,6 @@ class TestBlockProducerCollection(TestCase):
         )
 
         assert BlockProducer.objects.get(id=3).name == 'Block producer USA'
-        assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
     def test_create_block_producer_without_mandatory_argument(self):

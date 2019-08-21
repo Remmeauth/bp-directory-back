@@ -24,3 +24,14 @@ class BlockProducerCommentDto:
 
     text: str
     created_at: typing.Any
+
+
+@dataclass_json
+@dataclass
+class BlockProducerCommentNumberDto:
+    """
+    Block producer comment number data transfer object implementation.
+    """
+
+    block_producer_id: int
+    comments: int

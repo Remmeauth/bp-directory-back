@@ -63,3 +63,19 @@ class UserSingle(APIView):
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'User has been deleted.'}, status=HTTPStatus.OK)
+
+
+class UserFromTokenSingle(APIView):
+    """
+    Single user from token endpoint implementation.
+    """
+
+    @permission_classes((JSONWebTokenAuthentication, ))
+    def get(self, request):
+        """
+        Get user.
+        """
+        return JsonResponse({'result': {
+            'email': request.user.email,
+            'username': request.user.username,
+        }}, status=HTTPStatus.OK)

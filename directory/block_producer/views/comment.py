@@ -17,9 +17,13 @@ from block_producer.domain.errors import BlockProducerWithSpecifiedIdentifierDoe
 from block_producer.domain.objects import (
     CommentBlockProducer,
     GetBlockProducerComments,
+    GetBlockProducerCommentsNumber,
 )
 from block_producer.forms import CommentBlockProducerForm
-from block_producer.dto.comment import BlockProducerCommentDto
+from block_producer.dto.comment import (
+    BlockProducerCommentDto,
+    BlockProducerCommentNumberDto,
+)
 from block_producer.models import (
     BlockProducer,
     BlockProducerComment,
@@ -85,3 +89,33 @@ class BlockProducerCommentCollection(APIView):
         )
 
         return JsonResponse({'result': serialized_block_producer_comments}, status=HTTPStatus.OK)
+
+
+class BlockProducerCommentNumberCollection(APIView):
+    """
+    Collection block producer's comments number endpoint implementation.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.user = User()
+        self.block_producer = BlockProducer()
+        self.block_producer_comment = BlockProducerComment()
+
+    @permission_classes((permissions.AllowAny,))
+    def get(self, request):
+        """
+        Get block producers' comments number.
+        """
+        block_producer_comments_number = GetBlockProducerCommentsNumber(
+            block_producer=self.block_producer,
+            block_producer_comment=self.block_producer_comment,
+        ).do()
+
+        serialized_block_producer_comments_number = json.loads(
+            BlockProducerCommentNumberDto.schema().dumps(block_producer_comments_number, many=True),
+        )
+
+        return JsonResponse({'result': serialized_block_producer_comments_number}, status=HTTPStatus.OK)

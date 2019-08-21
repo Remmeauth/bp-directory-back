@@ -7,10 +7,17 @@ from django.contrib.postgres.search import (
     SearchVector,
 )
 from django.db import models
+from django.db.models import Count
 
 from block_producer.dto.block_producer import BlockProducerDto
-from block_producer.dto.comment import BlockProducerCommentDto
-from block_producer.dto.like import BlockProducerLikeDto
+from block_producer.dto.comment import (
+    BlockProducerCommentDto,
+    BlockProducerCommentNumberDto,
+)
+from block_producer.dto.like import (
+    BlockProducerLikeDto,
+    BlockProducerLikeNumberDto,
+)
 from user.models import User
 
 
@@ -135,6 +142,28 @@ class BlockProducer(models.Model):
 
         return BlockProducerDto.schema().load(block_producers_as_list, many=True)
 
+    @classmethod
+    def get_last(cls, username):
+        """
+        Get user's last block producer by username.
+        """
+        block_producers_as_dict = cls.objects.filter(user__username=username)
+
+        if not block_producers_as_dict:
+            return None
+
+        last_block_producer = block_producers_as_dict.values().last()
+
+        user_identifier = last_block_producer.get('user_id')
+        user_as_dict = User.objects.filter(id=user_identifier).values().first()
+
+        del user_as_dict['password']
+        del user_as_dict['created']
+
+        last_block_producer['user'] = user_as_dict
+
+        return BlockProducerDto(**last_block_producer)
+
 
 class BlockProducerLike(models.Model):
     """
@@ -204,6 +233,17 @@ class BlockProducerLike(models.Model):
 
         return BlockProducerLikeDto.schema().load(block_producer_likes_as_dicts, many=True)
 
+    @classmethod
+    def get_numbers(cls):
+        """
+        Get likes numbers for block producers.
+        """
+        block_producer_likes_numbers = cls.objects.all().values(
+            'block_producer_id',
+        ).annotate(likes=Count('id'))
+
+        return BlockProducerLikeNumberDto.schema().load(block_producer_likes_numbers, many=True)
+
 
 class BlockProducerComment(models.Model):
     """
@@ -251,3 +291,14 @@ class BlockProducerComment(models.Model):
             block_producer_comment['user'] = user_as_dict
 
         return BlockProducerCommentDto.schema().load(block_producer_comments_as_dicts, many=True)
+
+    @classmethod
+    def get_numbers(cls):
+        """
+        Get comments numbers for block producers.
+        """
+        block_producer_comments_numbers = cls.objects.all().values(
+            'block_producer_id',
+        ).annotate(comments=Count('text'))
+
+        return BlockProducerCommentNumberDto.schema().load(block_producer_comments_numbers, many=True)
