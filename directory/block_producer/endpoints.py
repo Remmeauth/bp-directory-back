@@ -3,6 +3,7 @@ Provide implementation of block producer endpoints.
 """
 from django.urls import path
 
+from block_producer.views.avatar import BlockProducerAvatarSingle
 from block_producer.views.block_producer import (
     BlockProducerCollection,
     BlockProducerSearchCollection,
@@ -25,4 +26,5 @@ block_producer_endpoints = [
     path('comments/numbers/', BlockProducerCommentNumberCollection.as_view()),
     path('likes/numbers/', BlockProducerLikeNumberCollection.as_view()),
     path('<int:block_producer_id>/likes/', BlockProducerLikeCollection.as_view()),
+    path('<int:block_producer_id>/avatars/', BlockProducerAvatarSingle.as_view()),
 ]

@@ -115,9 +115,13 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
 
 DEFAULT_USER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
-                             'user/avatars/default-user-logotype.png'
+                             'users/avatars/default-user-logotype.png'
 
 DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
                                      'bps/logos/default-block-producer-logotype.png'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')

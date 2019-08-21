@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='avatar_url',
-            field=models.URLField(blank=True, default='https://block-producers-directory.s3-us-west-2.amazonaws.com/user/avatars/default-user-logotype.png'),
+            field=models.URLField(blank=True, default='https://block-producers-directory.s3-us-west-2.amazonaws.com/users/avatars/default-user-logotype.png'),
         ),
     ]
