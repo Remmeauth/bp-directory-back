@@ -58,3 +58,12 @@ class CommentBlockProducerForm(forms.Form):
     """
 
     text = forms.CharField(max_length=200)
+
+
+class UploadBlockProducerAvatarForm(forms.Form):
+    """
+    Upload block producer avatar form implementation.
+    """
+
+    title = forms.CharField(max_length=150)
+    file = forms.FileField()

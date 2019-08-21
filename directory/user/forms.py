@@ -59,3 +59,12 @@ class UpdateProfileForm(forms.Form):
     facebook_url = forms.URLField(required=False, max_length=200)
     telegram_url = forms.URLField(required=False, max_length=200)
     steemit_url = forms.URLField(required=False, max_length=200)
+
+
+class UploadUserAvatarForm(forms.Form):
+    """
+    Upload user avatar form implementation.
+    """
+
+    title = forms.CharField(max_length=150)
+    file = forms.FileField()

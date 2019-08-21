@@ -18,7 +18,10 @@ from block_producer.dto.like import (
     BlockProducerLikeDto,
     BlockProducerLikeNumberDto,
 )
-from user.models import User
+from user.models import (
+    User,
+    Profile,
+)
 
 
 class BlockProducer(models.Model):
@@ -87,6 +90,10 @@ class BlockProducer(models.Model):
         Create a block producer with specified information.
         """
         user = User.objects.get(email=email)
+
+        if not info.get('logo_url'):
+            del info['logo_url']
+
         cls.objects.create(user=user, **info)
 
     @classmethod
@@ -285,10 +292,13 @@ class BlockProducerComment(models.Model):
             user_identifier = block_producer_comment.get('user_id')
             user_as_dict = User.objects.filter(id=user_identifier).values().first()
 
+            profile = Profile.objects.get(user__id=user_identifier)
+
             del user_as_dict['password']
             del user_as_dict['created']
 
             block_producer_comment['user'] = user_as_dict
+            block_producer_comment['profile_avatar_url'] = profile.avatar_url
 
         return BlockProducerCommentDto.schema().load(block_producer_comments_as_dicts, many=True)
 

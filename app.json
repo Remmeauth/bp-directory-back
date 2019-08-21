@@ -22,7 +22,19 @@
     "SENDGRID_API_KEY": {
       "description": "SendGrid e-mail service API key.",
       "required": true
-    }
+    },
+    "AWS_BUCKET_NAME": {
+      "description": "AWS bucket name to store avatars and logotypes.",
+      "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "description": "AWS access key id.",
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "AWS secret access key.",
+      "required": true
+    },
   },
   "addons": [
     {

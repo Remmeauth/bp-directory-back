@@ -341,6 +341,23 @@ $ curl -X POST http://localhost:8000/users/dmytro.striletskyi/profile/ \
 }
 ```
 
+* `POST | /users/{username}/avatars/` - upload user avatar.
+
+##### Request parameters 
+
+| Argument | Type   | Required | Description    |
+| :------: | :----: | :------: | -------------- |
+| username | String | Yes      | User username. |
+
+```bash
+$ curl -X POST -F "file=@/Users/dmytrostriletskyi/Desktop/default-user-logotype.png" \
+      -H -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \   
+      http://localhost:8000/users/dmytro.striletskyi/avatars/ | python -m json.tool
+{
+    "result": "User avatar has been uploaded."
+}
+```
+
 ##### Known errors
 
 | Argument | Level             | Error message                                      | Status code |
@@ -689,6 +706,23 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 | :-------: | :------------------------: | -------------------------------------------------------- | :---------: |
 | -         | General execution          | Block producer with specified identifier does not exist. | 400         |
 | -         | Input arguments validation | This field is required.                                  | 400         |
+
+* `POST | /block-producers/{block_producer_identifier}/avatars/` - upload block producer avatar.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -X POST -F "file=@/Users/dmytrostriletskyi/Desktop/default-user-logotype.png" \
+      -H -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \   
+      http://localhost:8000/block-producers/2/avatars/ | python -m json.tool
+{
+    "result": "Block producer avatar has been uploaded."
+}
+```
 
 * `GET | /block-producers/{block_producer_identifier}/comments/` - get block producer's comments.
 

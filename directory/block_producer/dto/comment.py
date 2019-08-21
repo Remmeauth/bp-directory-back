@@ -21,6 +21,7 @@ class BlockProducerCommentDto:
     block_producer_id: int
 
     user: UserDto
+    profile_avatar_url: str
 
     text: str
     created_at: typing.Any
