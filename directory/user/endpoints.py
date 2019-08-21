@@ -3,6 +3,7 @@ Provide implementation of user endpoints.
 """
 from django.urls import path
 
+from user.views.avatar import UserAvatarSingle
 from user.views.email import UserEmailSingle
 from user.views.password import (
     UserPasswordRecoverSingle,
@@ -25,4 +26,5 @@ user_endpoints = [
     path('<str:username>/', UserSingle.as_view()),
     path('<str:username>/profile/', UserProfileSingle.as_view()),
     path('<str:username>/email/', UserEmailSingle.as_view()),
+    path('<str:username>/avatars/', UserAvatarSingle.as_view()),
 ]
