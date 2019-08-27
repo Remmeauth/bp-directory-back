@@ -1,5 +1,5 @@
-boto3==1.9.214
-dataclasses-json==0.2.14
+boto3==1.9.216
+dataclasses-json==0.3.0
 dj-database-url==0.5.0
 django-cors-headers==3.1.0
 django==2.2.4
