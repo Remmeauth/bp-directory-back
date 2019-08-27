@@ -45,12 +45,14 @@ class TestBlockProducerSingle(TestCase):
         Setup.
         """
         self.user = User.objects.create_user(
+            id=1,
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
         )
 
         BlockProducer.objects.create(
+            id=1,
             user=self.user,
             name='Block producer Canada',
             website_url='https://bpcanada.com',
@@ -58,6 +60,7 @@ class TestBlockProducerSingle(TestCase):
         )
 
         BlockProducer.objects.create(
+            id=2,
             user=self.user,
             name='Block producer Spain',
             website_url='https://bpspain.com',
@@ -79,7 +82,7 @@ class TestBlockProducerSingle(TestCase):
         expected_result = {
             'result': {
                 'user': {
-                    'id': 6,
+                    'id': 1,
                     'last_login': None,
                     'is_superuser': False,
                     'email': 'martin.fowler@gmail.com',
@@ -87,8 +90,8 @@ class TestBlockProducerSingle(TestCase):
                     'is_active': True,
                     'is_staff': False,
                 },
-                'user_id': 6,
-                'id': 12,
+                'user_id': 1,
+                'id': 1,
                 'name': 'Block producer Canada',
                 'website_url': 'https://bpcanada.com',
                 'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
@@ -96,6 +99,7 @@ class TestBlockProducerSingle(TestCase):
                 'full_description': '',
                 'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                             'bps/logos/default-block-producer-logotype.png',
+                'status': 'moderation',
                 'linkedin_url': '',
                 'twitter_url': '',
                 'medium_url': '',
@@ -109,7 +113,7 @@ class TestBlockProducerSingle(TestCase):
             },
         }
 
-        response = self.client.get('/block-producers/12/', content_type='application/json')
+        response = self.client.get('/block-producers/1/', content_type='application/json')
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
@@ -141,18 +145,16 @@ class TestBlockProducerSingle(TestCase):
             'result': 'Block producer has been updated.',
         }
 
-        block_producer_identifier = 17
-
         BLOCK_PRODUCER_INFO.update(name='Block producer Japan')
 
         response = self.client.post(
-            f'/block-producers/{block_producer_identifier}/',
+            f'/block-producers/1/',
             json.dumps(BLOCK_PRODUCER_INFO),
             HTTP_AUTHORIZATION='JWT ' + self.user_token,
             content_type='application/json',
         )
 
-        assert BlockProducer.objects.get(id=block_producer_identifier).name == 'Block producer Japan'
+        assert BlockProducer.objects.get(id=1).name == 'Block producer Japan'
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
 
@@ -241,6 +243,7 @@ class TestBlockProducerCollection(TestCase):
                     'steemit_url': '',
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
+                    'status': 'moderation',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -271,6 +274,7 @@ class TestBlockProducerCollection(TestCase):
                     'steemit_url': '',
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
+                    'status': 'moderation',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -393,6 +397,7 @@ class TestBlockProducerSearchCollection(TestCase):
                     'full_description': '',
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
+                    'status': 'moderation',
                 },
             ],
         }

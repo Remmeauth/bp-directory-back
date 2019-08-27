@@ -23,6 +23,16 @@ from user.models import (
     Profile,
 )
 
+BLOCK_PRODUCER_STATUS_MODERATION = 'moderation'
+BLOCK_PRODUCER_STATUS_DECLINED = 'declined'
+BLOCK_PRODUCER_STATUS_ACTIVE = 'active'
+
+BLOCK_PRODUCER_STATUSES = (
+    (BLOCK_PRODUCER_STATUS_MODERATION, BLOCK_PRODUCER_STATUS_MODERATION),
+    (BLOCK_PRODUCER_STATUS_DECLINED, BLOCK_PRODUCER_STATUS_DECLINED),
+    (BLOCK_PRODUCER_STATUS_ACTIVE, BLOCK_PRODUCER_STATUS_ACTIVE),
+)
+
 
 class BlockProducer(models.Model):
     """
@@ -37,6 +47,7 @@ class BlockProducer(models.Model):
     short_description = models.CharField(max_length=100, blank=False)
     full_description = models.TextField(blank=True)
     logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
+    status = models.CharField(max_length=10, choices=BLOCK_PRODUCER_STATUSES, default=BLOCK_PRODUCER_STATUS_MODERATION)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
     twitter_url = models.URLField(max_length=200, blank=True)
