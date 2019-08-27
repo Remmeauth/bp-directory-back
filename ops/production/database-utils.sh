@@ -13,10 +13,7 @@ function create_database_super_user() {
 function create_database_fixtures() {
   declare -a arr_fixtures=(
     "directory/user/fixtures/user.json"
-    "directory/user/fixtures/profile.json"
     "directory/block_producer/fixtures/block_producer.json"
-    "directory/block_producer/fixtures/block_producer_like.json"
-    "directory/block_producer/fixtures/block_producer_comment.json"
     "directory/services/fixtures/password_recovery_state.json"
   )
 

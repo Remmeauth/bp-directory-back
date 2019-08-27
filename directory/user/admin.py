@@ -3,10 +3,6 @@ Provide configuration for admin panel user tables.
 """
 from django.contrib import admin
 
-from user.models import (
-    Profile,
-    User,
-)
+from user.models import User
 
-admin.site.register(Profile)
 admin.site.register(User)

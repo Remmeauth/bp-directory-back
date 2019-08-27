@@ -120,8 +120,7 @@ class BlockProducerCollection(APIView):
         """
         Create a block producer.
         """
-        email = request.user.email
-        username = request.user.username
+        user_email = request.user.email
 
         form = CreateBlockProducerForm(data=request.data)
 
@@ -130,14 +129,14 @@ class BlockProducerCollection(APIView):
 
         try:
             CreateBlockProducer(user=self.user, block_producer=self.block_producer).do(
-                user_email=email, info=form.cleaned_data,
+                user_email=user_email, info=form.cleaned_data,
             )
 
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         try:
-            last_block_producer = GetUserLastBlockProducer(block_producer=self.block_producer).do(username=username)
+            last_block_producer = GetUserLastBlockProducer(block_producer=self.block_producer).do(user_email=user_email)
 
         except BlockProducerDoesNotExistForSpecifiedUsername as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)

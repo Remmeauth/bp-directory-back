@@ -94,29 +94,6 @@ $ curl -X POST -H "Content-Type: application/json" \
 |  email    | Input arguments validation | This field is required.                            | 400         |
 |  password | Input arguments validation | This field is required.                            | 400         |
 
-* `GET | /users/{username}/` - get user by username.
-
-##### Request parameters 
-
-| Arguments  | Type    | Required | Description    |
-| :--------: | :-----: | :------: | -------------- |
-| username   | String  | Yes      | User username. |
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.striletskyi/ | python -m json.tool
-{
-    "result": {
-        "email": "dmytro.striletskyi@gmail.com",
-        "id": 6,
-        "is_active": true,
-        "is_staff": false,
-        "is_superuser": false,
-        "last_login": null,
-        "username": "dmytro.striletskyi"
-    }
-}
-```
-
 * `GET | /users/` - get user from token.
 
 ##### Request parameters 
@@ -127,8 +104,7 @@ $ curl -H "Content-Type: application/json" \
       http://localhost:8000/users/ | python -m json.tool
 {
     "result": {
-        "email": "dmytro.striletskyi@gmail.com",
-        "username": "dmytro.striletskyi"
+        "email": "dmytro.striletskyi@gmail.com"
     }
 }
 ```
@@ -157,7 +133,7 @@ $ curl -X DELETE -H "Content-Type: application/json" \
 | username | Input arguments validation | User with specified username does not exists.                       | 400         |
 | username | Input arguments validation | User has no authority to delete this account by specified username. | 400         |
 
-* `POST | /users/{username}/email/` - change user e-mail by username.
+* `POST | /users/email/` - change user e-mail by username.
 
 ##### Request parameters
 
@@ -183,7 +159,7 @@ $ curl -X POST -d '{"new_email":"dmytro.striletskyi.1337@gmail.com"}' \
 | username  | Input arguments validation | User with specified username does not exists. | 400         |
 | new_email | Input arguments validation | This field is required.                       | 400         |
 
-* `POST | /users/{username}/password/` - change user password.
+* `POST | /users/password/` - change user password.
 
 ##### Request parameters
 
@@ -255,114 +231,6 @@ $ curl -X POST -H "Content-Type: application/json" \
 | :------: | :---------------: | ---------------------------------------------------------- | :---------: |
 | -        | General execution | User with specified e-mail address does not exist.         | 400         |
 | -        | General execution | Recovery password has been already sent to e-mail address. | 400         |
-
-* `GET | /users/{username}/profile/` - get user profile information by username.
-
-##### Request parameters 
-
-| Argument | Type   | Required | Description    |
-| :------: | :----: | :------: | -------------- |
-| username | String | Yes      | User username. |
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/users/john.smith/profile/ | python -m json.tool
-{
-    "result": {
-        "additional_information": "Software Engineer at Travis-CI.",
-        "avatar_url": "",
-        "facebook_url": "",
-        "first_name": "John",
-        "github_url": "",
-        "last_name": "Smith",
-        "linkedin_url": "https://www.linkedin.com/in/johnsmith",
-        "location": "Berlin, Germany",
-        "medium_url": "",
-        "steemit_url": "",
-        "telegram_url": "",
-        "twitter_url": "",
-        "user": {
-            "email": "john.smith@gmail.com",
-            "id": 5,
-            "is_active": true,
-            "is_staff": false,
-            "is_superuser": false,
-            "last_login": null,
-            "username": "john.smith"
-        },
-        "user_id": 5,
-        "website_url": "https://johnsmith.com"
-    }
-}
-```
-
-##### Known errors
-
-| Argument | Level                      | Error message                                 | Status code |
-| :------: | :------------------------: | --------------------------------------------- | :---------: |
-| username | Input arguments validation | User with specified username does not exists. | 400         |
-
-* `POST | /users/{username}/profile/` - update user profile information.
-
-##### Request parameters 
-
-| Arguments              | Type   | Required | Description                                |
-| :--------------------: | :----: | :------: | ------------------------------------------ |
-| first_name             | String | No       | User's first name.                         |
-| last_name              | String | No       | User's last name.                          |
-| location               | String | No       | User location.                             |
-| additional_information | String | No       | Additional information about the user.     |
-| avatar_url             | String | No       | Reference to the user avatar.              |
-| website_url            | String | No       | Reference to the user website.             |
-| linkedin_url           | String | No       | Reference to the user account on Linkedin. |
-| twitter_url            | String | No       | Reference to the user account on Twitter.  |
-| medium_url             | String | No       | Reference to the user account on Medium.   |
-| github_url             | String | No       | Reference to the user account on GitHub.   |
-| facebook_url           | String | No       | Reference to the user account on Facebook. |
-| telegram_url           | String | No       | Reference to the user account on Telegram. |
-| reddit_url             | String | No       | Reference to the user account on Reddit.   |
-| slack_url              | String | No       | Reference to the user account on Slack.    |
-| steemit_url            | String | No       | Reference to the user account on Steemit.  |
-| wikipedia_url          | String | No       | Reference to the user page on Wikipedia.   |
-
-```bash
-$ curl -X POST http://localhost:8000/users/dmytro.striletskyi/profile/ \
-     -H "Content-Type: application/json" \
-     -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-     -d $'{
-  "first_name": "John",
-  "last_name": "Smith",
-  "location": "Berlin, Germany",
-  "additional_information": "Software Engineer at Travis-CI.",
-  "website_url": "https://johnsmith.com",
-  "linkedin_url": "https://www.linkedin.com/in/johnsmith"
-}' | python -m json.tool
-{
-    "result": "User profile has been updated."
-}
-```
-
-* `POST | /users/{username}/avatars/` - upload user avatar.
-
-##### Request parameters 
-
-| Argument | Type   | Required | Description    |
-| :------: | :----: | :------: | -------------- |
-| username | String | Yes      | User username. |
-
-```bash
-$ curl -X POST -F "file=@/Users/dmytrostriletskyi/Desktop/default-user-logotype.png" \
-      -H -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \   
-      http://localhost:8000/users/dmytro.striletskyi/avatars/ | python -m json.tool
-{
-    "result": "User avatar has been uploaded."
-}
-```
-
-##### Known errors
-
-| Argument | Level             | Error message                                      | Status code |
-| :------: | :---------------: | -------------------------------------------------- | :---------: |
-| -        | General execution | User with specified e-mail address does not exist. | 400         |
 
 ### Block producer
 
@@ -627,88 +495,6 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
 }
 ```
 
-* `PUT | /block-producers/{block_producer_identifier}/likes/` - to like or unlike block producer.
-
-##### Request parameters 
-
-| Arguments                 | Type    | Required | Description                   |
-| :-----------------------: | :-----: | :------: | ----------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
-
-```bash
-$ curl -X PUT \
-      -H "Content-Type: application/json" \
-      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/block-producers/2/likes/ | python -m json.tool
-{
-    "result": "Block producer liking has been handled."
-}
-```
-
-##### Known errors
-
-| Argument  | Level             | Error message                                            | Status code |
-| :-------: | :---------------: | -------------------------------------------------------- | :---------: |
-| -         | General execution | User with specified e-mail address does not exist.       | 400         |
-| -         | General execution | Block producer with specified identifier does not exist. | 400         |
-
-* `PUT | /block-producers/{block_producer_identifier}/comments/` - to comment a block producer.
-
-##### Request parameters 
-
-| Arguments                 | Type    | Required | Description                      |
-| :-----------------------: | :-----: | :------: | -------------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer.    |
-| text                      | String  | Yes      | Comment text. Max length is 200. |
-
-```bash
-$ curl -X PUT -d '{"text":"Great block producer!"}' \
-      -H "Content-Type: application/json" \
-      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
-      http://localhost:8000/block-producers/2/comments/ | python -m json.tool
-{
-    "result": "Block producer has been commented."
-}
-```
-
-* `GET | /block-producers/{block_producer_identifier}/likes/` - get block producer's likes.
-
-##### Request parameters 
-
-| Arguments                 | Type    | Required | Description                   |
-| :-----------------------: | :-----: | :------: | ----------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/likes/ | python -m json.tool
-{
-    "result": [
-        {
-            "block_producer_id": 2,
-            "id": 2,
-            "user": {
-                "email": "john.smith@gmail.com",
-                "id": 1,
-                "is_active": true,
-                "is_staff": false,
-                "is_superuser": false,
-                "last_login": null,
-                "username": "john.smith"
-            },
-            "user_id": 1
-        },
-        ...
-    ]
-}
-```
-
-##### Known errors
-
-| Argument  | Level                      | Error message                                            | Status code |
-| :-------: | :------------------------: | -------------------------------------------------------- | :---------: |
-| -         | General execution          | Block producer with specified identifier does not exist. | 400         |
-| -         | Input arguments validation | This field is required.                                  | 400         |
-
 * `POST | /block-producers/{block_producer_identifier}/avatars/` - upload block producer avatar.
 
 ##### Request parameters 
@@ -718,104 +504,11 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
 | block_producer_identifier | Integer | Yes      | Identifier of block producer. |
 
 ```bash
-$ curl -X POST -F "file=@/Users/dmytrostriletskyi/Desktop/default-user-logotype.png" \
-      -H -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \   
-      http://localhost:8000/block-producers/2/avatars/ | python -m json.tool
+$ curl -X POST http://localhost:8000/block-producers/2/avatars/ \
+      -F "file=@/Users/dmytrostriletskyi/Desktop/default-user-logotype.png" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." | python -m json.tool
 {
     "result": "Block producer avatar has been uploaded."
-}
-```
-
-* `GET | /block-producers/{block_producer_identifier}/comments/` - get block producer's comments.
-
-##### Request parameters 
-
-| Arguments                 | Type    | Required | Description                   |
-| :-----------------------: | :-----: | :------: | ----------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/2/comments/ | python -m json.tool
-{
-    "result": [
-        {
-            "block_producer_id": 2,
-            "created_at": 1560950377.0,
-            "id": 10,
-            "text": "Great block producer!",
-            "user": {
-                "email": "paul.rudd@gmail.com",
-                "id": 3,
-                "is_active": true,
-                "is_staff": false,
-                "is_superuser": false,
-                "last_login": null,
-                "username": "paul.rudd"
-            },
-            "user_id": 3
-        },
-        ...
-    ]
-}
-```
-
-##### Known errors
-
-| Argument  | Level                      | Error message                                               | Status code |
-| :-------: | :------------------------: | ----------------------------------------------------------- | :---------: |
-| -         | General execution          | Block producer with specified identifier does not exist.    | 400         |
-| -         | Input arguments validation | This field is required.                                     | 400         |
-| -         | Input arguments validation | Ensure this value has at most 200 characters (it has more). | 400         |
-
-* `GET | /block-producers/likes/numbers/` - get block producer's likes numbers.
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/likes/numbers/ | python -m json.tool
-{
-    "result": [
-        {
-            "block_producer_id": 3,
-            "likes": 3
-        },
-        {
-            "block_producer_id": 4,
-            "likes": 3
-        },
-        {
-            "block_producer_id": 2,
-            "likes": 3
-        },
-        {
-            "block_producer_id": 1,
-            "likes": 3
-        }
-    ]
-}
-```
-
-* `GET | /block-producers/comments/numbers/` - get block producer's comments numbers.
-
-```bash
-$ curl -H "Content-Type: application/json" http://localhost:8000/block-producers/comments/numbers/ | python -m json.tool
-{
-    "result": [
-        {
-            "block_producer_id": 3,
-            "comments": 3
-        },
-        {
-            "block_producer_id": 4,
-            "comments": 3
-        },
-        {
-            "block_producer_id": 2,
-            "comments": 3
-        },
-        {
-            "block_producer_id": 1,
-            "comments": 3
-        }
-    ]
 }
 ```
 

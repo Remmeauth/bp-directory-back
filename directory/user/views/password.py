@@ -21,7 +21,6 @@ from services.models import PasswordRecoveryState
 from user.domain.errors import (
     RecoveryPasswordHasBeenAlreadySentError,
     SpecifiedUserPasswordIsIncorrectError,
-    UserHasNoAuthorityToChangePasswordForThisUserError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
     UserWithSpecifiedIdentifierDoesNotExistError,
 )
@@ -49,16 +48,11 @@ class UserPasswordSingle(APIView):
         self.user = User()
 
     @authentication_classes((JSONWebTokenAuthentication, ))
-    def post(self, request, username):
+    def post(self, request):
         """
         Change user password.
         """
-        if username != request.user.username:
-            return JsonResponse(
-                {'error': UserHasNoAuthorityToChangePasswordForThisUserError().message}, status=HTTPStatus.BAD_REQUEST,
-            )
-
-        email = request.user.email
+        user_email = request.user.email
 
         old_password = request.data.get('old_password')
         new_password = request.data.get('new_password')
@@ -72,7 +66,9 @@ class UserPasswordSingle(APIView):
             return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
 
         try:
-            ChangeUserPassword(user=self.user).do(email=email, old_password=old_password, new_password=new_password)
+            ChangeUserPassword(user=self.user).do(
+                email=user_email, old_password=old_password, new_password=new_password,
+            )
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
         except SpecifiedUserPasswordIsIncorrectError as error:

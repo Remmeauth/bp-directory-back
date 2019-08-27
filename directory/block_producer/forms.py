@@ -52,14 +52,6 @@ class UpdateBlockProducerForm(forms.Form):
     steemit_url = forms.URLField(required=False, max_length=200)
 
 
-class CommentBlockProducerForm(forms.Form):
-    """
-    Comment a block producer form implementation.
-    """
-
-    text = forms.CharField(max_length=200)
-
-
 class UploadBlockProducerAvatarForm(forms.Form):
     """
     Upload block producer avatar form implementation.

@@ -75,14 +75,14 @@ class ChangeUserEmail:
         """
         self.user = user
 
-    def do(self, username, new_email):
+    def do(self, user_email, new_email):
         """
         Change user e-mail.
         """
-        if not self.user.does_exist_by_username(username=username):
+        if not self.user.does_exist_by_email(email=user_email):
             raise UserWithSpecifiedUsernameDoesNotExistError
 
-        self.user.set_new_email(username=username, email=new_email)
+        self.user.set_new_email(user_email=user_email, new_email=new_email)
 
 
 class RequestUserPasswordRecovery:
@@ -143,28 +143,6 @@ class RecoverUserPassword:
         return email, new_password
 
 
-class UpdateUserProfile:
-    """
-    Update user profile implementation.
-    """
-
-    def __init__(self, user, profile):
-        """
-        Constructor.
-        """
-        self.user = user
-        self.profile = profile
-
-    def do(self, username, info):
-        """
-        Update user profile.
-        """
-        if not self.user.does_exist_by_username(username=username):
-            raise UserWithSpecifiedUsernameDoesNotExistError
-
-        self.profile.update(username=username, info=info)
-
-
 class GetUser:
     """
     Get user implementation.
@@ -184,28 +162,6 @@ class GetUser:
             raise UserWithSpecifiedUsernameDoesNotExistError
 
         return self.user.get(username=username)
-
-
-class GetUserProfile:
-    """
-    Get user profile implementation.
-    """
-
-    def __init__(self, user, profile):
-        """
-        Constructor.
-        """
-        self.user = user
-        self.profile = profile
-
-    def do(self, username):
-        """
-        Get user profile information by username.
-        """
-        if not self.user.does_exist_by_username(username=username):
-            raise UserWithSpecifiedUsernameDoesNotExistError
-
-        return self.profile.get(username=username)
 
 
 class DeleteUser:

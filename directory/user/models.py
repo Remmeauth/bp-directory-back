@@ -3,14 +3,12 @@ Provide database models for user.
 """
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from user.dto.profile import UserProfileDto
 from user.dto.user import UserDto
 from user.managers import UserManager
 
@@ -60,8 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Create a user with specified e-mail address and password.
         """
-        user = cls.objects.create_user(email=email, username=username, password=password)
-        Profile.objects.create(user=user)
+        cls.objects.create_user(email=email, username=username, password=password)
 
     @classmethod
     def does_exist_by_email(cls, email):
@@ -118,64 +115,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         cls.objects.filter(username=username).delete()
 
     @classmethod
-    def set_new_email(cls, username, email):
+    def set_new_email(cls, user_email, new_email):
         """
         Set new user e-mail by specified username.
         """
-        user = cls.objects.get(username=username)
-        user.email = email
+        user = cls.objects.get(email=user_email)
+        user.email = new_email
         user.save()
-
-
-class Profile(models.Model):
-    """
-    Profile database model.
-    """
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
-    location = models.CharField(max_length=100, blank=True)
-    avatar_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_USER_LOGOTYPE_URL)
-    additional_information = models.TextField(blank=True)
-
-    website_url = models.URLField(max_length=200, blank=True)
-    linkedin_url = models.URLField(max_length=200, blank=True)
-    twitter_url = models.URLField(max_length=200, blank=True)
-    medium_url = models.URLField(max_length=200, blank=True)
-    github_url = models.URLField(max_length=200, blank=True)
-    facebook_url = models.URLField(max_length=200, blank=True)
-    telegram_url = models.URLField(max_length=200, blank=True)
-    steemit_url = models.URLField(max_length=200, blank=True)
-
-    def __str__(self):
-        """
-        Get string representation of an object.
-        """
-        return self.user.email
-
-    @classmethod
-    def update(cls, username, info):
-        """
-        Update user profile with specified information.
-        """
-        user = User.objects.get(username=username)
-        cls.objects.filter(user=user).update(**info)
-
-    @classmethod
-    def get(cls, username):
-        """
-        Get user profile information by username.
-        """
-        user = User.objects.get(username=username)
-        user_profile_as_dict = cls.objects.filter(user=user).values().first()
-
-        user_as_dict = User.objects.filter(username=username).values().first()
-
-        del user_as_dict['password']
-        del user_as_dict['created']
-
-        user_profile_as_dict['user'] = user_as_dict
-
-        return UserProfileDto(**user_profile_as_dict)

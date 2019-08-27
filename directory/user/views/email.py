@@ -26,10 +26,11 @@ class UserEmailSingle(APIView):
         self.user = User()
 
     @authentication_classes((JSONWebTokenAuthentication, ))
-    def post(self, request, username):
+    def post(self, request):
         """
         Change user e-mail.
         """
+        user_email = request.user.email
         new_email = request.data.get('new_email')
 
         form = ChangeUserEmailForm({
@@ -40,7 +41,7 @@ class UserEmailSingle(APIView):
             return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
 
         try:
-            ChangeUserEmail(user=self.user).do(username=username, new_email=new_email)
+            ChangeUserEmail(user=self.user).do(user_email=user_email, new_email=new_email)
         except UserWithSpecifiedUsernameDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
