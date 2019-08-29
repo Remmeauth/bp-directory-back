@@ -1,7 +1,6 @@
 """
 Provide settings for block producers directory.
 """
-import datetime
 import os
 
 import dj_database_url
@@ -27,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
+    'django_admin_multiple_choice_list_filter',
     'rest_framework',
 
     'block_producer',
@@ -38,6 +38,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -110,8 +111,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
-
 AUTH_USER_MODEL = 'user.User'
 
 DEFAULT_USER_LOGOTYPE_URL = 'https://block-producers-directory.s3-us-west-2.amazonaws.com/' \
@@ -125,3 +124,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 AWS_BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
+TELEGRAM_BOT_HOST = os.environ.get('TELEGRAM_BOT_HOST')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
