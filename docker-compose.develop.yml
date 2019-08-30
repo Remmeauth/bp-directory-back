@@ -19,6 +19,8 @@ services:
       - 'DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres'
       - 'PROJECT_EMAIL_ADDRESS=directory-test@remme.io'
       - 'SENDGRID_API_KEY=${SENDGRID_API_KEY}'
+      - 'TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}'
+      - 'TELEGRAM_BOT_HOST=${TELEGRAM_BOT_HOST}'
     ports:
       - '8000:8000'
     stdin_open: true

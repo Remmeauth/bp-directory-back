@@ -390,6 +390,7 @@ $ curl http://localhost:8000/block-producers/2/ -H "Content-Type: application/js
         "reddit_url": "https://reddit.com/@bpcanada",
         "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in Canada",
         "slack_url": "https://slack.com/bpcanada",
+        "status": "active",
         "steemit_url": "https://steemit.com/@bpcanada",
         "telegram_url": "https://t.me/bpcanada",
         "twitter_url": "https://twitter.com/bpcanada",
@@ -434,6 +435,7 @@ $ curl http://localhost:8000/block-producers/ -H "Content-Type: application/json
             "reddit_url": "https://reddit.com/@bpusa",
             "short_description": "Leading Block Producer - founded by a team of serial tech entrepreneurs, headquartered in USA",
             "slack_url": "https://slack.com/bpusa",
+            "status": "active",
             "steemit_url": "https://steemit.com/@bpusa",
             "telegram_url": "https://t.me/bpusa",
             "twitter_url": "https://twitter.com/bpusa",
@@ -830,6 +832,8 @@ The project requires the following environment variables:
 
 ```bash
 export SENDGRID_API_KEY='PZqNQgmk9dJcw.yJ0eNzZ0sVpa5NzZ0sVpa5.eyJ1c2VyX2eyJ1c2VyX2'
+export TELEGRAM_BOT_TOKEN='237187656:AAFD8Zc_7-g2NkQR0gYaIicJVjhUSb6yOXo'
+export TELEGRAM_BOT_HOST='https://directory-telegram-bot-production.com'
 ```
 
 Instead of default values above, request workable and real ones from [@dmytrostriletskyi](https://github.com/dmytrostriletskyi) or [@yelaginj](https://github.com/yelaginj).

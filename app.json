@@ -35,6 +35,14 @@
       "description": "AWS secret access key.",
       "required": true
     },
+    "TELEGRAM_BOT_TOKEN": {
+      "description": "Block producers Telegram bot token.",
+      "required": true
+    },
+    "TELEGRAM_BOT_HOST": {
+      "description": "Block producers Telegram host.",
+      "required": true
+    }
   },
   "addons": [
     {
