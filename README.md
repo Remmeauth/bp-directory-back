@@ -832,6 +832,8 @@ The project requires the following environment variables:
 
 ```bash
 export SENDGRID_API_KEY='PZqNQgmk9dJcw.yJ0eNzZ0sVpa5NzZ0sVpa5.eyJ1c2VyX2eyJ1c2VyX2'
+export TELEGRAM_BOT_TOKEN='237187656:AAFD8Zc_7-g2NkQR0gYaIicJVjhUSb6yOXo'
+export TELEGRAM_BOT_HOST='https://directory-telegram-bot-production.com'
 ```
 
 Instead of default values above, request workable and real ones from [@dmytrostriletskyi](https://github.com/dmytrostriletskyi) or [@yelaginj](https://github.com/yelaginj).
