@@ -224,12 +224,12 @@ class TestBlockProducerCollection(TestCase):
         expected_result = {
             'result': [
                 {
-                    'website_url': 'https://bpcanada.com',
+                    'website_url': 'https://bpunitedkingdom.com',
                     'medium_url': '',
                     'facebook_url': '',
-                    'name': 'Block producer Canada',
+                    'name': 'Block producer United Kingdom',
                     'twitter_url': '',
-                    'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in United Kingdom.',
                     'full_description': '',
                     'github_url': '',
                     'telegram_url': '',
@@ -238,7 +238,7 @@ class TestBlockProducerCollection(TestCase):
                     'user_id': 3,
                     'reddit_url': '',
                     'location': '',
-                    'id': 6,
+                    'id': 7,
                     'linkedin_url': '',
                     'steemit_url': '',
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
@@ -255,12 +255,12 @@ class TestBlockProducerCollection(TestCase):
                     },
                 },
                 {
-                    'website_url': 'https://bpunitedkingdom.com',
+                    'website_url': 'https://bpcanada.com',
                     'medium_url': '',
                     'facebook_url': '',
-                    'name': 'Block producer United Kingdom',
+                    'name': 'Block producer Canada',
                     'twitter_url': '',
-                    'short_description': 'Founded by a team of serial tech entrepreneurs in United Kingdom.',
+                    'short_description': 'Founded by a team of serial tech entrepreneurs in Canada.',
                     'full_description': '',
                     'github_url': '',
                     'telegram_url': '',
@@ -269,7 +269,7 @@ class TestBlockProducerCollection(TestCase):
                     'user_id': 3,
                     'reddit_url': '',
                     'location': '',
-                    'id': 7,
+                    'id': 6,
                     'linkedin_url': '',
                     'steemit_url': '',
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'

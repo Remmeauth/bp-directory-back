@@ -47,7 +47,9 @@ class BlockProducer(models.Model):
     short_description = models.CharField(max_length=100, blank=False)
     full_description = models.TextField(blank=True)
     logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
+
     status = models.CharField(max_length=10, choices=BLOCK_PRODUCER_STATUSES, default=BLOCK_PRODUCER_STATUS_MODERATION)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
     twitter_url = models.URLField(max_length=200, blank=True)
@@ -81,7 +83,7 @@ class BlockProducer(models.Model):
         """
         Get block producers.
         """
-        block_producers_as_dicts = cls.objects.all().values()
+        block_producers_as_dicts = cls.objects.all().order_by('-created_at').values()
 
         for block_producer in block_producers_as_dicts:
 
@@ -92,6 +94,7 @@ class BlockProducer(models.Model):
             del user_as_dict['created']
 
             block_producer['user'] = user_as_dict
+            del block_producer['created_at']
 
         return BlockProducerDto.schema().load(block_producers_as_dicts, many=True)
 
@@ -129,6 +132,7 @@ class BlockProducer(models.Model):
         del user_as_dict['created']
 
         block_producer_as_dict['user'] = user_as_dict
+        del block_producer_as_dict['created_at']
 
         return BlockProducerDto(**block_producer_as_dict)
 
@@ -144,7 +148,7 @@ class BlockProducer(models.Model):
 
         block_producers_as_list = cls.objects.annotate(
             search=search_vector,
-        ).filter(search=SearchQuery(phrase)).values()
+        ).filter(search=SearchQuery(phrase)).order_by('-created_at').values()
 
         for block_producer_as_dict in block_producers_as_list:
             user_identifier = block_producer_as_dict.get('user_id')
@@ -155,6 +159,7 @@ class BlockProducer(models.Model):
             del user_as_dict['created']
 
             del block_producer_as_dict['search']
+            del block_producer_as_dict['created_at']
 
             block_producer_as_dict['user'] = user_as_dict
 
@@ -179,6 +184,7 @@ class BlockProducer(models.Model):
         del user_as_dict['created']
 
         last_block_producer['user'] = user_as_dict
+        del last_block_producer['created_at']
 
         return BlockProducerDto(**last_block_producer)
 
