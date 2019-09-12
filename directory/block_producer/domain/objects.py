@@ -271,3 +271,28 @@ class GetBlockProducerLikesNumber:
         Get block producers' likes number.
         """
         return self.block_producer_like.get_numbers()
+
+
+class DeleteBlockProducer:
+    """
+    Delete block producer implementation.
+    """
+
+    def __init__(self, user, block_producer):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+
+    def do(self, user_email, block_producer_id):
+        """
+        Delete block producer by its identifier.
+        """
+        if not self.user.does_exist_by_email(email=user_email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
+        return self.block_producer.delete_(identifier=block_producer_id)

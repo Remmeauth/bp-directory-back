@@ -581,6 +581,31 @@ $ curl -X POST http://localhost:8000/block-producers/2/ \
 | -        | General execution | User with specified e-mail address does not exist.       | 400         |
 | -        | General execution | Block producer with specified identifier does not exist. | 400         |
 
+* `DELETE | /block-producers/{block_producer_identifier}/` - delete block producer by its identifier.
+
+##### Request parameters 
+
+| Arguments                 | Type    | Required | Description                   |
+| :-----------------------: | :-----: | :------: | ----------------------------- |
+| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
+
+```bash
+$ curl -X DELETE -H "Content-Type: application/json" \
+      -H "Authorization: JWT eyJ0e....eyJ1c2VyX2....sOx4S9zpC..." \
+      http://localhost:8000/block-producers/2/ | python -m json.tool
+{
+    "result": "Block producer has been deleted."
+}
+```
+
+##### Known errors
+
+| Argument                  | Level                      | Error message                                                          | Status code |
+| :-----------------------: | :------------------------: | ---------------------------------------------------------------------- | :---------: |
+| block_producer_identifier | Input arguments validation | Block producer with specified identifier does not exist.               | 400         |
+| username                  | Input arguments validation | User has no authority to delete this block producer by its identifier. | 400         |
+
+
 * `GET | /block-producers/search/?phrase=block%20producer%20usa` - search block producers by phrase.
 
 ##### Request parameters 
