@@ -74,6 +74,21 @@ class TestBlockProducerSingle(TestCase):
 
         self.user_token = response.data.get('token')
 
+        self.second_user = User.objects.create_user(
+            id=2,
+            email='john.cap@gmail.com',
+            username='john.cap',
+            password='john.cap.1337',
+        )
+
+        BlockProducer.objects.create(
+            id=4,
+            user=self.second_user,
+            name='Remme',
+            website_url='https://remmebp.com',
+            short_description='Founded by a team of serial tech entrepreneurs in Ukraine.',
+        )
+
     def test_get_block_producer(self):
         """
         Case: get block producer.
@@ -178,6 +193,62 @@ class TestBlockProducerSingle(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.NOT_FOUND == response.status_code
+
+    def test_delete_block_producer(self):
+        """
+        Case: delete block producer by its identifier.
+        Expect: block producer deleted from the database.
+        """
+        expected_result = {
+            'result': 'Block producer has been deleted.',
+        }
+
+        response = self.client.delete(
+            f'/block-producers/1/',
+            HTTP_AUTHORIZATION='JWT ' + self.user_token,
+            content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+    def test_delete_block_producer_by_non_exiting_identifier(self):
+        """
+        Case: delete block producer by non-exiting identifier.
+        Expect: block producer with specified identifier does not exist error message.
+        """
+        expected_result = {
+            'error': 'Block producer with specified identifier does not exist.',
+        }
+
+        non_existing_block_producer_identifier = 100500
+
+        response = self.client.delete(
+            f'/block-producers/{non_existing_block_producer_identifier}/',
+            HTTP_AUTHORIZATION='JWT ' + self.user_token,
+            content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.NOT_FOUND == response.status_code
+
+    def test_delete_block_producer_without_deletion_rights(self):
+        """
+        Case: deleting a block producer without deletion rights.
+        Expect: user has no authority to delete this block producer by its identifier error message.
+        """
+        expected_result = {
+            'error': 'User has no authority to delete this block producer by its identifier.',
+        }
+
+        response = self.client.delete(
+            f'/block-producers/4/',
+            HTTP_AUTHORIZATION='JWT ' + self.user_token,
+            content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
 
 
 class TestBlockProducerCollection(TestCase):

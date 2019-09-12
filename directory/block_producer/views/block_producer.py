@@ -19,6 +19,7 @@ from block_producer.domain.errors import (
 )
 from block_producer.domain.objects import (
     CreateBlockProducer,
+    DeleteBlockProducer,
     GetBlockProducer,
     GetBlockProducers,
     GetUserLastBlockProducer,
@@ -32,7 +33,10 @@ from block_producer.forms import (
 )
 from block_producer.models import BlockProducer
 from services.telegram import TelegramBot
-from user.domain.errors import UserWithSpecifiedEmailAddressDoesNotExistError
+from user.domain.errors import (
+    UserHasNoAuthorityToDeleteThisBlockProducerError,
+    UserWithSpecifiedEmailAddressDoesNotExistError,
+)
 from user.models import User
 
 
@@ -91,6 +95,44 @@ class BlockProducerSingle(APIView):
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
         return JsonResponse({'result': 'Block producer has been updated.'}, status=HTTPStatus.OK)
+
+    @authentication_classes((JSONWebTokenAuthentication,))
+    def delete(self, request, block_producer_id):
+        """
+        Delete block producer.
+        """
+        user_email = request.user.email
+
+        try:
+            response = self.get(request=None, block_producer_id=block_producer_id)
+
+            json_response = json.loads(response.content)
+            username = json_response.get('result').get('user').get('username')
+
+        except BlockProducerWithSpecifiedIdentifierDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+
+        except AttributeError:
+            return JsonResponse(
+                {'error': BlockProducerWithSpecifiedIdentifierDoesNotExistError().message}, status=HTTPStatus.NOT_FOUND,
+            )
+
+        if username != request.user.username:
+            return JsonResponse(
+                {'error': UserHasNoAuthorityToDeleteThisBlockProducerError().message}, status=HTTPStatus.BAD_REQUEST,
+            )
+
+        try:
+            DeleteBlockProducer(user=self.user, block_producer=self.block_producer).do(
+                user_email=user_email, block_producer_id=block_producer_id,
+            )
+        except (
+            BlockProducerWithSpecifiedIdentifierDoesNotExistError,
+            UserWithSpecifiedEmailAddressDoesNotExistError,
+        ) as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+
+        return JsonResponse({'result': 'Block producer has been deleted.'}, status=HTTPStatus.OK)
 
 
 class BlockProducerCollection(APIView):

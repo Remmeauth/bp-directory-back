@@ -188,6 +188,13 @@ class BlockProducer(models.Model):
 
         return BlockProducerDto(**last_block_producer)
 
+    @classmethod
+    def delete_(cls, identifier):
+        """
+        Delete block producer by its identifier.
+        """
+        cls.objects.filter(id=identifier).delete()
+
 
 class BlockProducerLike(models.Model):
     """

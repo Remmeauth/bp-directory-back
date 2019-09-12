@@ -121,3 +121,15 @@ class UserHasNoAuthorityToChangePasswordForThisUserError(Exception):
         Constructor.
         """
         self.message = 'User has no authority to change password for this user by specified username.'
+
+
+class UserHasNoAuthorityToDeleteThisBlockProducerError(Exception):
+    """
+    User has no authority to delete this block producer by its identifier error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User has no authority to delete this block producer by its identifier.'
