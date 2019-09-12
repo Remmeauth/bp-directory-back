@@ -1,7 +1,6 @@
 """
 Provide implementation of block producer data transfer object.
 """
-import typing
 from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
@@ -24,7 +23,6 @@ class BlockProducerDto:
     name: str
     website_url: str
     short_description: str
-    created_at: typing.Any
 
     location: str = ''
     full_description: str = ''

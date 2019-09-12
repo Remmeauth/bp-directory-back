@@ -83,7 +83,7 @@ class BlockProducer(models.Model):
         """
         Get block producers.
         """
-        block_producers_as_dicts = cls.objects.all().order_by('created_at').values()
+        block_producers_as_dicts = cls.objects.all().order_by('-created_at').values()
 
         for block_producer in block_producers_as_dicts:
 
@@ -94,6 +94,7 @@ class BlockProducer(models.Model):
             del user_as_dict['created']
 
             block_producer['user'] = user_as_dict
+            del block_producer['created_at']
 
         return BlockProducerDto.schema().load(block_producers_as_dicts, many=True)
 
@@ -131,6 +132,7 @@ class BlockProducer(models.Model):
         del user_as_dict['created']
 
         block_producer_as_dict['user'] = user_as_dict
+        del block_producer_as_dict['created_at']
 
         return BlockProducerDto(**block_producer_as_dict)
 
@@ -146,7 +148,7 @@ class BlockProducer(models.Model):
 
         block_producers_as_list = cls.objects.annotate(
             search=search_vector,
-        ).filter(search=SearchQuery(phrase)).order_by('created_at').values()
+        ).filter(search=SearchQuery(phrase)).order_by('-created_at').values()
 
         for block_producer_as_dict in block_producers_as_list:
             user_identifier = block_producer_as_dict.get('user_id')
@@ -157,6 +159,7 @@ class BlockProducer(models.Model):
             del user_as_dict['created']
 
             del block_producer_as_dict['search']
+            del block_producer_as_dict['created_at']
 
             block_producer_as_dict['user'] = user_as_dict
 
@@ -181,6 +184,7 @@ class BlockProducer(models.Model):
         del user_as_dict['created']
 
         last_block_producer['user'] = user_as_dict
+        del last_block_producer['created_at']
 
         return BlockProducerDto(**last_block_producer)
 
