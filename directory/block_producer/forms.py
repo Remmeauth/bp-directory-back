@@ -69,7 +69,7 @@ class UploadBlockProducerAvatarForm(forms.Form):
     file = forms.FileField()
 
 
-class RejectedBlockProducerForm(forms.Form):
+class RejectedBlockProducerDescriptionForm(forms.Form):
     """
     Send a message to the specified email address with a description
     of the reason why the block producer has been rejected form implementation.
