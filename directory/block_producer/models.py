@@ -45,10 +45,11 @@ class BlockProducer(models.Model):
     website_url = models.URLField(max_length=200, blank=False)
     location = models.CharField(max_length=100, blank=True)
     short_description = models.CharField(max_length=100, blank=False)
-    full_description = models.TextField(blank=True)
+    full_description = models.TextField(max_length=10000, blank=True)
     logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
 
     status = models.CharField(max_length=10, choices=BLOCK_PRODUCER_STATUSES, default=BLOCK_PRODUCER_STATUS_MODERATION)
+    status_description = models.TextField(max_length=1000, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
