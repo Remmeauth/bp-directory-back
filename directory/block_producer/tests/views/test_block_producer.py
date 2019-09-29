@@ -496,9 +496,9 @@ class TestBlockProducerSearchCollection(TestCase):
         assert HTTPStatus.OK == response.status_code
 
 
-class TestRejectedBlockProducerStatusSingle(TestCase):
+class TestRejectedBlockProducerDescriptionSingle(TestCase):
     """
-    Implements tests for implementation of single rejected block producer status endpoint.
+    Implements tests for implementation of single rejected block producer description endpoint.
     """
 
     def setUp(self):
@@ -519,10 +519,10 @@ class TestRejectedBlockProducerStatusSingle(TestCase):
         )
 
     @patch('services.email.Email.send')
-    def test_rejected_block_producer_sent_description_to_email(self, mock_email_send):
+    def test_rejected_block_producer_description(self, mock_email_send):
         """
-        Case: search block producers by phrase.
-        Expect: list of block producers is returned.
+        Case: send block producer status description to the email address.
+        Expect: message was sent to the specified email is returned.
         """
         expected_result = {
             'result': 'Message was sent to the specified email address with a description '
@@ -539,3 +539,75 @@ class TestRejectedBlockProducerStatusSingle(TestCase):
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code
+
+    def test_rejected_block_producer_description_with_incorrect_email(self):
+        """
+        Case: send block producer status description by incorrect email.
+        Expect: enter a valid email address error message.
+        """
+        expected_result = {
+            'errors': {
+                'email': ['Enter a valid email address.'],
+            },
+        }
+
+        response = self.client.post('/block-producers/12/description/', json.dumps({
+            'email': 'martin.fowler.1337',
+        }), content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_rejected_block_producer_description_with_non_existent_email(self):
+        """
+        Case: send block producer status description with non-existent email.
+        Expect: user with specified e-mail address does not exist error message.
+        """
+        expected_result = {
+            'error': 'User with specified e-mail address does not exist.',
+        }
+
+        response = self.client.post('/block-producers/12/description/', json.dumps({
+            'email': 'flower@gmail.com',
+        }), content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.NOT_FOUND == response.status_code
+
+    def test_rejected_block_producer_description_without_email(self):
+        """
+        Case: send block producer status description without email.
+        Expect: this field is required error message.
+        """
+        expected_result = {
+            'errors': {
+                'email': ['This field is required.'],
+            },
+        }
+
+        response = self.client.post(
+            '/block-producers/12/description/', json.dumps({}), content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.BAD_REQUEST == response.status_code
+
+    def test_rejected_block_producer_description_by_non_exiting_identifier(self):
+        """
+        Case: send block producer status description by non-exiting identifier.
+        Expect: block producer with specified identifier does not exist error message.
+        """
+        expected_result = {
+            'error': 'Block producer with specified identifier does not exist.',
+        }
+
+        non_existing_block_producer_identifier = 100500
+
+        response = self.client.delete(
+            f'/block-producers/{non_existing_block_producer_identifier}/description/',
+            json.dumps({'email': 'flower@gmail.com'}),
+            content_type='application/json',
+        )
+
+        assert expected_result == response.json()
+        assert HTTPStatus.NOT_FOUND == response.status_code
