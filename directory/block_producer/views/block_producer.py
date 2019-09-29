@@ -24,14 +24,14 @@ from block_producer.domain.objects import (
     GetBlockProducer,
     GetBlockProducers,
     GetUserLastBlockProducer,
-    RejectedBlockProducer,
+    RejectedBlockProducerDescription,
     SearchBlockProducer,
     UpdateBlockProducer,
 )
 from block_producer.dto.block_producer import BlockProducerDto
 from block_producer.forms import (
     CreateBlockProducerForm,
-    RejectedBlockProducerForm,
+    RejectedBlockProducerDescriptionForm,
     UpdateBlockProducerForm,
 )
 from block_producer.models import BlockProducer
@@ -230,9 +230,9 @@ class BlockProducerSearchCollection(APIView):
         return JsonResponse({'result': serialized_block_producers}, status=HTTPStatus.OK)
 
 
-class RejectedBlockProducerSingle(APIView):
+class RejectedBlockProducerDescriptionSingle(APIView):
     """
-    Single rejected block producer endpoint implementation.
+    Single rejected block producer description endpoint implementation.
     """
 
     def __init__(self):
@@ -251,7 +251,7 @@ class RejectedBlockProducerSingle(APIView):
         """
         email = request.data.get('email')
 
-        form = RejectedBlockProducerForm({
+        form = RejectedBlockProducerDescriptionForm({
             'email': email,
         })
 
@@ -259,25 +259,27 @@ class RejectedBlockProducerSingle(APIView):
             return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
 
         try:
-            status_description = RejectedBlockProducer(
+            status_description = RejectedBlockProducerDescription(
                 user=self.user, block_producer=self.block_producer,
             ).do(email=email, block_producer_id=block_producer_id)
 
         except UserWithSpecifiedEmailAddressDoesNotExistError as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+        except BlockProducerWithSpecifiedIdentifierDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
-        # if status_description:
+        if status_description:
 
-        message = EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value.format(status_description)
+            message = EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value.format(status_description)
 
-        self.email_service.send(
-            email_to=email, subject=EmailSubject.BLOCK_PRODUCER_REJECTED.value, message=message,
-        )
+            self.email_service.send(
+                email_to=email, subject=EmailSubject.BLOCK_PRODUCER_REJECTED.value, message=message,
+            )
 
-        return JsonResponse(
-            {
-                'result': 'Message was sent to the specified email address with a description '
-                          'of the reason for the rejection of the block producer.'
-            },
-            status=HTTPStatus.OK,
-        )
+            return JsonResponse(
+                {
+                    'result': 'Message was sent to the specified email address with a description '
+                              'of the reason for the rejection of the block producer.'
+                },
+                status=HTTPStatus.OK,
+            )
