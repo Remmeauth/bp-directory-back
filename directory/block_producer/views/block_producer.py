@@ -244,7 +244,7 @@ class RejectedBlockProducerDescriptionSingle(APIView):
         self.block_producer = BlockProducer()
 
     @permission_classes((AllowAny, ))
-    def post(self, request, block_producer_id):
+    def post(self, request, block_producer_id):  # noqa: D205, D400
         """
         Send a message to the specified email address with a description
         of the reason why the block producer has been rejected.
@@ -279,7 +279,9 @@ class RejectedBlockProducerDescriptionSingle(APIView):
             return JsonResponse(
                 {
                     'result': 'Message was sent to the specified email address with a description '
-                              'of the reason for the rejection of the block producer.'
+                              'of the reason for the rejection of the block producer.',
                 },
                 status=HTTPStatus.OK,
             )
+
+        return JsonResponse({'result': 'Block producer not rejected.'}, status=HTTPStatus.OK)
