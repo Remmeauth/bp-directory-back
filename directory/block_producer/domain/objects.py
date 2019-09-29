@@ -317,5 +317,8 @@ class RejectedBlockProducerDescription:
         if not self.user.does_exist_by_email(email=email):
             raise UserWithSpecifiedEmailAddressDoesNotExistError
 
+        if not self.block_producer.does_exist(identifier=block_producer_id):
+            raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
+
         status_description = self.block_producer.get_status_description(email=email, identifier=block_producer_id)
         return status_description
