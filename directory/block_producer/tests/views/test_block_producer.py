@@ -3,6 +3,7 @@ Provide tests for implementation of block producer endpoints.
 """
 import json
 from http import HTTPStatus
+from unittest.mock import patch
 
 from django.test import TestCase
 
@@ -490,6 +491,51 @@ class TestBlockProducerSearchCollection(TestCase):
         expected_result = {'result': []}
 
         response = self.client.get('/block-producers/search/?phrase=queen', content_type='application/json')
+
+        assert expected_result == response.json()
+        assert HTTPStatus.OK == response.status_code
+
+
+class TestRejectedBlockProducerStatusSingle(TestCase):
+    """
+    Implements tests for implementation of single rejected block producer status endpoint.
+    """
+
+    def setUp(self):
+        """
+        Setup.
+        """
+        user = User.objects.create_user(
+            email='martin.fowler@gmail.com',
+            username='martin.fowler',
+            password='martin.fowler.1337',
+        )
+
+        BlockProducer.objects.create(
+            user=user,
+            name='Block producer USA',
+            website_url='https://bpusa.com',
+            short_description='Founded by a team of serial tech entrepreneurs in USA.',
+        )
+
+    @patch('services.email.Email.send')
+    def test_rejected_block_producer_sent_description_to_email(self, mock_email_send):
+        """
+        Case: search block producers by phrase.
+        Expect: list of block producers is returned.
+        """
+        expected_result = {
+            'result': 'Message was sent to the specified email address with a description '
+                      'of the reason for the rejection of the block producer.'
+        }
+
+        mock_email_send.return_value = None
+
+        response = self.client.post(
+            '/block-producers/12/description/',
+            json.dumps({'email': 'martin.fowler@gmail.com'}),
+            content_type='application/json',
+        )
 
         assert expected_result == response.json()
         assert HTTPStatus.OK == response.status_code

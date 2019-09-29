@@ -10,6 +10,7 @@ class EmailSubject(Enum):
     """
 
     RECOVER_PASSWORD_LINK = 'Password recovery link'
+    BLOCK_PRODUCER_REJECTED = 'Block producer rejected'
 
 
 class EmailBody(Enum):
@@ -25,3 +26,6 @@ class EmailBody(Enum):
 
     PASSWORD_RECOVERY_MESSAGE = "Hi,<br><br>Recently you have requested password recovery. " \
                                 "Your new password: <strong>{}</strong>. <br><br>Thanks,<br>Remme"
+
+    BLOCK_PRODUCER_REJECTED_MESSAGE = "Hi,<br><br>Recently you have requested password recovery. " \
+                                      "Your new password: <strong>{}</strong>. <br><br>Thanks,<br>Remme"

@@ -296,3 +296,26 @@ class DeleteBlockProducer:
             raise BlockProducerWithSpecifiedIdentifierDoesNotExistError
 
         return self.block_producer.delete_(identifier=block_producer_id)
+
+
+class RejectedBlockProducer:
+    """
+    Sent block producer status description to the email address implementation.
+    """
+
+    def __init__(self, user, block_producer):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.block_producer = block_producer
+
+    def do(self, email, block_producer_id):
+        """
+        Sent block producer status description to the email address.
+        """
+        if not self.user.does_exist_by_email(email=email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        status_description = self.block_producer.get_status_description(email=email, identifier=block_producer_id)
+        return status_description
