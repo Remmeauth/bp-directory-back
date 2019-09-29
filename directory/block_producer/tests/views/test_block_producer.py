@@ -115,6 +115,7 @@ class TestBlockProducerSingle(TestCase):
                 'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                             'bps/logos/default-block-producer-logotype.png',
                 'status': 'moderation',
+                'status_description': '',
                 'linkedin_url': '',
                 'twitter_url': '',
                 'medium_url': '',
@@ -315,6 +316,7 @@ class TestBlockProducerCollection(TestCase):
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
                     'status': 'moderation',
+                    'status_description': '',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -346,6 +348,7 @@ class TestBlockProducerCollection(TestCase):
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
                     'status': 'moderation',
+                    'status_description': '',
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
@@ -469,6 +472,7 @@ class TestBlockProducerSearchCollection(TestCase):
                     'logo_url': 'https://block-producers-directory.s3-us-west-2.amazonaws.com/'
                                 'bps/logos/default-block-producer-logotype.png',
                     'status': 'moderation',
+                    'status_description': '',
                 },
             ],
         }
