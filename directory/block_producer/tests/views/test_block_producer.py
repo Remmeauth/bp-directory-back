@@ -505,8 +505,10 @@ class TestRejectedBlockProducerDescriptionSingle(TestCase):
         """
         Setup.
         """
+        self.email = 'martin.fowler@gmail.com'
+
         user = User.objects.create_user(
-            email='martin.fowler@gmail.com',
+            email=self.email,
             username='martin.fowler',
             password='martin.fowler.1337',
         )
@@ -524,17 +526,23 @@ class TestRejectedBlockProducerDescriptionSingle(TestCase):
         Case: send block producer status description to the email address.
         Expect: message was sent to the specified email is returned.
         """
-        expected_result = {
-            'result': 'Message was sent to the specified email address with a description '
-                      'of the reason for the rejection of the block producer.'
-        }
+        block_producer = BlockProducer.objects.filter(user__email=self.email, id=12).values().first()
+
+        if block_producer.get('status_description'):
+            expected_result = {
+                'result': 'Message was sent to the specified email address with a description '
+                          'of the reason for the rejection of the block producer.',
+            }
+
+        else:
+            expected_result = {
+                'result': 'Block producer not rejected.',
+            }
 
         mock_email_send.return_value = None
 
         response = self.client.post(
-            '/block-producers/12/description/',
-            json.dumps({'email': 'martin.fowler@gmail.com'}),
-            content_type='application/json',
+            '/block-producers/12/description/', json.dumps({'email': self.email}), content_type='application/json',
         )
 
         assert expected_result == response.json()
@@ -603,9 +611,9 @@ class TestRejectedBlockProducerDescriptionSingle(TestCase):
 
         non_existing_block_producer_identifier = 100500
 
-        response = self.client.delete(
+        response = self.client.post(
             f'/block-producers/{non_existing_block_producer_identifier}/description/',
-            json.dumps({'email': 'flower@gmail.com'}),
+            json.dumps({'email': self.email}),
             content_type='application/json',
         )
 
