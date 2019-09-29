@@ -193,12 +193,12 @@ class BlockProducerCollection(APIView):
         except BlockProducerDoesNotExistForSpecifiedUsername as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
-        # if request.META.get('HTTP_HOST'):  # fixme: if tests, no https host, better to mock
-        #     admin_host = f"{request.scheme}://{request.META.get('HTTP_HOST')}"
-        #
-        #     TelegramBot().notify_block_producer_creation(
-        #         admin_host=admin_host, block_producer_identifier=last_block_producer.id,
-        #     )
+        if request.META.get('HTTP_HOST'):  # fixme: if tests, no https host, better to mock
+            admin_host = f"{request.scheme}://{request.META.get('HTTP_HOST')}"
+
+            TelegramBot().notify_block_producer_creation(
+                admin_host=admin_host, block_producer_identifier=last_block_producer.id,
+            )
 
         serialized_lst_block_producer = last_block_producer.to_dict()
 
