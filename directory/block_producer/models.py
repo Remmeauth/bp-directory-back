@@ -196,6 +196,15 @@ class BlockProducer(models.Model):
         """
         cls.objects.filter(id=identifier).delete()
 
+    @classmethod
+    def get_status_description(cls, email, identifier):
+        """
+        Get block producer status description by its identifier.
+        """
+        block_producer_as_dict = cls.objects.filter(user__email=email, id=identifier).values().first()
+
+        return block_producer_as_dict.get('status_description')
+
 
 class BlockProducerLike(models.Model):
     """

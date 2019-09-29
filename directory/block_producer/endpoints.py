@@ -8,6 +8,7 @@ from block_producer.views.block_producer import (
     BlockProducerCollection,
     BlockProducerSearchCollection,
     BlockProducerSingle,
+    RejectedBlockProducerDescriptionSingle,
 )
 from block_producer.views.comment import (
     BlockProducerCommentCollection,
@@ -27,4 +28,5 @@ block_producer_endpoints = [
     path('likes/numbers/', BlockProducerLikeNumberCollection.as_view()),
     path('<int:block_producer_id>/likes/', BlockProducerLikeCollection.as_view()),
     path('<int:block_producer_id>/avatars/', BlockProducerAvatarSingle.as_view()),
+    path('<int:block_producer_id>/description/', RejectedBlockProducerDescriptionSingle.as_view()),
 ]
