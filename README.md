@@ -94,6 +94,54 @@ $ curl -X POST -H "Content-Type: application/json" \
 |  email    | Input arguments validation | This field is required.                            | 400         |
 |  password | Input arguments validation | This field is required.                            | 400         |
 
+* `POST | /users/email/confirm/` - request email confirm at the specified email address. Send the confirm link to the e-mail address.
+
+##### Request parameters
+
+| Arguments | Type   | Required | Description  |
+| :-------: | :----: | :------: | ------------ |
+| email     | String | Yes      | User e-mail. |
+
+```bash
+$ curl -X POST -d '{"email":"dmytro.striletskyi@gmail.com"}' \
+      -H "Content-Type: application/json" \
+      http://localhost:8000/users/email/confirm/ | python -m json.tool
+{
+    "result": "Message with confirmed registration link has been sent to the specified e-mail address."
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                      | Status code |
+| :------: | :------------------------: | -------------------------------------------------- | :---------: |
+| -        | General execution          | User with specified e-mail address does not exist. | 400         |
+| email    | Input arguments validation | This field is required.                            | 400         |
+
+* `POST | /users/email/confirm/{user_identifier}/` - confirm registration at the specified user identifier.
+
+##### Request parameters
+
+| Arguments       | Type   | Required | Description      |
+| :-------------: | :----: | :------: | ---------------- |
+| user_identifier | String | Yes      | User identifier. |
+
+```bash
+$ curl -X POST http://localhost:8000/users/email/confirm/4b73ab1fc1f94c719420433e69408609/ \ 
+      -H "Content-Type: application/json" | python -m json.tool
+{
+    "result": "Registration is confirmed by the specified identifier."
+}
+```
+
+##### Known errors
+
+| Argument | Level                      | Error message                                     | Status code |
+| :------: | :------------------------: | ------------------------------------------------- | :---------: |
+| -        | General execution          | User with specified identifier does not exist.    | 400         |
+| -        | General execution          | User with specified identifier already confirmed. | 400         |
+| email    | Input arguments validation | This field is required.                           | 400         |
+
 * `GET | /users/{username}/` - get user by username.
 
 ##### Request parameters 
@@ -109,6 +157,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.st
         "email": "dmytro.striletskyi@gmail.com",
         "id": 6,
         "is_active": true,
+        "is_email_confirmed": true,
         "is_staff": false,
         "is_superuser": false,
         "last_login": null,
@@ -284,6 +333,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/john.smit
             "email": "john.smith@gmail.com",
             "id": 5,
             "is_active": true,
+            "is_email_confirmed": true,
             "is_staff": false,
             "is_superuser": false,
             "last_login": null,
@@ -399,6 +449,7 @@ $ curl http://localhost:8000/block-producers/2/ -H "Content-Type: application/js
             "email": "tony.stark@gmail.com",
             "id": 2,
             "is_active": true,
+            "is_email_confirmed": true,
             "is_staff": false,
             "is_superuser": false,
             "last_login": null,
@@ -445,6 +496,7 @@ $ curl http://localhost:8000/block-producers/ -H "Content-Type: application/json
                 "email": "tony.stark@gmail.com",
                 "id": 2,
                 "is_active": true,
+                "is_email_confirmed": true,
                 "is_staff": false,
                 "is_superuser": false,
                 "last_login": null,
@@ -514,6 +566,7 @@ $ curl -X PUT http://localhost:8000/block-producers/ \
             "email": "dmytro.striletskyi@gmail.com",
             "id": 5,
             "is_active": true,
+            "is_email_confirmed": true,
             "is_staff": false,
             "is_superuser": false,
             "last_login": null,
@@ -666,6 +719,7 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
                 "email": "tony.stark@gmail.com",
                 "id": 2,
                 "is_active": true,
+                "is_email_confirmed": true,
                 "is_staff": false,
                 "is_superuser": false,
                 "last_login": null,
@@ -742,6 +796,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
                 "email": "john.smith@gmail.com",
                 "id": 1,
                 "is_active": true,
+                "is_email_confirmed": true,
                 "is_staff": false,
                 "is_superuser": false,
                 "last_login": null,
@@ -799,6 +854,7 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
                 "email": "paul.rudd@gmail.com",
                 "id": 3,
                 "is_active": true,
+                "is_email_confirmed": true,
                 "is_staff": false,
                 "is_superuser": false,
                 "last_login": null,
