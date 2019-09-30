@@ -133,3 +133,15 @@ class UserHasNoAuthorityToDeleteThisBlockProducerError(Exception):
         Constructor.
         """
         self.message = 'User has no authority to delete this block producer by its identifier.'
+
+
+class UserWithSpecifiedIdentifierAlreadyConfirmedError(Exception):
+    """
+    User with specified identifier already confirmed error.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.message = 'User with specified identifier already confirmed.'

@@ -1,0 +1,11 @@
+[
+  {
+    "model": "services.passwordrecoverystate",
+    "pk": 1,
+    "fields": {
+      "email": "djangosendemailfrom@gmail.com",
+      "identifier": "407e4042-f61e-4341-b338-1abeea816d61",
+      "created_at": "2019-06-18T13:19:37+00:00"
+    }
+  }
+]

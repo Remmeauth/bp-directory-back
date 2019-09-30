@@ -67,3 +67,12 @@ class UploadBlockProducerAvatarForm(forms.Form):
 
     title = forms.CharField(max_length=150)
     file = forms.FileField()
+
+
+class RejectedBlockProducerDescriptionForm(forms.Form):  # noqa: D205, D400
+    """
+    Send a message to the specified email address with a description
+    of the reason why the block producer has been rejected form implementation.
+    """
+
+    email = forms.EmailField()

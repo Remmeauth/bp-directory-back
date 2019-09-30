@@ -10,6 +10,7 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -23,15 +24,22 @@ from block_producer.domain.objects import (
     GetBlockProducer,
     GetBlockProducers,
     GetUserLastBlockProducer,
+    RejectedBlockProducerDescription,
     SearchBlockProducer,
     UpdateBlockProducer,
 )
 from block_producer.dto.block_producer import BlockProducerDto
 from block_producer.forms import (
     CreateBlockProducerForm,
+    RejectedBlockProducerDescriptionForm,
     UpdateBlockProducerForm,
 )
 from block_producer.models import BlockProducer
+from services.constants import (
+    EmailBody,
+    EmailSubject,
+)
+from services.email import Email
 from services.telegram import TelegramBot
 from user.domain.errors import (
     UserHasNoAuthorityToDeleteThisBlockProducerError,
@@ -220,3 +228,60 @@ class BlockProducerSearchCollection(APIView):
         serialized_block_producers = json.loads(BlockProducerDto.schema().dumps(block_producers, many=True))
 
         return JsonResponse({'result': serialized_block_producers}, status=HTTPStatus.OK)
+
+
+class RejectedBlockProducerDescriptionSingle(APIView):
+    """
+    Single rejected block producer description endpoint implementation.
+    """
+
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self.user = User()
+        self.email_service = Email()
+        self.block_producer = BlockProducer()
+
+    @permission_classes((AllowAny, ))
+    def post(self, request, block_producer_id):  # noqa: D205, D400
+        """
+        Send a message to the specified email address with a description
+        of the reason why the block producer has been rejected.
+        """
+        email = request.data.get('email')
+
+        form = RejectedBlockProducerDescriptionForm({
+            'email': email,
+        })
+
+        if not form.is_valid():
+            return JsonResponse({'errors': form.errors}, status=HTTPStatus.BAD_REQUEST)
+
+        try:
+            status_description = RejectedBlockProducerDescription(
+                user=self.user, block_producer=self.block_producer,
+            ).do(email=email, block_producer_id=block_producer_id)
+
+        except UserWithSpecifiedEmailAddressDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+        except BlockProducerWithSpecifiedIdentifierDoesNotExistError as error:
+            return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
+
+        if status_description:
+
+            message = EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value.format(status_description)
+
+            self.email_service.send(
+                email_to=email, subject=EmailSubject.BLOCK_PRODUCER_REJECTED.value, message=message,
+            )
+
+            return JsonResponse(
+                {
+                    'result': 'Message was sent to the specified email address with a description '
+                              'of the reason for the rejection of the block producer.',
+                },
+                status=HTTPStatus.OK,
+            )
+
+        return JsonResponse({'result': 'Block producer not rejected.'}, status=HTTPStatus.OK)

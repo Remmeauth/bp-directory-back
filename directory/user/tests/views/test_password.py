@@ -24,6 +24,7 @@ class TestUserPasswordSingle(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
@@ -123,12 +124,17 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
         self.email = 'martin.fowler@gmail.com'
         self.password = 'martin.fowler.1337'
 
-        User.objects.create_user(email=self.email, username='martin.fowler', password=self.password)
+        User.objects.create_user(
+            email=self.email,
+            username='martin.fowler',
+            password=self.password,
+            is_email_confirmed=True,
+        )
 
     @patch('services.email.Email.send')
     def test_request_recover_user_password(self, mock_email_send):
         """
-        Case: sent request to recover user password by email.
+        Case: send request to recover user password by email.
         Expect: a password recovery email has been sent.
         """
         expected_result = {
@@ -147,7 +153,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
 
     def test_request_recover_user_password_with_incorrect_email(self):
         """
-        Case: sent request to recover user password by incorrect email.
+        Case: send request to recover user password by incorrect email.
         Expect: enter a valid email address error message.
         """
         expected_result = {
@@ -165,7 +171,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
 
     def test_request_recover_user_password_with_non_existent_email(self):
         """
-        Case: sent request to recover user password with non-existent email.
+        Case: send request to recover user password with non-existent email.
         Expect: user with specified e-mail address does not exist error message.
         """
         expected_result = {
@@ -181,7 +187,7 @@ class TestUserRequestPasswordRecoverySingle(TestCase):
 
     def test_request_recover_user_password_without_email(self):
         """
-        Case: sent request to recover user password without email.
+        Case: send request to recover user password without email.
         Expect: this field is required error message.
         """
         expected_result = {
@@ -208,7 +214,9 @@ class TestUserPasswordRecoverSingle(TestCase):
         self.email = 'martin.fowler@gmail.com'
         self.password = 'martin.fowler.1337'
 
-        User.objects.create_user(email=self.email, username='martin.fowler', password='martin.fowler.1337')
+        User.objects.create_user(
+            email=self.email, username='martin.fowler', password='martin.fowler.1337', is_email_confirmed=True,
+        )
 
     @patch('services.email.Email.send')
     def test_recovery_user_password(self, mock_email_send):

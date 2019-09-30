@@ -28,6 +28,7 @@ class BlockProducerDto:
     full_description: str = ''
     logo_url: str = ''
     status: str = ''
+    status_description: str = ''
 
     linkedin_url: str = ''
     twitter_url: str = ''
