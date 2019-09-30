@@ -8,6 +8,7 @@ from user.domain.errors import (
     SpecifiedUserPasswordIsIncorrectError,
     UserWithSpecifiedEmailAddressAlreadyExistsError,
     UserWithSpecifiedEmailAddressDoesNotExistError,
+    UserWithSpecifiedIdentifierAlreadyConfirmedError,
     UserWithSpecifiedIdentifierDoesNotExistError,
     UserWithSpecifiedUsernameAlreadyExistsError,
     UserWithSpecifiedUsernameDoesNotExistError,
@@ -227,3 +228,54 @@ class DeleteUser:
             raise UserWithSpecifiedUsernameDoesNotExistError
 
         return self.user.delete_(username=username)
+
+
+class UserRequestEmailConfirm:
+    """
+    Request email confirm at the specified email address implementation.
+    """
+
+    def __init__(self, user, email_confirm_state):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.email_confirm_state = email_confirm_state
+
+    def do(self, email):
+        """
+        Request email confirm at the specified email address.
+        """
+        if not self.user.does_exist_by_email(email=email):
+            raise UserWithSpecifiedEmailAddressDoesNotExistError
+
+        identifier = uuid.uuid4().hex
+
+        self.email_confirm_state.create(email=email, identifier=identifier)
+
+        return identifier
+
+
+class UserEmailConfirm:
+    """
+    Confirm registration by user identifier implementation.
+    """
+
+    def __init__(self, user, email_confirm_state):
+        """
+        Constructor.
+        """
+        self.user = user
+        self.email_confirm_state = email_confirm_state
+
+    def do(self, user_identifier):
+        """
+        Confirm registration by user identifier.
+        """
+        if not self.email_confirm_state.does_exist(user_identifier=user_identifier):
+            raise UserWithSpecifiedIdentifierDoesNotExistError
+
+        if self.user.is_email_confirmed_(user_identifier=user_identifier):
+            raise UserWithSpecifiedIdentifierAlreadyConfirmedError
+
+        self.user.set_email_as_confirmed(user_identifier=user_identifier)
