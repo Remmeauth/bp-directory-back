@@ -50,6 +50,7 @@ class TestBlockProducerSingle(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         BlockProducer.objects.create(
@@ -80,6 +81,7 @@ class TestBlockProducerSingle(TestCase):
             email='john.cap@gmail.com',
             username='john.cap',
             password='john.cap.1337',
+            is_email_confirmed=True,
         )
 
         BlockProducer.objects.create(
@@ -101,6 +103,7 @@ class TestBlockProducerSingle(TestCase):
                     'id': 1,
                     'last_login': None,
                     'is_superuser': False,
+                    'is_email_confirmed': True,
                     'email': 'martin.fowler@gmail.com',
                     'username': 'martin.fowler',
                     'is_active': True,
@@ -266,6 +269,7 @@ class TestBlockProducerCollection(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         BlockProducer.objects.create(
@@ -321,6 +325,7 @@ class TestBlockProducerCollection(TestCase):
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
+                        'is_email_confirmed': True,
                         'last_login': None,
                         'username': 'martin.fowler',
                         'email': 'martin.fowler@gmail.com',
@@ -353,6 +358,7 @@ class TestBlockProducerCollection(TestCase):
                     'user': {
                         'is_staff': False,
                         'is_superuser': False,
+                        'is_email_confirmed': True,
                         'last_login': None,
                         'username': 'martin.fowler',
                         'email': 'martin.fowler@gmail.com',
@@ -420,6 +426,7 @@ class TestBlockProducerSearchCollection(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         BlockProducer.objects.create(
@@ -459,6 +466,7 @@ class TestBlockProducerSearchCollection(TestCase):
                         'id': 4,
                         'email': 'martin.fowler@gmail.com',
                         'last_login': None,
+                        'is_email_confirmed': True,
                         'is_superuser': False,
                         'is_staff': False,
                         'username': 'martin.fowler',
@@ -511,6 +519,7 @@ class TestRejectedBlockProducerDescriptionSingle(TestCase):
             email=self.email,
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         BlockProducer.objects.create(

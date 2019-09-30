@@ -10,6 +10,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from services.models import EmailConfirmState
 from user.dto.profile import UserProfileDto
 from user.dto.user import UserDto
 from user.managers import UserManager
@@ -24,6 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True, max_length=25, blank=False)
 
     created = models.DateTimeField(auto_now_add=True)
+    is_email_confirmed = models.BooleanField(default=False)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -125,6 +127,27 @@ class User(AbstractBaseUser, PermissionsMixin):
         user = cls.objects.get(username=username)
         user.email = email
         user.save()
+
+    @classmethod
+    def is_email_confirmed_(cls, user_identifier):
+        """
+        Check if user email confirmed by identifier.
+        """
+        email = EmailConfirmState.get_email(user_identifier=user_identifier)
+        if cls.objects.get(email=email).is_email_confirmed:
+            return True
+
+        return False
+
+    @classmethod
+    def set_email_as_confirmed(cls, user_identifier):
+        """
+        Set email as confirmed by identifier.
+        """
+        email = EmailConfirmState.get_email(user_identifier=user_identifier)
+        user_state = cls.objects.get(email=email)
+        user_state.is_email_confirmed = True
+        user_state.save()
 
 
 class Profile(models.Model):

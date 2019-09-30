@@ -68,3 +68,11 @@ class UploadUserAvatarForm(forms.Form):
 
     title = forms.CharField(max_length=150)
     file = forms.FileField()
+
+
+class UserEmailConfirmForm(forms.Form):
+    """
+    Confirm registration at the specified email address form implementation.
+    """
+
+    email = forms.EmailField()

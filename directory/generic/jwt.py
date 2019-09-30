@@ -42,7 +42,11 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
         user = get_user_by_email or get_user_by_username
 
         if user is None:
-            msg = _('Account with this email/username does not exists')
+            msg = _('Account with this email/username does not exists.')
+            raise serializers.ValidationError(msg)
+
+        if not user.is_email_confirmed:
+            msg = _('User must confirm registration by email in order to log in.')
             raise serializers.ValidationError(msg)
 
         credentials = {

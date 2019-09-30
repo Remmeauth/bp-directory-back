@@ -23,6 +23,7 @@ class TestUserSingle(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         response = self.client.post('/authentication/token/obtaining/', json.dumps({
@@ -42,6 +43,7 @@ class TestUserSingle(TestCase):
                 'email': 'martin.fowler@gmail.com',
                 'id': 99,
                 'is_active': True,
+                'is_email_confirmed': True,
                 'is_staff': False,
                 'is_superuser': False,
                 'last_login': None,

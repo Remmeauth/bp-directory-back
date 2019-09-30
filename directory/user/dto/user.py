@@ -17,6 +17,7 @@ class UserDto:
     id: typing.Any
     email: str
     username: str
+    is_email_confirmed: bool
     is_active: bool
     is_staff: bool
     is_superuser: bool

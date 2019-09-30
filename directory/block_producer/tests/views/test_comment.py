@@ -26,6 +26,7 @@ class TestBlockProducerCommentSingle(TestCase):
             email='martin.fowler@gmail.com',
             username='martin.fowler',
             password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
         block_producer = BlockProducer.objects.create(
             user=user,
