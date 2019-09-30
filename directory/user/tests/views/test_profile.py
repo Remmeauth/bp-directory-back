@@ -23,7 +23,11 @@ class TestUserProfileSingle(TestCase):
         """
         self.username = 'martin.fowler'
         self.user = User.objects.create_user(
-            id=1, email='martin.fowler@gmail.com', username=self.username, password='martin.fowler.1337',
+            id=1,
+            email='martin.fowler@gmail.com',
+            username=self.username,
+            password='martin.fowler.1337',
+            is_email_confirmed=True,
         )
 
         Profile.objects.create(
@@ -101,6 +105,7 @@ class TestUserProfileSingle(TestCase):
                     'is_superuser': False,
                     'email': 'martin.fowler@gmail.com',
                     'username': 'martin.fowler',
+                    'is_email_confirmed': True,
                     'is_active': True,
                     'is_staff': False,
                 },
