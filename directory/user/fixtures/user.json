@@ -1,0 +1,38 @@
+[
+  {
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+      "email": "john.smith@gmail.com",
+      "username": "john.smith",
+      "created": "2019-07-17T14:19:37+00:00",
+      "is_email_confirmed": false,
+      "is_active": true,
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+      "email": "tony.stark@gmail.com",
+      "username": "tony.stark",
+      "created": "2019-06-18T13:19:37+00:00",
+      "is_email_confirmed": false,
+      "is_active": true,
+      "is_staff": false
+    }
+  },
+  {
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+      "email": "paul.rudd@gmail.com",
+      "username": "paul.rudd",
+      "created": "2019-08-22T18:19:37+00:00",
+      "is_email_confirmed": false,
+      "is_active": true,
+      "is_staff": false
+    }
+  }
+]

@@ -16,7 +16,11 @@ services:
     environment:
       - 'DEBUG=True'
       - 'SECRET_KEY=q#-d-)5oo8cjoy6=(ejf=5jdg)e&(tf!@k2zs%9=8^=kq7gxq'
-      - 'POSTGRESQL_DSN=postgresql://postgres:postgres@postgres:5432/postgres'
+      - 'DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres'
+      - 'PROJECT_EMAIL_ADDRESS=directory-test@remme.io'
+      - 'SENDGRID_API_KEY=${SENDGRID_API_KEY}'
+      - 'TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}'
+      - 'TELEGRAM_BOT_HOST=${TELEGRAM_BOT_HOST}'
     ports:
       - '8000:8000'
     stdin_open: true
