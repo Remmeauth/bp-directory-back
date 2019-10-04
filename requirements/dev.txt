@@ -7,6 +7,6 @@ flake8-print==3.1.0
 flake8==3.7.8
 isort==4.3.21
 pep8-naming==0.8.2
-pydocstyle<4.0.0
+pydocstyle==4.0.1
 radon==4.0.0
 safety==1.8.5
