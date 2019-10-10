@@ -46,10 +46,10 @@ class BlockProducer(models.Model):
     location = models.CharField(max_length=100, blank=True)
     short_description = models.CharField(max_length=100, blank=False)
     full_description = models.TextField(max_length=10000, blank=True)
-    logo_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
+    logo_url = models.URLField(max_length=1000, blank=True, default=settings.DEFAULT_BLOCK_PRODUCER_LOGOTYPE_URL)
 
     status = models.CharField(max_length=10, choices=BLOCK_PRODUCER_STATUSES, default=BLOCK_PRODUCER_STATUS_MODERATION)
-    status_description = models.TextField(max_length=1000, blank=True)
+    status_description = models.TextField(max_length=10000, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     linkedin_url = models.URLField(max_length=200, blank=True)
@@ -293,7 +293,7 @@ class BlockProducerComment(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     block_producer = models.ForeignKey(BlockProducer, on_delete=models.CASCADE)
-    text = models.CharField(max_length=200, blank=False)
+    text = models.CharField(max_length=1000, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
