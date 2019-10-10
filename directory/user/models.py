@@ -160,8 +160,8 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
-    avatar_url = models.URLField(max_length=200, blank=True, default=settings.DEFAULT_USER_LOGOTYPE_URL)
-    additional_information = models.TextField(blank=True)
+    avatar_url = models.URLField(max_length=1000, blank=True, default=settings.DEFAULT_USER_LOGOTYPE_URL)
+    additional_information = models.TextField(max_length=10000, blank=True)
 
     website_url = models.URLField(max_length=200, blank=True)
     linkedin_url = models.URLField(max_length=200, blank=True)
