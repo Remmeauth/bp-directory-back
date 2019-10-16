@@ -8,6 +8,8 @@ from django.contrib.postgres.search import (
 )
 from django.db import models
 from django.db.models import Count
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from block_producer.dto.block_producer import BlockProducerDto
 from block_producer.dto.comment import (
@@ -18,6 +20,11 @@ from block_producer.dto.like import (
     BlockProducerLikeDto,
     BlockProducerLikeNumberDto,
 )
+from services.constants import (
+    EmailBody,
+    EmailSubject,
+)
+from services.email import Email
 from user.models import (
     User,
     Profile,
@@ -204,6 +211,28 @@ class BlockProducer(models.Model):
         block_producer_as_dict = cls.objects.filter(user__email=email, id=identifier).values().first()
 
         return block_producer_as_dict.get('status_description')
+
+
+@receiver(post_save, sender=BlockProducer)
+def send_email_if_bp_rejected(sender, instance, **kwargs):
+    """
+    Send an email if the status of the block producer is rejected and a status description exists.
+    """
+    block_producer = sender.objects.get(pk=instance.pk)
+
+    empty_status_description = ''
+
+    if block_producer.status == 'declined' and \
+            block_producer.status_description != empty_status_description:
+
+        email = block_producer.user.email
+        username = block_producer.user.username
+
+        message = EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value.format(
+            username, block_producer.status_description,
+        )
+
+        Email().send(email_to=email, subject=EmailSubject.BLOCK_PRODUCER_REJECTED.value, message=message)
 
 
 class BlockProducerLike(models.Model):

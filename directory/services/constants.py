@@ -28,7 +28,7 @@ class EmailBody(Enum):
     PASSWORD_RECOVERY_MESSAGE = "Hi,<br><br>Recently you have requested password recovery. " \
                                 "Your new password: <strong>{}</strong>. <br><br>Thanks,<br>Remme"
 
-    BLOCK_PRODUCER_REJECTED_MESSAGE = "Hi,<br><br>{}<br><br>Thanks,<br>Remme"
+    BLOCK_PRODUCER_REJECTED_MESSAGE = "Hi <strong>{}</strong>,<br><br>{}<br><br>Thanks,<br>Remme"
 
     USER_CONFIRMING_REGISTRATION_MESSAGE = "Hi,<br><br>" \
                                            "You're only one step for being able to log in on our website! <br><br>" \

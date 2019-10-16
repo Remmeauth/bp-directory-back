@@ -661,31 +661,6 @@ $ curl -X DELETE -H "Content-Type: application/json" \
 | username                  | Input arguments validation | User has no authority to delete this block producer by its identifier. | 400         |
 
 
-* `POST | /block-producers/{block_producer_identifier}/description/` - send message to email with a description of the reason for the rejection of the block producer.
-
-##### Request parameters
-
-| Arguments                 | Type    | Required | Description                   |
-| :-----------------------: | :-----: | :------: | ----------------------------- |
-| block_producer_identifier | Integer | Yes      | Identifier of block producer. |
-| email                     | String  | Yes      | User e-mail.                  |
-
-```bash
-$ curl -X POST -d '{"email":"dmytro.striletskyi.1337@gmail.com"}' \
-      -H "Content-Type: application/json" \
-      http://localhost:8000/block-producers/2/description/ | python -m json.tool
-{
-    "result": "Message was sent to the specified email address with a description of the reason for the rejection of the block producer."
-}
-```
-
-##### Known errors
-
-| Arguments                 | Level                      | Error message                                            | Status code |
-| :-----------------------: | :------------------------: | -------------------------------------------------------- | :---------: |
-| email                     | Input arguments validation | User with specified e-mail address does not exist.       | 400         |
-| block_producer_identifier | Input arguments validation | Block producer with specified identifier does not exist. | 400         |
-
 * `GET | /block-producers/search/?phrase=block%20producer%20usa` - search block producers by phrase.
 
 ##### Request parameters 
