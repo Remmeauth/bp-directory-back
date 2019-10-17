@@ -40,6 +40,17 @@ BLOCK_PRODUCER_STATUSES = (
     (BLOCK_PRODUCER_STATUS_ACTIVE, BLOCK_PRODUCER_STATUS_ACTIVE),
 )
 
+STATUS_TYPE = {
+    'active': [
+        EmailSubject.BLOCK_PRODUCER_ACTIVE.value,
+        EmailBody.BLOCK_PRODUCER_ACTIVE_MESSAGE.value,
+    ],
+    'declined': [
+        EmailSubject.BLOCK_PRODUCER_REJECTED.value,
+        EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value,
+    ],
+}
+
 
 class BlockProducer(models.Model):
     """
@@ -214,25 +225,27 @@ class BlockProducer(models.Model):
 
 
 @receiver(post_save, sender=BlockProducer)
-def send_email_if_bp_rejected(sender, instance, **kwargs):
+def send_email_when_status_changed(sender, instance, **kwargs):
     """
-    Send an email if the status of the block producer is rejected and a status description exists.
+    Send an email if the status of the block producer is rejected or active and a status description exists.
     """
     block_producer = sender.objects.get(pk=instance.pk)
 
+    email = block_producer.user.email
+    username = block_producer.user.username
+    block_producer_name = block_producer.name
     empty_status_description = ''
 
-    if block_producer.status == 'declined' and \
-            block_producer.status_description != empty_status_description:
+    for type_, description in STATUS_TYPE.items():
 
-        email = block_producer.user.email
-        username = block_producer.user.username
+        if block_producer.status == type_ and \
+                block_producer.status_description != empty_status_description:
 
-        message = EmailBody.BLOCK_PRODUCER_REJECTED_MESSAGE.value.format(
-            username, block_producer.status_description,
-        )
+            message = description[1].format(
+                username, block_producer.status_description,
+            )
 
-        Email().send(email_to=email, subject=EmailSubject.BLOCK_PRODUCER_REJECTED.value, message=message)
+            Email().send(email_to=email, subject=description[0].format(block_producer_name), message=message)
 
 
 class BlockProducerLike(models.Model):
