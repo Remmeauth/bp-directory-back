@@ -56,3 +56,27 @@ class TelegramBot:
                 message += f'\nTo moderate use following [link]({link_to_moderate}).'
 
             self._send_message_telegram_api(chat_id=subscriber_chat_id, message=message)
+
+    def notify_block_producer_update(self, admin_host, block_producer_identifier):
+        """
+        Notify block producer update.
+        """
+        subscribers = requests.get(f'{self.host}/subscribers/block-producer/creation', headers={
+            'Content-type': 'application/json',
+        }).json().get('result')
+
+        administrators = requests.get(f'{self.host}/administrators', headers={
+            'Content-type': 'application/json',
+        }).json().get('result')
+
+        link_to_moderate = f'{admin_host}/admin/block_producer/blockproducer/{block_producer_identifier}/change/'
+
+        for subscriber in subscribers:
+            message = f'Block producer with identifier {block_producer_identifier} has been updated.'
+
+            subscriber_chat_id = subscriber.get('chat_id')
+
+            if subscriber in administrators:
+                message += f'\nTo moderate use following [link]({link_to_moderate}).'
+
+            self._send_message_telegram_api(chat_id=subscriber_chat_id, message=message)
