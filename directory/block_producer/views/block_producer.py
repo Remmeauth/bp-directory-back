@@ -94,6 +94,13 @@ class BlockProducerSingle(APIView):
         ) as error:
             return JsonResponse({'error': error.message}, status=HTTPStatus.NOT_FOUND)
 
+        if request.META.get('HTTP_HOST'):  # fixme: if tests, no https host, better to mock
+            admin_host = f"{request.scheme}://{request.META.get('HTTP_HOST')}"
+
+            TelegramBot().notify_block_producer_update(
+                admin_host=admin_host, block_producer_identifier=block_producer_id,
+            )
+
         return JsonResponse({'result': 'Block producer has been updated.'}, status=HTTPStatus.OK)
 
     @authentication_classes((JSONWebTokenAuthentication,))
