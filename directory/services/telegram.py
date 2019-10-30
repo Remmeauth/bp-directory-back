@@ -57,7 +57,7 @@ class TelegramBot:
 
             self._send_message_telegram_api(chat_id=subscriber_chat_id, message=message)
 
-    def notify_block_producer_update(self, admin_host, block_producer_identifier):
+    def notify_block_producer_update(self, admin_host, block_producer_id, block_producer_name, username):
         """
         Notify block producer update.
         """
@@ -69,10 +69,11 @@ class TelegramBot:
             'Content-type': 'application/json',
         }).json().get('result')
 
-        link_to_moderate = f'{admin_host}/admin/block_producer/blockproducer/{block_producer_identifier}/change/'
+        link_to_moderate = f'{admin_host}/admin/block_producer/blockproducer/{block_producer_id}/change/'
 
         for subscriber in subscribers:
-            message = f'Block producer with identifier {block_producer_identifier} has been updated.'
+            message = f'User {username} HAS BEEN UPDATED his block producer with ' \
+                f'the name {block_producer_name} and identifier {block_producer_id}.'
 
             subscriber_chat_id = subscriber.get('chat_id')
 
