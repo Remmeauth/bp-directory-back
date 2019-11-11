@@ -111,6 +111,7 @@ class BlockProducer(models.Model):
 
             del user_as_dict['password']
             del user_as_dict['created']
+            del user_as_dict['email']
 
             block_producer['user'] = user_as_dict
             del block_producer['created_at']
@@ -149,6 +150,7 @@ class BlockProducer(models.Model):
 
         del user_as_dict['password']
         del user_as_dict['created']
+        del user_as_dict['email']
 
         block_producer_as_dict['user'] = user_as_dict
         del block_producer_as_dict['created_at']
@@ -176,6 +178,7 @@ class BlockProducer(models.Model):
 
             del user_as_dict['password']
             del user_as_dict['created']
+            del user_as_dict['email']
 
             del block_producer_as_dict['search']
             del block_producer_as_dict['created_at']
@@ -201,6 +204,7 @@ class BlockProducer(models.Model):
 
         del user_as_dict['password']
         del user_as_dict['created']
+        del user_as_dict['email']
 
         last_block_producer['user'] = user_as_dict
         del last_block_producer['created_at']
@@ -311,6 +315,7 @@ class BlockProducerLike(models.Model):
 
             del user_as_dict['password']
             del user_as_dict['created']
+            del user_as_dict['email']
 
             block_producer_like['user'] = user_as_dict
 
@@ -372,6 +377,7 @@ class BlockProducerComment(models.Model):
 
             del user_as_dict['password']
             del user_as_dict['created']
+            del user_as_dict['email']
 
             block_producer_comment['user'] = user_as_dict
             block_producer_comment['profile_avatar_url'] = profile.avatar_url

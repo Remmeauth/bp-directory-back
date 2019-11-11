@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from dataclasses_json import dataclass_json
 
-from user.dto.user import UserDto
+from user.dto.user import UserDtoWithoutEmail
 
 
 @dataclass_json
@@ -19,7 +19,7 @@ class BlockProducerLikeDto:
     user_id: int
     block_producer_id: int
 
-    user: UserDto
+    user: UserDtoWithoutEmail
 
 
 @dataclass_json
