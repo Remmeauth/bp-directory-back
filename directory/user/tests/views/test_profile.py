@@ -103,7 +103,6 @@ class TestUserProfileSingle(TestCase):
                     'id': 1,
                     'last_login': None,
                     'is_superuser': False,
-                    'email': 'martin.fowler@gmail.com',
                     'username': 'martin.fowler',
                     'is_email_confirmed': True,
                     'is_active': True,
