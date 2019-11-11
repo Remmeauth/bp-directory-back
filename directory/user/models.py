@@ -198,6 +198,7 @@ class Profile(models.Model):
 
         del user_as_dict['password']
         del user_as_dict['created']
+        del user_as_dict['email']
 
         user_profile_as_dict['user'] = user_as_dict
 

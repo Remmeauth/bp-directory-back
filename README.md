@@ -154,7 +154,6 @@ $ curl -X POST http://localhost:8000/users/email/confirm/4b73ab1fc1f94c719420433
 $ curl -H "Content-Type: application/json" http://localhost:8000/users/dmytro.striletskyi/ | python -m json.tool
 {
     "result": {
-        "email": "dmytro.striletskyi@gmail.com",
         "id": 6,
         "is_active": true,
         "is_email_confirmed": true,
@@ -330,7 +329,6 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/users/john.smit
         "telegram_url": "",
         "twitter_url": "",
         "user": {
-            "email": "john.smith@gmail.com",
             "id": 5,
             "is_active": true,
             "is_email_confirmed": true,
@@ -446,7 +444,6 @@ $ curl http://localhost:8000/block-producers/2/ -H "Content-Type: application/js
         "telegram_url": "https://t.me/bpcanada",
         "twitter_url": "https://twitter.com/bpcanada",
         "user": {
-            "email": "tony.stark@gmail.com",
             "id": 2,
             "is_active": true,
             "is_email_confirmed": true,
@@ -493,7 +490,6 @@ $ curl http://localhost:8000/block-producers/ -H "Content-Type: application/json
             "telegram_url": "https://t.me/bpusa",
             "twitter_url": "https://twitter.com/bpusa",
             "user": {
-                "email": "tony.stark@gmail.com",
                 "id": 2,
                 "is_active": true,
                 "is_email_confirmed": true,
@@ -691,7 +687,6 @@ $ curl http://localhost:8000/block-producers/search/?phrase=block%20producer%20u
             "telegram_url": "https://t.me/bpusa",
             "twitter_url": "https://twitter.com/bpusa",
             "user": {
-                "email": "tony.stark@gmail.com",
                 "id": 2,
                 "is_active": true,
                 "is_email_confirmed": true,
@@ -768,7 +763,6 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
             "block_producer_id": 2,
             "id": 2,
             "user": {
-                "email": "john.smith@gmail.com",
                 "id": 1,
                 "is_active": true,
                 "is_email_confirmed": true,
@@ -826,7 +820,6 @@ $ curl -H "Content-Type: application/json" http://localhost:8000/block-producers
             "id": 10,
             "text": "Great block producer!",
             "user": {
-                "email": "paul.rudd@gmail.com",
                 "id": 3,
                 "is_active": true,
                 "is_email_confirmed": true,
