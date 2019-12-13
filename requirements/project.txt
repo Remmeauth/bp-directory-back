@@ -9,4 +9,4 @@ djangorestframework==3.10.3
 psycopg2==2.8.4
 requests==2.22.0
 sendgrid==6.1.0
-whitenoise==4.1.4
+whitenoise==5.0.1
